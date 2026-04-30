@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Tezana White — IT Labs & Project Portfolio. Hands-on labs in IT support, cybersecurity, cloud, and data center technologies."/>
+  <title>Tezana | IT Labs Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--near:#e8ecf0;
+  --white:#f4f7fa;--pure:#ffffff;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --glow-sm:0 0 16px rgba(176,188,200,.12);
+  --glow-md:0 0 30px rgba(176,188,200,.18);
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+  --nav:66px;--max:1160px;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.875rem;line-height:1.75;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 2rem}
+.sec{padding:6rem 0}
+.ruled{height:1px;background:linear-gradient(90deg,transparent,var(--b3) 35%,var(--b3) 65%,transparent)}
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem}
+.eyebrow::before{content:'';flex-shrink:0;width:20px;height:1px;background:var(--steel)}
+.sec-title{font-family:var(--fh);font-size:clamp(1.7rem,3vw,2.4rem);font-weight:700;color:var(--white);letter-spacing:.02em;line-height:1.1;margin-bottom:2.5rem}
+.sec-title span{color:var(--mid);font-weight:300}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.on{opacity:1;transform:none}
+.btn{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--fh);font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.72rem 1.9rem;border:1px solid var(--b3);color:var(--white);background:transparent;cursor:pointer;position:relative;overflow:hidden;transition:box-shadow .25s,border-color .25s}
+.btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.06);transform:translateX(-110%);transition:transform .3s ease}
+.btn:hover{border-color:var(--fog);box-shadow:var(--glow-md)}
+.btn:hover::after{transform:translateX(0)}
+.btn-ghost{border-color:var(--b2);color:var(--silver)}
+.btn-ghost:hover{border-color:var(--b2);color:var(--mist)}
+.btn-card{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--b2);color:var(--silver);background:transparent;display:inline-block;transition:all .2s}
+.btn-card:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+.badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid currentColor;line-height:1.6}
+.b-done{color:var(--fog);border-color:rgba(205,213,222,.35)}
+.b-wip{color:var(--silver);border-color:rgba(136,150,168,.28)}
+.b-plan{color:var(--dim);border-color:rgba(61,70,85,.55)}
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;height:var(--nav);background:rgba(6,8,11,.92);backdrop-filter:blur(24px) saturate(150%);border-bottom:1px solid var(--b0);display:flex;align-items:center;transition:border-color .3s,box-shadow .3s}
+#nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
+.nav-logo span{font-weight:300;color:var(--silver)}
+.nav-desk{list-style:none;display:flex;align-items:center;gap:2.25rem}
+.nav-desk a{font-family:var(--fh);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);position:relative;transition:color .2s}
+.nav-desk a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--fog);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-desk a:hover{color:var(--white)}
+.nav-desk a:hover::after{transform:scaleX(1)}
+.hbg{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:38px;height:38px;background:none;border:1px solid var(--b2);cursor:pointer;flex-shrink:0;transition:border-color .2s,box-shadow .2s}
+.hbg:hover{border-color:var(--b2);box-shadow:var(--glow-sm)}
+.hbg .bar{display:block;width:16px;height:1px;background:var(--silver);transition:transform .3s,opacity .3s,width .3s}
+.hbg.open .bar:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hbg.open .bar:nth-child(2){opacity:0;width:0}
+.hbg.open .bar:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+#dd{display:none;position:fixed;top:var(--nav);right:0;width:min(300px,90vw);background:rgba(15,19,24,.97);border:1px solid var(--b2);border-top:0;backdrop-filter:blur(24px);z-index:610;box-shadow:-4px 16px 48px rgba(0,0,0,.7)}
+#dd.open{display:block}
+.dd-head{padding:1rem 1.4rem .65rem;font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--steel);border-bottom:1px solid var(--b0);display:flex;justify-content:space-between;align-items:center}
+.dd-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+.dd-list{list-style:none;padding:.4rem 0 .75rem}
+.dd-list li a{display:flex;align-items:center;justify-content:space-between;padding:.65rem 1.4rem;font-family:var(--fh);font-size:1rem;font-weight:600;letter-spacing:.05em;color:var(--silver);border-bottom:1px solid var(--b0);transition:color .2s,background .2s,padding-left .2s}
+.dd-list li:last-child a{border-bottom:0}
+.dd-list li a:hover{color:var(--white);background:rgba(255,255,255,.03);padding-left:1.8rem}
+.dd-arr{font-size:.65rem;color:var(--steel)}
+#home{position:relative;min-height:100vh;display:flex;align-items:center;padding-top:var(--nav);overflow:hidden}
+.vid-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.vid-bg video{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.18;filter:grayscale(100%) brightness(.85)}
+.vid-bg::before{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 75% 65% at 55% 45%,transparent 15%,rgba(6,8,11,.72) 75%),linear-gradient(to bottom,rgba(6,8,11,.65) 0%,transparent 25%,transparent 72%,rgba(6,8,11,.95) 100%),linear-gradient(to right,rgba(6,8,11,.55) 0%,transparent 30%)}
+.dots{position:absolute;inset:0;z-index:1;background-image:radial-gradient(circle,rgba(176,188,200,.055) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.hero-in{position:relative;z-index:2;display:grid;grid-template-columns:1fr 380px;gap:4.5rem;align-items:center;width:100%}
+.hero-copy{animation:up .75s ease both}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.hero-badge{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--fm);font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);margin-bottom:1.4rem}
+.hero-badge::before,.hero-badge::after{content:'';display:block;height:1px;width:18px;background:var(--steel)}
+h1.hname{font-family:var(--fh);font-size:clamp(3rem,5.5vw,5.2rem);font-weight:800;color:var(--white);line-height:.95;letter-spacing:.015em;margin-bottom:1.1rem}
+h1.hname .last{display:block;font-weight:300;color:var(--fog)}
+.hero-hl{font-family:var(--fh);font-size:clamp(.78rem,1.4vw,.98rem);font-weight:500;letter-spacing:.1em;color:var(--silver);margin-bottom:.9rem;min-height:1.5em}
+.cursor{opacity:.6;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:.6}50%{opacity:0}}
+.hero-sub{font-size:.82rem;line-height:1.9;color:var(--mid);max-width:44ch;margin-bottom:2.2rem}
+.hero-btns{display:flex;gap:.85rem;flex-wrap:wrap}
+.hstats{display:flex;gap:2.75rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--b0)}
+.hs-n{font-family:var(--fh);font-size:1.8rem;font-weight:700;color:var(--white);line-height:1}
+.hs-l{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-top:.2rem}
+.pf-wrap{animation:pf .9s .2s ease both}
+@keyframes pf{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.pf-outer{position:relative;display:inline-block;width:100%}
+.pf-outer::before,.pf-outer::after{content:'';position:absolute;width:30px;height:30px;z-index:5}
+.pf-outer::before{top:-7px;left:-7px;border-top:2px solid var(--fog);border-left:2px solid var(--fog)}
+.pf-outer::after{bottom:-7px;right:-7px;border-bottom:2px solid var(--fog);border-right:2px solid var(--fog)}
+.pf-inner{border:1px solid var(--b2);overflow:hidden;background:var(--coal);position:relative}
+.pf-inner::before,.pf-inner::after{content:'';position:absolute;z-index:4;pointer-events:none;width:18px;height:18px}
+.pf-inner::before{top:0;right:0;border-top:1px solid var(--steel);border-right:1px solid var(--steel)}
+.pf-inner::after{bottom:0;left:0;border-bottom:1px solid var(--steel);border-left:1px solid var(--steel)}
+.pf-inner img{width:100%;display:block;filter:grayscale(100%) contrast(1.06);transition:filter .45s}
+.pf-outer:hover .pf-inner img{filter:grayscale(55%) contrast(1.08)}
+.pf-placeholder{width:100%;aspect-ratio:3/4;background:var(--coal);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
+.pf-placeholder .initials{font-family:var(--fh);font-size:4rem;font-weight:800;color:var(--steel);letter-spacing:.05em}
+.pf-placeholder .ph-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-align:center}
+.pf-scan{position:absolute;left:0;right:0;height:70px;background:linear-gradient(transparent,rgba(200,210,220,.05),transparent);pointer-events:none;z-index:3;top:-70px;animation:scan 3.8s linear infinite}
+@keyframes scan{to{top:110%}}
+.pf-hud{position:absolute;bottom:0;left:0;right:0;z-index:5;padding:2.5rem .8rem .6rem;background:linear-gradient(transparent,rgba(6,8,11,.88));display:flex;justify-content:space-between;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.live{animation:blink 2.2s step-end infinite}
+.pf-id{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--fm);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);background:var(--void);padding:0 .7rem;white-space:nowrap;z-index:6}
+.vid-tag{position:absolute;bottom:1.75rem;right:1.75rem;z-index:10;display:flex;align-items:center;gap:.45rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);border:1px solid var(--b0);background:rgba(6,8,11,.55);padding:.3rem .7rem;backdrop-filter:blur(8px)}
+.vid-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:blink 1.9s ease infinite}
+#about{background:var(--abyss)}
+.about-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:5rem;align-items:start}
+.about-body p{font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1.1rem}
+.focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-top:1.75rem}
+.fi{font-size:.71rem;color:var(--silver);padding:.42rem .55rem;border-left:1px solid var(--steel);transition:border-color .2s,color .2s}
+.fi::before{content:'→ ';color:var(--steel)}
+.fi:hover{border-color:var(--fog);color:var(--white)}
+.labs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--b0);border:1px solid var(--b0)}
+.lc{background:var(--deep);padding:1.9rem;display:block;color:inherit;transition:background .22s}
+.lc:hover{background:var(--coal)}
+.lc-row1{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.05rem}
+.lc-num{font-family:var(--fm);font-size:.56rem;letter-spacing:.2em;color:var(--steel)}
+.lc-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.28rem;letter-spacing:.02em}
+.lc-cat{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:.85rem}
+.lc-sum{font-size:.77rem;line-height:1.82;color:var(--silver);margin-bottom:1rem}
+.lc-meta{border-top:1px solid var(--b0);padding-top:.85rem;display:flex;flex-direction:column;gap:.28rem;font-size:.67rem;color:var(--steel)}
+.lc-meta strong{color:var(--mid);font-weight:400;margin-right:.3rem}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.chip{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .52rem;border:1px solid var(--b0);color:var(--steel);transition:border-color .2s,color .2s}
+.lc:hover .chip{border-color:var(--b1);color:var(--mid)}
+#projects{background:var(--abyss)}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+.pc{border:1px solid var(--b0);padding:1.9rem;background:var(--deep);position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.pc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);opacity:0;transition:opacity .3s}
+.pc:hover{border-color:var(--b2);box-shadow:var(--glow-sm)}
+.pc:hover::after{opacity:1}
+.pc-num{font-family:var(--fm);font-size:.52rem;letter-spacing:.22em;color:var(--steel);margin-bottom:.55rem}
+.pc-title{font-family:var(--fh);font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.45rem}
+.pc-prob{font-size:.72rem;color:var(--steel);font-style:italic;margin-bottom:.8rem;line-height:1.65}
+.pc-body{font-size:.77rem;line-height:1.85;color:var(--silver);margin-bottom:.85rem}
+.pc-tools{font-size:.64rem;color:var(--steel);margin-bottom:1.2rem}
+.pc-tools strong{color:var(--mid);font-weight:400}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.sg{background:var(--deep);border:1px solid var(--b0);padding:1.4rem;transition:border-color .2s}
+.sg:hover{border-color:var(--b1)}
+.sg:last-child{grid-column:1/-1}
+.sg-h{font-family:var(--fh);font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--white);padding-bottom:.7rem;margin-bottom:.95rem;border-bottom:1px solid var(--b0)}
+.tags{display:flex;flex-wrap:wrap;gap:.38rem}
+.sk{font-size:.62rem;letter-spacing:.08em;padding:.28rem .66rem;background:var(--coal);color:var(--silver);border:1px solid transparent;transition:all .2s}
+.sk:hover{border-color:var(--b2);background:var(--gun);color:var(--white)}
+#certs{background:var(--abyss)}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1rem}
+.cc{border:1px solid var(--b0);padding:1.4rem;background:var(--deep);transition:border-color .2s}
+.cc:hover{border-color:var(--b2)}
+.cc .badge{margin-bottom:.85rem;display:inline-block}
+.cc-name{font-family:var(--fh);font-size:.9rem;font-weight:700;color:var(--white);margin-bottom:.3rem}
+.cc-focus{font-size:.71rem;color:var(--silver);line-height:1.65;margin-bottom:.55rem}
+.cc-date{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--steel)}
+.doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.doc-body p{font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1rem}
+.tl{list-style:none;position:relative;padding-left:1.75rem}
+.tl::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(var(--steel),transparent)}
+.tl li{position:relative;padding:.6rem 0;font-size:.77rem;color:var(--silver);border-bottom:1px solid var(--b0)}
+.tl li:last-child{border-bottom:none}
+.tl li::before{content:'';position:absolute;left:-1.75rem;top:50%;transform:translateY(-50%);width:7px;height:7px;border:1px solid var(--steel);background:var(--void)}
+.tl li strong{display:block;font-family:var(--fh);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);font-weight:700;margin-bottom:.1rem}
+#contact{background:var(--abyss)}
+.con-c{max-width:640px;margin:0 auto;text-align:center}
+.con-c p{font-size:.83rem;line-height:1.9;color:var(--mid);margin-bottom:2.5rem}
+.con-links{display:flex;justify-content:center;flex-wrap:wrap;gap:.9rem}
+.cl-btn{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.72rem 1.6rem;border:1px solid var(--b2);color:var(--silver);background:transparent;transition:all .22s}
+.cl-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun);box-shadow:var(--glow-sm)}
+.cl-btn svg{width:14px;height:14px;flex-shrink:0;fill:currentColor}
+footer{border-top:1px solid var(--b0);padding:1.6rem 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;letter-spacing:.1em;color:var(--steel)}
+footer a{transition:color .2s}
+footer a:hover{color:var(--white)}
+.f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid);letter-spacing:.06em}
+@media(max-width:1024px){.sk-grid{grid-template-columns:repeat(2,1fr)}.sg:last-child{grid-column:auto}}
+@media(max-width:820px){.hero-in{grid-template-columns:1fr;gap:3rem}.pf-wrap{order:-1}.pf-outer{max-width:300px;margin:0 auto}.about-grid,.doc-grid{grid-template-columns:1fr;gap:3rem}.labs-grid,.proj-grid{grid-template-columns:1fr}.nav-desk{display:none}footer .wrap{flex-direction:column;gap:.5rem;text-align:center}}
+@media(max-width:540px){.sk-grid{grid-template-columns:1fr}.wrap{padding:0 1.2rem}.sec{padding:4rem 0}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="wrap">
+    <a href="#home" class="nav-logo">TEZANA <span>WHITE</span></a>
+    <ul class="nav-desk">
+      <li><a href="#about">About</a></li>
+      <li><a href="#labs">Labs</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hbg" id="hbg" aria-label="Menu">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+  </div>
+</nav>
+
+<div id="dd">
+  <div class="dd-head"><span>Navigation</span><span class="dd-dot"></span></div>
+  <ul class="dd-list">
+    <li><a href="#home">Home <span class="dd-arr">→</span></a></li>
+    <li><a href="#labs">Portfolio <span class="dd-arr">→</span></a></li>
+    <li><a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">LinkedIn <span class="dd-arr">↗</span></a></li>
+    <li><a href="https://github.com/tezana" target="_blank" rel="noopener">GitHub <span class="dd-arr">↗</span></a></li>
+    <li><a href="#contact">Contact <span class="dd-arr">→</span></a></li>
+  </ul>
+</div>
+
+<section id="home">
+  <div class="vid-bg">
+    <video autoplay muted loop playsinline aria-hidden="true">
+      <source src="assets/videos/hero-video.mp4" type="video/mp4"/>
+    </video>
+  </div>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-in">
+      <div class="hero-copy">
+        <div class="hero-badge">IT Labs &amp; Projects Portfolio</div>
+        <h1 class="hname">Tezana<span class="last">White</span></h1>
+        <p class="hero-hl"><span id="tw">IT Support | Cybersecurity | Cloud | Data Center Labs</span><span class="cursor">_</span></p>
+        <p class="hero-sub">Building hands-on technical skills through real-world labs, troubleshooting, and project documentation.</p>
+        <div class="hero-btns">
+          <a href="#labs" class="btn">View My Labs</a>
+          <a href="https://github.com/tezana" target="_blank" rel="noopener" class="btn btn-ghost">View GitHub ↗</a>
+        </div>
+        <div class="hstats">
+          <div><div class="hs-n" data-count="12" data-sfx="+">12+</div><div class="hs-l">Labs Documented</div></div>
+          <div><div class="hs-n" data-count="4">4</div><div class="hs-l">Cert Tracks</div></div>
+          <div><div class="hs-n" data-count="100" data-sfx="%">100%</div><div class="hs-l">Hands-On</div></div>
+        </div>
+      </div>
+      <div class="pf-wrap">
+        <div class="pf-outer">
+          <span class="pf-id">// OPERATOR PROFILE</span>
+          <div class="pf-inner">
+            <div class="pf-scan" aria-hidden="true"></div>
+            <div class="pf-placeholder">
+              <div class="initials">TW</div>
+              <div class="ph-label">Add profile-sci-fi.png<br>to assets/images/</div>
+            </div>
+            <div class="pf-hud">
+              <span>SYS_ACTIVE</span>
+              <span class="live">● LIVE</span>
+              <span>LAB_ENV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="vid-tag" aria-hidden="true"><span class="vid-dot"></span> Video / Loop</div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="about" class="sec">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="eyebrow">// 01 — About</div>
+        <h2 class="sec-title">Who I Am<br><span>&amp; What I'm Building</span></h2>
+        <a href="#contact" class="btn btn-ghost" style="margin-top:1rem">Get In Touch →</a>
+      </div>
+      <div class="reveal">
+        <p>I'm a transitioning IT professional with a background in leadership, operations, HR systems, program management, and technology-enabled process improvement. I'm currently building hands-on experience in IT support, cybersecurity, cloud, networking, and data center technologies.</p>
+        <p>My portfolio documents every lab, troubleshooting session, tool, and lesson learned as I grow into a well-rounded technical professional. Everything here was built, broken, and figured out — and fully documented so it can be verified.</p>
+        <p style="font-family:var(--fh);font-size:.68rem;letter-spacing:.2em;color:var(--white);margin-top:1.75rem;margin-bottom:.55rem;font-weight:700;text-transform:uppercase;">Current Focus Areas</p>
+        <div class="focus-grid">
+          <span class="fi">CompTIA A+ Hardware</span>
+          <span class="fi">Networking Fundamentals</span>
+          <span class="fi">Cybersecurity Basics</span>
+          <span class="fi">Cloud Fundamentals</span>
+          <span class="fi">Data Center Skills</span>
+          <span class="fi">Linux &amp; Command-Line</span>
+          <span class="fi">Technical Documentation</span>
+          <span class="fi">Help Desk Workflows</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="labs" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 02 — Portfolio</div>
+    <h2 class="sec-title">Hands-On <span>IT Labs</span></h2>
+    <div class="labs-grid">
+      <a href="#" class="lc reveal">
+        <div class="lc-row1"><span class="lc-num">LAB-001</span><span class="badge b-wip">In Progress</span></div>
+        <div class="lc-title">PC Hardware Identification Lab</div>
+        <div class="lc-cat">CompTIA A+ / Hardware</div>
+        <p class="lc-sum">Identified major internal and external PC components and documented their purpose, compatibility, and troubleshooting considerations aligned with CompTIA A+ objectives.</p>
+        <div class="lc-meta">
+          <span><strong>Difficulty:</strong> Beginner</span>
+          <span><strong>Tools:</strong> PCPartPicker, CompTIA A+ Objectives, Documentation Template</span>
+          <span><strong>Skills:</strong> Hardware recognition, documentation, troubleshooting concepts</span>
+        </div>
+        <div class="chips"><span class="chip">Hardware</span><span class="chip">A+</span><span class="chip">Documentation</span></div>
+      </a>
+      <a href="#" class="lc reveal">
+        <div class="lc-row1"><span class="lc-num">LAB-002</span><span class="badge b-plan">Planned</span></div>
+        <div class="lc-title">Virtual Machine Setup Lab</div>
+        <div class="lc-cat">Virtualization / Operating Systems</div>
+        <p class="lc-sum">Build and configure virtual machines to practice OS installation, snapshots, basic networking, and system configuration across Windows and Linux environments.</p>
+        <div class="lc-meta">
+          <span><strong>Difficulty:</strong> Beginner → Intermediate</span>
+          <span><strong>Tools:</strong> VirtualBox / VMware Workstation, Windows ISO, Linux ISO</span>
+          <span><strong>Skills:</strong> Virtualization, OS install, system config, troubleshooting</span>
+        </div>
+        <div class="chips"><span class="chip">VMware</span><span class="chip">VirtualBox</span><span class="chip">Linux</span><span class="chip">Windows</span></div>
+      </a>
+      <a href="#" class="lc reveal">
+        <div class="lc-row1"><span class="lc-num">LAB-003</span><span class="badge b-plan">Planned</span></div>
+        <div class="lc-title">Basic Network Troubleshooting Lab</div>
+        <div class="lc-cat">Networking / IT Support</div>
+        <p class="lc-sum">Practice core network troubleshooting commands and document systematic approaches to diagnosing common connectivity issues in a real or virtualized environment.</p>
+        <div class="lc-meta">
+          <span><strong>Difficulty:</strong> Beginner</span>
+          <span><strong>Tools:</strong> Command Prompt, PowerShell, ping, ipconfig, tracert, nslookup</span>
+          <span><strong>Skills:</strong> Network troubleshooting, CLI tools, documentation</span>
+        </div>
+        <div class="chips"><span class="chip">Networking</span><span class="chip">CLI</span><span class="chip">PowerShell</span></div>
+      </a>
+      <a href="#" class="lc reveal">
+        <div class="lc-row1"><span class="lc-num">LAB-004</span><span class="badge b-plan">Planned</span></div>
+        <div class="lc-title">Help Desk Ticket Triage Lab</div>
+        <div class="lc-cat">IT Support / AI Workflow</div>
+        <p class="lc-sum">Design a structured system to sort IT support tickets by urgency, category, and issue type using a spreadsheet-based urgency matrix and AI-assisted classification.</p>
+        <div class="lc-meta">
+          <span><strong>Difficulty:</strong> Intermediate</span>
+          <span><strong>Tools:</strong> Spreadsheet, AI prompt workflow, ticket categories, urgency matrix</span>
+          <span><strong>Skills:</strong> Ticket triage, customer support, workflow design, AI-assisted ops</span>
+        </div>
+        <div class="chips"><span class="chip">Help Desk</span><span class="chip">Triage</span><span class="chip">AI Workflow</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="projects" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 03 — Projects</div>
+    <h2 class="sec-title">Portfolio <span>Projects</span></h2>
+    <div class="proj-grid">
+      <div class="pc reveal">
+        <div class="pc-num">PROJECT-01</div>
+        <div class="pc-title">IT Support Ticket Classification System</div>
+        <p class="pc-prob">Problem: Help desk teams lose time manually sorting tickets without a structured triage system.</p>
+        <p class="pc-body">Built a rules-based and AI-assisted workflow to classify help desk tickets by urgency, category, and issue type — reducing response overhead and improving resolution tracking.</p>
+        <p class="pc-tools"><strong>Tools:</strong> Spreadsheet, Python (basic), AI prompt workflow, urgency matrix</p>
+        <a href="#" class="btn-card">View on GitHub →</a>
+      </div>
+      <div class="pc reveal">
+        <div class="pc-num">PROJECT-02</div>
+        <div class="pc-title">Cybersecurity Home Lab</div>
+        <p class="pc-prob">Problem: Security concepts require a live environment to understand attack and defense in practice.</p>
+        <p class="pc-body">Set up a virtualized home lab for practicing security monitoring, access control, defensive tooling, and log analysis with real scenarios and documented findings.</p>
+        <p class="pc-tools"><strong>Tools:</strong> VirtualBox, Kali Linux, Wireshark, pfSense, Security Onion (planned)</p>
+        <a href="#" class="btn-card">View on GitHub →</a>
+      </div>
+      <div class="pc reveal">
+        <div class="pc-num">PROJECT-03</div>
+        <div class="pc-title">Cloud Fundamentals Project</div>
+        <p class="pc-prob">Problem: Cloud skills require hands-on deployment beyond reading documentation.</p>
+        <p class="pc-body">Beginner cloud project using AWS, Azure, or GCP to deploy VMs, configure storage, set permissions, and document architecture decisions and lessons learned.</p>
+        <p class="pc-tools"><strong>Tools:</strong> AWS Free Tier / Azure / GCP, IAM policies, S3 / Blob Storage</p>
+        <a href="#" class="btn-card">View on GitHub →</a>
+      </div>
+      <div class="pc reveal">
+        <div class="pc-num">PROJECT-04</div>
+        <div class="pc-title">Data Center Technician Skills Project</div>
+        <p class="pc-prob">Problem: Data center roles require physical and procedural knowledge that's hard to show without experience.</p>
+        <p class="pc-body">Project focused on rack-and-stack concepts, structured cabling documentation, server hardware identification, and data center operational workflows — built as a reference guide and checklist suite.</p>
+        <p class="pc-tools"><strong>Tools:</strong> Physical hardware, cable management diagrams, documentation templates</p>
+        <a href="#" class="btn-card">View on GitHub →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="skills" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 04 — Skills</div>
+    <h2 class="sec-title">Technical <span>Skill Areas</span></h2>
+    <div class="sk-grid">
+      <div class="sg reveal"><div class="sg-h">IT Support</div><div class="tags"><span class="sk">Troubleshooting</span><span class="sk">Hardware Basics</span><span class="sk">Operating Systems</span><span class="sk">Ticketing Workflows</span><span class="sk">Customer Support</span><span class="sk">Tech Documentation</span></div></div>
+      <div class="sg reveal"><div class="sg-h">Networking</div><div class="tags"><span class="sk">TCP/IP</span><span class="sk">DNS</span><span class="sk">DHCP</span><span class="sk">Ethernet</span><span class="sk">Wi-Fi Standards</span><span class="sk">CLI Diagnostics</span></div></div>
+      <div class="sg reveal"><div class="sg-h">Cybersecurity</div><div class="tags"><span class="sk">Security Fundamentals</span><span class="sk">Access Control</span><span class="sk">Risk Awareness</span><span class="sk">Vuln Concepts</span><span class="sk">Security Docs</span></div></div>
+      <div class="sg reveal"><div class="sg-h">Cloud &amp; Data Center</div><div class="tags"><span class="sk">Cloud Fundamentals</span><span class="sk">Virtualization</span><span class="sk">Server Hardware</span><span class="sk">Data Center Ops</span><span class="sk">Infrastructure</span></div></div>
+      <div class="sg reveal"><div class="sg-h">Tools &amp; Platforms</div><div class="tags"><span class="sk">GitHub</span><span class="sk">VS Code</span><span class="sk">Windows</span><span class="sk">Linux</span><span class="sk">PowerShell</span><span class="sk">Command Prompt</span><span class="sk">VirtualBox</span><span class="sk">VMware Workstation</span><span class="sk">Wireshark</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="certs" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 05 — Certifications</div>
+    <h2 class="sec-title">Credentials &amp; <span>Cert Progress</span></h2>
+    <div class="cert-grid">
+      <div class="cc reveal"><span class="badge b-done">Completed</span><div class="cc-name">Google Cybersecurity Certificate</div><div class="cc-focus">Cybersecurity foundations, threat analysis, security tools, and incident response via Google / Coursera.</div><div class="cc-date">✓ Completed</div></div>
+      <div class="cc reveal"><span class="badge b-wip">In Progress</span><div class="cc-name">CompTIA A+ Core 1 (220-1101)</div><div class="cc-focus">Mobile devices, networking tech, hardware, virtualization, cloud, and hardware &amp; network troubleshooting.</div><div class="cc-date">Target: Q3 2026</div></div>
+      <div class="cc reveal"><span class="badge b-wip">In Progress</span><div class="cc-name">CompTIA A+ Core 2 (220-1102)</div><div class="cc-focus">Operating systems, security, software troubleshooting, and operational procedures.</div><div class="cc-date">Target: Q3 2026</div></div>
+      <div class="cc reveal"><span class="badge b-plan">Planned</span><div class="cc-name">CompTIA Network+</div><div class="cc-focus">Networking fundamentals, infrastructure, operations, security, and troubleshooting.</div><div class="cc-date">Target: Q4 2026</div></div>
+      <div class="cc reveal"><span class="badge b-plan">Planned</span><div class="cc-name">AWS Cloud Practitioner</div><div class="cc-focus">AWS Cloud concepts, core services, security, architecture, pricing, and support fundamentals.</div><div class="cc-date">Target: Q4 2026</div></div>
+      <div class="cc reveal"><span class="badge b-plan">Planned</span><div class="cc-name">Azure Fundamentals (AZ-900)</div><div class="cc-focus">Azure cloud concepts, core services, security, privacy, compliance, and pricing basics.</div><div class="cc-date">Target: Q1 2027</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="documentation" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 06 — Process</div>
+    <h2 class="sec-title">How I Document <span>My Labs</span></h2>
+    <div class="doc-grid">
+      <div class="doc-body reveal">
+        <p>Every lab in this portfolio is documented to show not just <em>what</em> I built, but <em>how</em> I thought through the process. Each entry includes the objective, tools used, steps completed, issues encountered, troubleshooting actions, screenshots, lessons learned, and next steps.</p>
+        <p>This approach prepares me to communicate technical work clearly — in tickets, runbooks, post-mortems, and interviews.</p>
+      </div>
+      <div class="reveal">
+        <ol class="tl">
+          <li><strong>Step 01</strong>Plan the lab objective and scope</li>
+          <li><strong>Step 02</strong>Build the environment or scenario</li>
+          <li><strong>Step 03</strong>Document each step as it happens</li>
+          <li><strong>Step 04</strong>Troubleshoot issues and record root cause</li>
+          <li><strong>Step 05</strong>Capture screenshots and command output</li>
+          <li><strong>Step 06</strong>Write lessons learned and next steps</li>
+          <li><strong>Step 07</strong>Publish to GitHub with a clear README</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<section id="contact" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 07 — Contact</div>
+    <div class="con-c">
+      <h2 class="sec-title" style="text-align:center">Let's <span>Connect</span></h2>
+      <p>I'm actively building my technical portfolio and open to IT support, data center, cybersecurity, cloud, and technical operations opportunities. Reach out through any of the links below.</p>
+      <div class="con-links">
+        <a href="https://github.com/tezana" target="_blank" rel="noopener" class="cl-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener" class="cl-btn">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:your.email@example.com" class="cl-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="fill:none">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Email
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="f-brand">Tezana White</span>
+    <span>© 2026 · IT Labs Portfolio · Built with GitHub Pages</span>
+    <a href="#home">↑ Top</a>
+  </div>
+</footer>
+
+<script>
+const hbg=document.getElementById('hbg');
+const dd=document.getElementById('dd');
+hbg.addEventListener('click',e=>{e.stopPropagation();hbg.classList.toggle('open');dd.classList.toggle('open');});
+document.addEventListener('click',e=>{if(!hbg.contains(e.target)&&!dd.contains(e.target)){hbg.classList.remove('open');dd.classList.remove('open');}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hbg.classList.remove('open');dd.classList.remove('open');}});
+dd.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hbg.classList.remove('open');dd.classList.remove('open');}));
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const sibs=[...e.target.parentElement.children].filter(el=>el.classList.contains('reveal'));e.target.style.transitionDelay=sibs.indexOf(e.target)*70+'ms';e.target.classList.add('on');ro.unobserve(e.target);});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+const co=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,t=+el.dataset.count,sfx=el.dataset.sfx||'';let c=0,step=Math.max(1,Math.ceil(t/50));const tick=()=>{c=Math.min(c+step,t);el.textContent=c+sfx;if(c<t)requestAnimationFrame(tick);};requestAnimationFrame(tick);co.unobserve(el);});},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>co.observe(el));
+const tw=document.getElementById('tw');
+const phrases=['IT Support | Cybersecurity | Cloud | Data Center Labs','Building Skills Through Hands-On Labs & Documentation','Troubleshoot · Configure · Document · Deploy'];
+let pi=0,ci=0,del=false;
+const tick=()=>{const p=phrases[pi];tw.textContent=del?p.slice(0,--ci):p.slice(0,++ci);let d=del?30:56;if(!del&&ci===p.length){d=2700;del=true;}else if(del&&ci===0){del=false;pi=(pi+1)%phrases.length;d=360;}setTimeout(tick,d);};
+setTimeout(tick,900);
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(!t)return;e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+scrollY-70,behavior:'smooth'});});});
+</script>
+</body>
+</html>
