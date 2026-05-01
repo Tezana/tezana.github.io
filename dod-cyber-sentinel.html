@@ -1,1 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DoD Cyber Sentinel Challenge 2025 | Tezana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--white:#f4f7fa;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --glow-sm:0 0 16px rgba(176,188,200,.12);
+  --glow-md:0 0 30px rgba(176,188,200,.18);
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+  --nav:66px;--max:1100px;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.875rem;line-height:1.75;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 2rem}
+.sec{padding:4rem 0}
+.ruled{height:1px;background:linear-gradient(90deg,transparent,var(--b3) 35%,var(--b3) 65%,transparent)}
 
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;height:var(--nav);background:rgba(6,8,11,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b0);display:flex;align-items:center;transition:border-color .3s,box-shadow .3s}
+#nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid var(--b2);color:var(--silver);background:transparent;transition:all .2s}
+.back-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* HERO */
+#hero{padding-top:calc(var(--nav) + 4rem);padding-bottom:3.5rem;background:var(--abyss);position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(176,188,200,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.proj-eyebrow{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.proj-eyebrow::before{content:'';width:20px;height:1px;background:var(--steel)}
+h1.proj-title{font-family:var(--fh);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--white);line-height:1.05;letter-spacing:.02em;margin-bottom:.75rem}
+.proj-sub{font-family:var(--fh);font-size:.9rem;font-weight:300;color:var(--silver);margin-bottom:1.5rem;letter-spacing:.04em}
+.proj-desc{font-size:.88rem;line-height:1.9;color:var(--silver);max-width:65ch;margin-bottom:2rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b0)}
+.meta-item{display:flex;flex-direction:column;gap:.2rem}
+.meta-label{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+.meta-value{font-family:var(--fh);font-size:.82rem;font-weight:600;color:var(--white)}
+
+/* SCORE CARDS */
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:3rem}
+.score-card{background:var(--coal);padding:1.5rem 1.25rem;text-align:center;transition:background .2s}
+.score-card:hover{background:var(--gun)}
+.score-num{font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:.35rem}
+.score-num.highlight{color:var(--fog)}
+.score-label{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+.score-note{font-size:.68rem;color:var(--dim);margin-top:.3rem;line-height:1.5}
+
+/* EYEBROW + TITLE */
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';width:16px;height:1px;background:var(--steel)}
+.sec-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:.03em;margin-bottom:1.5rem}
+.sec-title span{color:var(--mid);font-weight:300}
+
+/* CHALLENGE BREAKDOWN TABLE */
+.challenge-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1rem}
+.challenge-table th{font-family:var(--fh);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);padding:.65rem .75rem;border-bottom:1px solid var(--b2);text-align:left;background:var(--coal)}
+.challenge-table td{padding:.65rem .75rem;border-bottom:1px solid var(--b0);color:var(--silver);vertical-align:top;line-height:1.6}
+.challenge-table tr:hover td{background:var(--coal)}
+.cat-badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.18rem .55rem;border:1px solid currentColor;white-space:nowrap}
+.cat-net{color:#7dd3fc;border-color:rgba(125,211,252,.3)}
+.cat-recon{color:#86efac;border-color:rgba(134,239,172,.3)}
+.cat-web{color:#fbbf24;border-color:rgba(251,191,36,.3)}
+.cat-osint{color:#c4b5fd;border-color:rgba(196,181,253,.3)}
+.cat-forensics{color:#f87171;border-color:rgba(248,113,113,.3)}
+
+/* TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:2rem}
+.tool-group{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.tool-group:hover{border-color:var(--b1)}
+.tool-group-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding-bottom:.6rem;margin-bottom:.75rem;border-bottom:1px solid var(--b0)}
+.tool-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tool-tag{font-size:.62rem;letter-spacing:.08em;padding:.28rem .66rem;background:var(--deep);color:var(--silver);border:1px solid transparent;transition:all .2s}
+.tool-tag:hover{border-color:var(--b2);background:var(--gun);color:var(--white)}
+
+/* WRITE-UP BLOCKS */
+.writeup-block{background:var(--deep);border:1px solid var(--b0);padding:2rem;margin-bottom:1.25rem;transition:border-color .2s}
+.writeup-block:hover{border-color:var(--b1)}
+.writeup-block h3{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.85rem;letter-spacing:.03em;padding-bottom:.65rem;border-bottom:1px solid var(--b0)}
+.writeup-block p{font-size:.82rem;line-height:1.9;color:var(--silver);margin-bottom:.75rem}
+.writeup-block p:last-child{margin-bottom:0}
+
+/* STEP LIST */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.step-list li{display:flex;gap:1rem;align-items:flex-start;font-size:.82rem;color:var(--silver);padding:.6rem .75rem;border-left:1px solid var(--b1);transition:background .2s,border-color .2s}
+.step-list li:hover{background:var(--coal);border-color:var(--b2)}
+.step-num{font-family:var(--fh);font-size:.58rem;font-weight:700;letter-spacing:.14em;color:var(--steel);white-space:nowrap;padding-top:.15rem;min-width:65px}
+
+/* LESSONS */
+.lessons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.lesson-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.lesson-card:hover{border-color:var(--b1)}
+.lesson-num{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:var(--steel);margin-bottom:.4rem}
+.lesson-text{font-size:.78rem;line-height:1.8;color:var(--silver)}
+
+/* NEXT STEPS */
+.next-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.next-list li{font-size:.82rem;color:var(--silver);padding:.6rem .75rem .6rem 2rem;border-bottom:1px solid var(--b0);position:relative;transition:background .2s}
+.next-list li:last-child{border-bottom:none}
+.next-list li:hover{background:var(--coal)}
+.next-list li::before{content:'→';position:absolute;left:.75rem;color:var(--steel)}
+
+/* PROJ NAV */
+.proj-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;border-top:1px solid var(--b0)}
+.proj-nav a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.6rem 1.25rem;border:1px solid var(--b2);color:var(--silver);transition:all .2s}
+.proj-nav a:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b0);padding:1.5rem 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;letter-spacing:.1em;color:var(--steel)}
+footer a{transition:color .2s}
+footer a:hover{color:var(--white)}
+.f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .score-grid{grid-template-columns:repeat(2,1fr)}
+  .tools-grid{grid-template-columns:1fr}
+  .lessons-grid{grid-template-columns:1fr}
+  .proj-nav{flex-direction:column;gap:1rem;text-align:center}
+}
+@media(max-width:540px){
+  .wrap{padding:0 1.2rem}
+  .sec{padding:3rem 0}
+  .challenge-table{font-size:.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">TEZANA</a>
+    <a href="index.html#projects" class="back-btn">← Back to Projects</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="proj-eyebrow">Cybersecurity Competition · Solo Competitor</div>
+    <h1 class="proj-title">DoD Cyber Sentinel<br>Challenge 2025</h1>
+    <p class="proj-sub">Department of Defense · Capture the Flag · Hosted by Correlation One</p>
+    <p class="proj-desc">
+      Competed solo in a DoD-level Capture the Flag cybersecurity competition against
+      2,151 participants. Solved challenges across networking, reconnaissance, web application
+      testing, OSINT, and forensics using professional security tools — finishing ranked
+      #767 on the national leaderboard.
+    </p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Event</span>
+        <span class="meta-value">DoD Cyber Sentinel CTF 2025</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Format</span>
+        <span class="meta-value">Solo Competitor</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Host</span>
+        <span class="meta-value">Correlation One</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Sponsor</span>
+        <span class="meta-value">Department of Defense</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Year</span>
+        <span class="meta-value">2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- SCORE CARDS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Results</div>
+    <h2 class="sec-title">Competition <span>Results</span></h2>
+
+    <div class="score-grid reveal">
+      <div class="score-card">
+        <div class="score-num highlight">#767</div>
+        <div class="score-label">Leaderboard Rank</div>
+        <div class="score-note">Out of 2,151 participants</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num">1,200</div>
+        <div class="score-label">Points Earned</div>
+        <div class="score-note">Across multiple categories</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num">975</div>
+        <div class="score-label">Final Score</div>
+        <div class="score-note">After revisiting tougher challenges</div>
+      </div>
+      <div class="score-card">
+        <div class="score-num">6</div>
+        <div class="score-label">Challenge Categories</div>
+        <div class="score-note">Networking, Recon, Web, OSINT, Forensics</div>
+      </div>
+    </div>
+
+    <!-- CHALLENGE BREAKDOWN -->
+    <div class="eyebrow">// Challenge Breakdown</div>
+    <h2 class="sec-title">Challenges <span>Attempted</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>Category-by-Category Breakdown</h3>
+      <table class="challenge-table">
+        <thead>
+          <tr>
+            <th>Challenge</th>
+            <th>Category</th>
+            <th>What I Did</th>
+            <th>Tools Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--white)">Clear(ed) Text</strong></td>
+            <td><span class="cat-badge cat-net">Networking</span></td>
+            <td>Reviewed a PCAP for plaintext HTTP login activity. Followed HTTP streams, identified POST data, and decoded URL-encoded special characters to find exposed credentials.</td>
+            <td>Wireshark, Follow HTTP Stream, CyberChef</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white)">Hoasted Toasted</strong></td>
+            <td><span class="cat-badge cat-recon">Recon</span></td>
+            <td>Investigated virtual hosting by inspecting a TLS certificate Subject Alternative Name (SAN) field, then used host-header testing to reach hidden content on the server.</td>
+            <td>Browser cert viewer, /etc/hosts, Burp Suite, cURL</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white)">Screamin' Streamin'</strong></td>
+            <td><span class="cat-badge cat-recon">Recon</span></td>
+            <td>Scanned for an exposed RTSP service, identified the port, enumerated the valid stream name, and validated the live stream connection using media player tools.</td>
+            <td>Nmap, ffprobe, ffplay, VLC</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white)">Robots Discovery</strong></td>
+            <td><span class="cat-badge cat-web">Web</span></td>
+            <td>Reviewed a website's robots.txt file to identify a disallowed path. Navigated to the hidden path to retrieve the flag — reinforcing that robots.txt is not a security control.</td>
+            <td>Browser, cURL, robots.txt review</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white)">Inspo</strong></td>
+            <td><span class="cat-badge cat-osint">OSINT</span></td>
+            <td>Used image clues, architectural details, and external research to geolocate a building within a valid coordinate radius. Required slow observation and multi-source correlation.</td>
+            <td>Image analysis, map review, press-release research</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--white)">Decryption Conniption</strong></td>
+            <td><span class="cat-badge cat-forensics">Forensics</span></td>
+            <td>Chained multiple evidence sources: PCAP, VNC keystroke analysis, memory dump, SSLKEYLOGFILE recovery, TLS traffic decryption, and encrypted archive review — a full investigation chain.</td>
+            <td>Wireshark, Volatility 3, NetworkMiner, tshark, 7z</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- TOOLS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Arsenal</div>
+    <h2 class="sec-title">Tools &amp; <span>Technologies Used</span></h2>
+
+    <div class="tools-grid reveal">
+
+      <div class="tool-group">
+        <div class="tool-group-title">Reconnaissance &amp; Enumeration</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Kali Linux</span>
+          <span class="tool-tag">Nmap</span>
+          <span class="tool-tag">Gobuster</span>
+          <span class="tool-tag">Dirbuster</span>
+          <span class="tool-tag">WHOIS</span>
+          <span class="tool-tag">dig</span>
+          <span class="tool-tag">nslookup</span>
+          <span class="tool-tag">ffprobe</span>
+          <span class="tool-tag">ffplay</span>
+          <span class="tool-tag">VLC</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-title">Packet Analysis &amp; Web Testing</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Wireshark</span>
+          <span class="tool-tag">tshark</span>
+          <span class="tool-tag">Burp Suite</span>
+          <span class="tool-tag">cURL</span>
+          <span class="tool-tag">wget</span>
+          <span class="tool-tag">Netcat</span>
+          <span class="tool-tag">OpenVAS</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-title">Forensics &amp; Memory Analysis</div>
+        <div class="tool-tags">
+          <span class="tool-tag">Volatility 3</span>
+          <span class="tool-tag">NetworkMiner</span>
+          <span class="tool-tag">strings</span>
+          <span class="tool-tag">exiftool</span>
+          <span class="tool-tag">7z</span>
+          <span class="tool-tag">Hashcat</span>
+          <span class="tool-tag">John the Ripper</span>
+        </div>
+      </div>
+
+      <div class="tool-group">
+        <div class="tool-group-title">Decoding &amp; Support Tools</div>
+        <div class="tool-tags">
+          <span class="tool-tag">CyberChef</span>
+          <span class="tool-tag">Base64 decode</span>
+          <span class="tool-tag">URL decoding</span>
+          <span class="tool-tag">ChatGPT</span>
+          <span class="tool-tag">OSINT techniques</span>
+          <span class="tool-tag">Google Maps</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- WRITE-UP -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Process</div>
+    <h2 class="sec-title">How I Approached <span>the Competition</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>Step 1 — Accepted the Challenge and Set the Mindset</h3>
+      <p>I first learned about the DoD Cyber Sentinel Challenge through the GovTech Blueprint Skool community. When I received the acceptance email, I was surprised and questioned whether I belonged in the event. I chose to show up, compete, and treat the experience as a learning opportunity instead of letting doubt make the decision for me.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 2 — Prepared the Workspace</h3>
+      <p>I used Kali Linux as my main environment and kept organized notes on tools, commands, clue paths, solved items, and tasks that needed more research. Staying organized mattered because CTF pressure can make it easy to lose track of what has already been tested.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 3 — Started with Reconnaissance</h3>
+      <p>For target-based challenges, I began by identifying what was available. I used Nmap and DNS tools to map ports, services, hostnames, and possible application paths. This helped me avoid guessing and made each next step more intentional.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Steps 4–9 — Working Through Each Challenge Category</h3>
+      <ul class="step-list">
+        <li><span class="step-num">STEP 04</span>Web Challenges — Reviewed page content, checked robots.txt, used cURL, and validated hidden paths. Confirmed that robots.txt disallowed paths can be direct evidence leads.</li>
+        <li><span class="step-num">STEP 05</span>Virtual Host Enumeration — Inspected TLS certificate SAN fields to uncover hidden hostnames, then used host-header testing via Burp Suite and cURL to reach hidden content.</li>
+        <li><span class="step-num">STEP 06</span>Packet Analysis — Used Wireshark to inspect protocols, follow HTTP streams, and extract sensitive data from plaintext network traffic. Reinforced why encryption matters.</li>
+        <li><span class="step-num">STEP 07</span>Protocol Enumeration — Used Nmap to find exposed RTSP ports, then ffprobe and ffplay to enumerate valid stream names and validate connections.</li>
+        <li><span class="step-num">STEP 08</span>OSINT Geolocation — Slowed down, compared visual details in images, checked map context, and used public press releases to geolocate a building within the required coordinate radius.</li>
+        <li><span class="step-num">STEP 09</span>Advanced Forensics — Chained PCAP analysis, VNC keystroke review, Volatility 3 memory forensics, SSLKEYLOGFILE recovery, and TLS decryption into a single investigation workflow.</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 10 — Final Score and Reflection</h3>
+      <p>I earned 1,200 points during the competition and finished with a final score of 975 after revisiting tougher tasks. I placed #767 out of 2,151 participants — in the top 36% of all competitors in a DoD-level national event.</p>
+      <p>The biggest win was proving to myself that I can learn under pressure, keep moving when stuck, and turn the experience into real portfolio evidence. Every unsolved challenge identified a skill gap that became a future lab or study target.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LESSONS LEARNED -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Takeaways</div>
+    <h2 class="sec-title">Lessons <span>Learned</span></h2>
+
+    <div class="lessons-grid reveal">
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 01</div>
+        <div class="lesson-text">Do not underestimate yourself. Growth happens at the edge of your comfort zone. I entered with doubts, but competing proved that I can step into hard technical spaces and still perform.</div>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 02</div>
+        <div class="lesson-text">Reconnaissance matters. The better I understood the target, service, file, or clue, the less time I wasted guessing and the more confident my next move was.</div>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 03</div>
+        <div class="lesson-text">Tools are only part of the job. Nmap, Burp Suite, Wireshark, Volatility, and Hashcat are powerful, but the real skill is knowing why to use a tool and how to interpret the result.</div>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 04</div>
+        <div class="lesson-text">Unsolved challenges still teach. Every hard task exposed a skill gap that can become a future lab, study session, or portfolio project. Not finishing is not failing.</div>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 05</div>
+        <div class="lesson-text">Documentation turns experience into proof. Capturing the tools, process, lessons, and next steps makes the challenge valuable long after competition day ends.</div>
+      </div>
+
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 06</div>
+        <div class="lesson-text">Time management is a cybersecurity skill. In a timed challenge, knowing when to move on can matter just as much as technical knowledge. Forward momentum wins over perfectionism.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- NEXT STEPS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Building On This</div>
+    <h2 class="sec-title">Next <span>Steps</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>Labs &amp; Projects Inspired by This Competition</h3>
+      <ul class="next-list">
+        <li>Create a Wireshark lab focused on plaintext HTTP stream analysis, POST data extraction, and URL decoding</li>
+        <li>Create a web discovery lab focused on robots.txt, hidden paths, directory enumeration, and safe documentation</li>
+        <li>Create a virtual-host recon lab covering TLS SAN inspection, hosts-file mapping, and host-header testing</li>
+        <li>Create an Nmap + service enumeration lab including port scanning, service versioning, and decision-making</li>
+        <li>Create a beginner forensics lab using strings, exiftool, and basic encoded artifact review</li>
+        <li>Create an advanced stretch lab on PCAP + memory analysis using Volatility 3 and Wireshark together</li>
+        <li>Continue studying CompTIA A+ while connecting hardware, networking, and troubleshooting to cybersecurity fundamentals</li>
+        <li>Use future competitions to measure skill growth and build confidence for real-world cybersecurity and IT support roles</li>
+      </ul>
+    </div>
+
+    <div class="proj-nav">
+      <a href="index.html#projects">← Back to All Projects</a>
+      <a href="index.html#labs">View My Labs →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <span class="f-brand">Tezana</span>
+    <span>© 2026 · IT Labs Portfolio · Built with GitHub Pages</span>
+    <a href="#hero">↑ Top</a>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('on');
+    ro.unobserve(e.target);
+  });
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
