@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LAB-002 | Setting Up a Virtual Lab | Tezana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--white:#f4f7fa;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --glow-sm:0 0 16px rgba(176,188,200,.12);
+  --glow-md:0 0 30px rgba(176,188,200,.18);
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+  --nav:66px;--max:1100px;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.875rem;line-height:1.75;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;border-radius:2px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 2rem}
+.sec{padding:4rem 0}
+.ruled{height:1px;background:linear-gradient(90deg,transparent,var(--b3) 35%,var(--b3) 65%,transparent)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;height:var(--nav);background:rgba(6,8,11,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b0);display:flex;align-items:center;transition:border-color .3s,box-shadow .3s}
+#nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid var(--b2);color:var(--silver);background:transparent;transition:all .2s}
+.back-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* HERO */
+#hero{padding-top:calc(var(--nav) + 4rem);padding-bottom:3rem;background:var(--abyss);position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(176,188,200,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.lab-eyebrow{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.lab-eyebrow::before{content:'';width:20px;height:1px;background:var(--steel)}
+.lab-num{font-family:var(--fm);font-size:.65rem;letter-spacing:.22em;color:var(--dim);margin-bottom:.5rem}
+h1.lab-title{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:var(--white);line-height:1.05;letter-spacing:.02em;margin-bottom:1.25rem}
+.lab-desc{font-size:.88rem;line-height:1.9;color:var(--silver);max-width:65ch;margin-bottom:2rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b0)}
+.meta-item{display:flex;flex-direction:column;gap:.2rem}
+.meta-label{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+.meta-value{font-family:var(--fh);font-size:.82rem;font-weight:600;color:var(--white)}
+.badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid currentColor;line-height:1.6}
+.b-wip{color:var(--silver);border-color:rgba(136,150,168,.28)}
+.b-done{color:var(--fog);border-color:rgba(205,213,222,.35)}
+.b-plan{color:var(--dim);border-color:rgba(61,70,85,.55)}
+
+/* EYEBROW + TITLE */
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';width:16px;height:1px;background:var(--steel)}
+.sec-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:.03em;margin-bottom:1.5rem}
+.sec-title span{color:var(--mid);font-weight:300}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem}
+.info-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.info-card:hover{border-color:var(--b1)}
+.info-card-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding-bottom:.6rem;margin-bottom:.75rem;border-bottom:1px solid var(--b0)}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.info-card ul li{font-size:.76rem;color:var(--silver);padding-left:.75rem;position:relative}
+.info-card ul li::before{content:'→';position:absolute;left:0;color:var(--steel);font-size:.65rem}
+
+/* STATUS TRACKER */
+.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:3rem}
+.status-card{background:var(--coal);padding:1.25rem;transition:background .2s}
+.status-card:hover{background:var(--gun)}
+.status-card-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--white);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--b0)}
+.status-item{display:flex;align-items:flex-start;gap:.6rem;font-size:.73rem;color:var(--silver);padding:.3rem 0;border-bottom:1px solid var(--b0);line-height:1.5}
+.status-item:last-child{border-bottom:none}
+.si-done{color:var(--fog)}
+.si-wip{color:var(--silver)}
+.si-plan{color:var(--dim)}
+
+/* WRITE-UP BLOCKS */
+.writeup-block{background:var(--deep);border:1px solid var(--b0);padding:2rem;margin-bottom:1.25rem;transition:border-color .2s}
+.writeup-block:hover{border-color:var(--b1)}
+.writeup-block h3{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.85rem;letter-spacing:.03em;padding-bottom:.65rem;border-bottom:1px solid var(--b0)}
+.writeup-block p{font-size:.82rem;line-height:1.9;color:var(--silver);margin-bottom:.75rem}
+.writeup-block p:last-child{margin-bottom:0}
+.placeholder{font-size:.82rem;line-height:1.9;color:var(--dim);font-style:italic;padding:.75rem;border:1px dashed var(--b1);border-radius:2px}
+
+/* STEP LIST */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.step-list li{display:flex;gap:1rem;align-items:flex-start;font-size:.82rem;color:var(--silver);padding:.6rem .75rem;border-left:1px solid var(--b1);transition:background .2s,border-color .2s}
+.step-list li:hover{background:var(--coal);border-color:var(--b2)}
+.step-num{font-family:var(--fh);font-size:.58rem;font-weight:700;letter-spacing:.14em;color:var(--steel);white-space:nowrap;padding-top:.15rem;min-width:65px}
+
+/* HARDWARE TABLE */
+.hw-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1rem}
+.hw-table th{font-family:var(--fh);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);padding:.65rem .75rem;border-bottom:1px solid var(--b2);text-align:left;background:var(--coal)}
+.hw-table td{padding:.65rem .75rem;border-bottom:1px solid var(--b0);color:var(--silver);vertical-align:top;line-height:1.6}
+.hw-table tr:hover td{background:var(--coal)}
+.hw-table td:first-child{color:var(--white);font-family:var(--fh);font-size:.8rem;font-weight:600}
+
+/* FOLDER TABLE */
+.folder-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1rem}
+.folder-table th{font-family:var(--fh);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);padding:.65rem .75rem;border-bottom:1px solid var(--b2);text-align:left;background:var(--coal)}
+.folder-table td{padding:.65rem .75rem;border-bottom:1px solid var(--b0);color:var(--silver);vertical-align:top;line-height:1.6}
+.folder-table tr:hover td{background:var(--coal)}
+.folder-name{color:var(--mist);font-family:var(--fm);font-size:.75rem}
+
+/* VM TABLE */
+.vm-table{width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1rem}
+.vm-table th{font-family:var(--fh);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);padding:.65rem .75rem;border-bottom:1px solid var(--b2);text-align:left;background:var(--coal)}
+.vm-table td{padding:.65rem .75rem;border-bottom:1px solid var(--b0);color:var(--silver);vertical-align:top;line-height:1.6}
+.vm-table tr:hover td{background:var(--coal)}
+.vm-name{color:var(--white);font-family:var(--fh);font-weight:600}
+
+/* PHOTO GRID */
+.photo-section-title{font-family:var(--fh);font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--white);padding:.5rem .75rem;background:var(--coal);border:1px solid var(--b1);margin-bottom:1px}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b0);border:1px solid var(--b0);margin-bottom:2rem}
+.photo-item{background:var(--deep);overflow:hidden;position:relative}
+.photo-item img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(15%);transition:filter .3s,transform .3s;display:block}
+.photo-item:hover img{filter:grayscale(0%);transform:scale(1.02)}
+.photo-caption{padding:.5rem .65rem;font-size:.62rem;letter-spacing:.08em;color:var(--steel);border-top:1px solid var(--b0);line-height:1.5}
+.photo-placeholder{width:100%;aspect-ratio:4/3;background:var(--coal);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
+.photo-placeholder .ph-num{font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--steel)}
+.photo-placeholder .ph-name{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* LESSONS */
+.lessons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.lesson-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.lesson-card:hover{border-color:var(--b1)}
+.lesson-num{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:var(--steel);margin-bottom:.4rem}
+.lesson-text{font-size:.78rem;line-height:1.8;color:var(--silver)}
+
+/* NEXT STEPS */
+.next-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.next-list li{font-size:.82rem;color:var(--silver);padding:.6rem .75rem .6rem 2rem;border-bottom:1px solid var(--b0);position:relative;transition:background .2s}
+.next-list li:last-child{border-bottom:none}
+.next-list li:hover{background:var(--coal)}
+.next-list li::before{content:'→';position:absolute;left:.75rem;color:var(--steel)}
+
+/* LAB NAV */
+.lab-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;border-top:1px solid var(--b0)}
+.lab-nav a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.6rem 1.25rem;border:1px solid var(--b2);color:var(--silver);transition:all .2s}
+.lab-nav a:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b0);padding:1.5rem 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;letter-spacing:.1em;color:var(--steel)}
+footer a{transition:color .2s}
+footer a:hover{color:var(--white)}
+.f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .info-grid{grid-template-columns:1fr}
+  .status-grid{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .lessons-grid{grid-template-columns:1fr}
+  .lab-nav{flex-direction:column;gap:1rem;text-align:center}
+  footer .wrap{flex-direction:column;gap:.5rem;text-align:center}
+}
+@media(max-width:480px){
+  .photo-grid{grid-template-columns:1fr}
+  .wrap{padding:0 1.2rem}
+  .sec{padding:3rem 0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">TEZANA</a>
+    <a href="index.html#labs" class="back-btn">← Back to Labs</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="lab-eyebrow">IT Labs Portfolio · Home Lab Build</div>
+    <div class="lab-num">LAB-002</div>
+    <h1 class="lab-title">Setting Up a<br>Virtual Lab</h1>
+    <p class="lab-desc">
+      Building a personal IT lab environment from the ground up on a refurbished
+      HP EliteDesk 800 G3 Mini — starting with no operating system and finishing
+      with a fully configured virtualization environment running Ubuntu and Windows
+      virtual machines ready for hands-on IT practice.
+    </p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span><span class="badge b-wip">In Progress</span></span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Category</span>
+        <span class="meta-value">Virtualization / OS Setup</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Difficulty</span>
+        <span class="meta-value">Beginner → Intermediate</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Hardware</span>
+        <span class="meta-value">HP EliteDesk 800 G3 Mini</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Hypervisor</span>
+        <span class="meta-value">VMware Workstation Pro</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- STATUS TRACKER -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Progress</div>
+    <h2 class="sec-title">Lab <span>Status Tracker</span></h2>
+
+    <div class="status-grid reveal">
+      <div class="status-card">
+        <div class="status-card-title">✅ Completed</div>
+        <div class="status-item si-done"><span>✓</span>HP EliteDesk 800 G3 Mini selected and received</div>
+        <div class="status-item si-done"><span>✓</span>BIOS virtualization (VT-x) verified and enabled</div>
+        <div class="status-item si-done"><span>✓</span>Windows 11 Pro installed from scratch</div>
+        <div class="status-item si-done"><span>✓</span>VMware Workstation Pro installation started</div>
+        <div class="status-item si-done"><span>✓</span>C:\IT-Labs folder structure created</div>
+      </div>
+      <div class="status-card">
+        <div class="status-card-title">⏳ In Progress</div>
+        <div class="status-item si-wip"><span>○</span>VMware default VM location configured</div>
+        <div class="status-item si-wip"><span>○</span>Ubuntu ISO downloaded and saved</div>
+        <div class="status-item si-wip"><span>○</span>Ubuntu-Lab-01 VM created</div>
+        <div class="status-item si-wip"><span>○</span>Ubuntu installed and updated</div>
+        <div class="status-item si-wip"><span>○</span>Lab tools installed in Ubuntu VM</div>
+        <div class="status-item si-wip"><span>○</span>Clean snapshot taken in VMware</div>
+      </div>
+      <div class="status-card">
+        <div class="status-card-title">📋 Planned</div>
+        <div class="status-item si-plan"><span>–</span>Windows-Lab-01 VM created</div>
+        <div class="status-item si-plan"><span>–</span>Cisco Packet Tracer installed on host</div>
+        <div class="status-item si-plan"><span>–</span>First Packet Tracer networking lab</div>
+        <div class="status-item si-plan"><span>–</span>RAM upgrade to 16GB</div>
+        <div class="status-item si-plan"><span>–</span>Kali Linux VM added</div>
+      </div>
+    </div>
+
+    <!-- LAB DETAILS -->
+    <div class="eyebrow">// Overview</div>
+    <h2 class="sec-title">Lab <span>Details</span></h2>
+
+    <div class="info-grid reveal">
+      <div class="info-card">
+        <div class="info-card-title">Objective</div>
+        <ul>
+          <li>Install Windows 11 Pro on a bare machine</li>
+          <li>Verify BIOS virtualization settings</li>
+          <li>Install and configure VMware Workstation Pro</li>
+          <li>Create an organized lab folder structure</li>
+          <li>Build and configure Ubuntu and Windows VMs</li>
+          <li>Take a clean snapshot as a restore point</li>
+          <li>Install Cisco Packet Tracer for networking labs</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Tools Used</div>
+        <ul>
+          <li>HP EliteDesk 800 G3 Mini</li>
+          <li>Bootable USB drive</li>
+          <li>Windows 11 Pro ISO</li>
+          <li>Ubuntu Desktop ISO</li>
+          <li>VMware Workstation Pro</li>
+          <li>Cisco Packet Tracer</li>
+          <li>Balena Etcher — bootable USB creator</li>
+          <li>ShareX — screenshot tool</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Skills Demonstrated</div>
+        <ul>
+          <li>OS installation from scratch</li>
+          <li>BIOS configuration and verification</li>
+          <li>Virtualization setup and management</li>
+          <li>Lab environment organization</li>
+          <li>VM creation and configuration</li>
+          <li>Snapshot management</li>
+          <li>Technical documentation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- HARDWARE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Hardware</div>
+    <h2 class="sec-title">Lab <span>Machine Specs</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>HP EliteDesk 800 G3 Mini — Refurbished Lab PC</h3>
+      <table class="hw-table">
+        <thead>
+          <tr><th>Component</th><th>Specification</th><th>Lab Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Computer</td><td>HP EliteDesk 800 G3 Mini</td><td>Refurbished — purchased on eBay with no OS</td></tr>
+          <tr><td>Processor</td><td>Intel Core i5-7500T @ 2.70 GHz</td><td>Supports Intel VT-x — required for VMware ✓</td></tr>
+          <tr><td>RAM</td><td>8 GB DDR4</td><td>Supports up to 32GB — upgrade to 16GB planned</td></tr>
+          <tr><td>Storage</td><td>256 GB SSD</td><td>Sufficient for host OS and 2 VMs</td></tr>
+          <tr><td>Operating System</td><td>Windows 11 Pro</td><td>Installed from scratch — no OS on arrival</td></tr>
+          <tr><td>Graphics</td><td>Intel HD Graphics (integrated)</td><td>Sufficient for lab and VM work</td></tr>
+          <tr><td>Connectivity</td><td>USB 2.0, USB 3.0, USB 3.1, DisplayPort, HDMI</td><td>All ports verified working</td></tr>
+          <tr><td>Network</td><td>Built-in Wi-Fi + Bluetooth</td><td>Wi-Fi connected and confirmed working</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- FOLDER STRUCTURE -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Organization</div>
+    <h2 class="sec-title">Lab Folder <span>Structure</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>C:\IT-Labs — Main Lab Directory</h3>
+      <p>Created an organized folder structure in File Explorer before installing any tools. This keeps all lab files separated, easy to find, and ready for GitHub documentation.</p>
+      <table class="folder-table" style="margin-top:1rem">
+        <thead>
+          <tr><th>Folder</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="folder-name">C:\IT-Labs\01-ISOs</span></td><td>OS installation files — Ubuntu, Windows, Kali Linux ISO files</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\02-Virtual-Machines</span></td><td>VMware virtual machine files — set as VMware default VM location</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\03-Packet-Tracer-Labs</span></td><td>Cisco Packet Tracer lab files and network simulation projects</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\04-Screenshots</span></td><td>Screenshots for lab documentation and GitHub write-ups</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\05-Lab-Notes</span></td><td>Written notes, troubleshooting steps, and lab summaries</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\06-GitHub-Projects</span></td><td>Completed project folders before uploading to GitHub</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\07-Network-Diagrams</span></td><td>Network diagrams created in draw.io or similar tools</td></tr>
+          <tr><td><span class="folder-name">C:\IT-Labs\08-Tools</span></td><td>Installers and utility tools used for the lab environment</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- VM PLAN -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Virtual Machines</div>
+    <h2 class="sec-title">Planned <span>Virtual Machines</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>Two-VM Lab Plan — NAT Network Mode</h3>
+      <p>Both VMs use NAT networking — allowing internet access while keeping the lab isolated and safe from the home network. Avoid running both VMs at the same time until RAM is upgraded to 16GB.</p>
+      <table class="vm-table" style="margin-top:1rem">
+        <thead>
+          <tr><th>VM Name</th><th>OS</th><th>Purpose</th><th>Settings</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="vm-name">Ubuntu-Lab-01</span></td>
+            <td>Ubuntu Linux</td>
+            <td>Linux commands, SSH, Nmap, networking basics, file permissions, beginner Linux practice</td>
+            <td>2GB RAM · 2 CPU · 30GB · NAT</td>
+            <td><span class="badge b-wip">Pending</span></td>
+          </tr>
+          <tr>
+            <td><span class="vm-name">Windows-Lab-01</span></td>
+            <td>Windows 10</td>
+            <td>Windows troubleshooting, help desk practice, user accounts, Device Manager, Remote Desktop</td>
+            <td>3GB RAM · 2 CPU · 50GB · NAT</td>
+            <td><span class="badge b-plan">Planned</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- WRITE-UP -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Write-Up</div>
+    <h2 class="sec-title">Step-by-Step <span>Documentation</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>Step 1 — Received the Lab PC and Verified Hardware</h3>
+      <p>Selected the HP EliteDesk 800 G3 Mini as a dedicated lab computer and purchased it refurbished on eBay. The machine arrived with no operating system installed — a perfect starting point for documenting a full build from scratch.</p>
+      <p>Connected monitor, keyboard, and mouse. Powered on the machine to enter BIOS and verify the hardware was functional before beginning the OS installation.</p>
+      <p class="placeholder">// Add your photos and specific BIOS findings here when you complete your write-up.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 2 — Verified BIOS Virtualization Settings</h3>
+      <p>Entered the HP BIOS setup by pressing <strong style="color:var(--white)">F10</strong> at startup. Located and confirmed that Intel Virtualization Technology (VT-x) was enabled. This setting is required for VMware Workstation Pro to create and run virtual machines — without it VMware will not function correctly.</p>
+      <p class="placeholder">// Add your BIOS screenshot showing VT-x enabled and document the exact menu path you followed.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 3 — Created Bootable USB and Installed Windows 11 Pro</h3>
+      <p>Downloaded the Windows 11 Pro ISO and used Balena Etcher to write it to a bootable USB drive. Inserted the USB into the HP EliteDesk and pressed <strong style="color:var(--white)">F9</strong> to open the boot menu. Selected the USB drive and followed the Windows installation steps.</p>
+      <ul class="step-list" style="margin-top:1rem">
+        <li><span class="step-num">STEP 01</span>Selected language, time, and keyboard settings</li>
+        <li><span class="step-num">STEP 02</span>Chose Custom installation to do a clean install on the SSD</li>
+        <li><span class="step-num">STEP 03</span>Completed Windows setup — created a local account</li>
+        <li><span class="step-num">STEP 04</span>Connected to Wi-Fi and confirmed internet access</li>
+        <li><span class="step-num">STEP 05</span>Ran Windows Update — installed all available updates</li>
+        <li><span class="step-num">STEP 06</span>Checked Device Manager — confirmed all drivers working</li>
+      </ul>
+      <p class="placeholder" style="margin-top:1rem">// Add your Windows installation screenshots here.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 4 — Created Organized Lab Folder Structure</h3>
+      <p>Before installing any software, created the main lab directory at <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">C:\IT-Labs</code> with 8 organized subfolders. This keeps every file in a predictable location and makes documentation and GitHub uploads much easier.</p>
+      <p class="placeholder">// Add a screenshot of your File Explorer showing the complete C:\IT-Labs folder structure.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 5 — Installed and Configured VMware Workstation Pro</h3>
+      <p>Downloaded VMware Workstation Pro and completed the installation. After installation configured the default virtual machine storage location via <strong style="color:var(--white)">Edit → Preferences → Workspace → Default location for virtual machines</strong> and pointed it to <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">C:\IT-Labs\02-Virtual-Machines</code>.</p>
+      <p class="placeholder">// Add VMware installation screenshots and the Preferences configuration screen here.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 6 — Downloaded Ubuntu ISO and Created Ubuntu-Lab-01 VM</h3>
+      <p class="placeholder">// Document this step as you complete it. Include: where you downloaded Ubuntu from, how you saved it to C:\IT-Labs\01-ISOs, the VM creation settings in VMware, and screenshots of each configuration screen.</p>
+      <ul class="step-list" style="margin-top:1rem">
+        <li><span class="step-num">NEXT 01</span>Download Ubuntu Desktop ISO — save to C:\IT-Labs\01-ISOs</li>
+        <li><span class="step-num">NEXT 02</span>In VMware click New Virtual Machine</li>
+        <li><span class="step-num">NEXT 03</span>Select Ubuntu ISO as installation source</li>
+        <li><span class="step-num">NEXT 04</span>Configure: 2GB RAM, 2 CPU cores, 30GB storage, NAT network</li>
+        <li><span class="step-num">NEXT 05</span>Complete Ubuntu installation and run all updates</li>
+        <li><span class="step-num">NEXT 06</span>Install tools: nmap, openssh-server, net-tools, curl, git</li>
+        <li><span class="step-num">NEXT 07</span>Take VMware snapshot — name it: Clean Install - Before Labs</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- PHOTOS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Photos</div>
+    <h2 class="sec-title">Documentation <span>Photos</span></h2>
+    <p style="font-size:.8rem;color:var(--silver);margin-bottom:2rem;line-height:1.8">
+      Upload photos to <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">assets/images/</code> named <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">lab002-01.jpg</code>, <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">lab002-02.jpg</code> etc.
+    </p>
+
+    <!-- GROUP 1 -->
+    <div class="photo-section-title">// Hardware & Initial Setup</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab002-01.jpg" alt="HP EliteDesk" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">01</div><div class="ph-name">lab002-01.jpg</div></div>
+        <div class="photo-caption">Photo 01 — HP EliteDesk 800 G3 Mini — lab machine</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-02.jpg" alt="BIOS Screen" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">02</div><div class="ph-name">lab002-02.jpg</div></div>
+        <div class="photo-caption">Photo 02 — BIOS screen showing VT-x virtualization enabled</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-03.jpg" alt="Bootable USB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">03</div><div class="ph-name">lab002-03.jpg</div></div>
+        <div class="photo-caption">Photo 03 — Bootable USB created with Balena Etcher</div>
+      </div>
+    </div>
+
+    <!-- GROUP 2 -->
+    <div class="photo-section-title">// Windows 11 Installation</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab002-04.jpg" alt="Windows Setup" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">04</div><div class="ph-name">lab002-04.jpg</div></div>
+        <div class="photo-caption">Photo 04 — Windows 11 installation in progress</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-05.jpg" alt="Windows Desktop" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">05</div><div class="ph-name">lab002-05.jpg</div></div>
+        <div class="photo-caption">Photo 05 — Windows 11 Pro desktop after clean install</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-06.jpg" alt="Device Manager" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">06</div><div class="ph-name">lab002-06.jpg</div></div>
+        <div class="photo-caption">Photo 06 — Device Manager showing all drivers working</div>
+      </div>
+    </div>
+
+    <!-- GROUP 3 -->
+    <div class="photo-section-title">// Folder Structure & VMware Setup</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab002-07.jpg" alt="Folder Structure" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">07</div><div class="ph-name">lab002-07.jpg</div></div>
+        <div class="photo-caption">Photo 07 — C:\IT-Labs folder structure in File Explorer</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-08.jpg" alt="VMware Home" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">08</div><div class="ph-name">lab002-08.jpg</div></div>
+        <div class="photo-caption">Photo 08 — VMware Workstation Pro home screen</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab002-09.jpg" alt="VMware Preferences" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none"><div class="ph-num">09</div><div class="ph-name">lab002-09.jpg</div></div>
+        <div class="photo-caption">Photo 09 — VMware Preferences — default VM location set</div>
+      </div>
+    </div>
+
+    <!-- GROUP 4 -->
+    <div class="photo-section-title">// Ubuntu VM Setup (Coming Soon)</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">10</div><div class="ph-name">VM Creation</div></div>
+        <div class="photo-caption">Photo 10 — Ubuntu VM creation settings in VMware</div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">11</div><div class="ph-name">Ubuntu Install</div></div>
+        <div class="photo-caption">Photo 11 — Ubuntu installation in progress inside VMware</div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">12</div><div class="ph-name">Ubuntu Running</div></div>
+        <div class="photo-caption">Photo 12 — Ubuntu Linux running inside VMware — first boot</div>
+      </div>
+    </div>
+
+    <!-- GROUP 5 -->
+    <div class="photo-section-title">// Clean Snapshot (Coming Soon)</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">13</div><div class="ph-name">Snapshot</div></div>
+        <div class="photo-caption">Photo 13 — VMware snapshot taken — Clean Install Before Labs</div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">14</div><div class="ph-name">Tools Installed</div></div>
+        <div class="photo-caption">Photo 14 — Ubuntu terminal showing tools installed</div>
+      </div>
+      <div class="photo-item">
+        <div class="photo-placeholder" style="display:flex"><div class="ph-num">15</div><div class="ph-name">Lab Ready</div></div>
+        <div class="photo-caption">Photo 15 — Lab environment fully configured and ready</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LESSONS LEARNED -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Takeaways</div>
+    <h2 class="sec-title">Lessons <span>Learned</span></h2>
+
+    <div class="lessons-grid reveal">
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 01</div>
+        <div class="lesson-text">Starting from a bare machine is the best way to learn. Every step — BIOS, bootable USB, OS install, drivers — builds real skills that apply directly to IT support and data center work.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 02</div>
+        <div class="lesson-text">Organization before installation saves time. Creating the folder structure first means every file has a home from day one. A disorganized lab leads to disorganized documentation.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 03</div>
+        <div class="lesson-text">Always verify BIOS virtualization before installing VMware. VT-x must be enabled or VMware will not create VMs. Checking hardware requirements first prevents installation failures.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 04</div>
+        <div class="lesson-text">Snapshots are your safety net. Taking a clean snapshot immediately after installing an OS — before any lab work — means you can always restore to a known good state if something breaks.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 05</div>
+        <div class="lesson-text">RAM planning matters. With 8GB shared between the host and VMs running one VM at a time is the safe approach. A 16GB upgrade is planned to allow smoother multi-VM operation.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 06</div>
+        <div class="lesson-text">
+          <!-- Add your own lesson here -->
+          Add your own lesson learned here as you complete the lab.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- NEXT STEPS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// What's Next</div>
+    <h2 class="sec-title">Next <span>Steps</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>After the Lab Environment is Ready</h3>
+      <ul class="next-list">
+        <li>Complete Ubuntu-Lab-01 VM setup and take a clean snapshot</li>
+        <li>Run Lab 003 — First Linux Commands in Ubuntu VM</li>
+        <li>Create Windows-Lab-01 VM for Windows troubleshooting practice</li>
+        <li>Install Cisco Packet Tracer on the Windows host</li>
+        <li>Complete first Cisco Packet Tracer networking lab</li>
+        <li>Upgrade RAM from 8GB to 16GB for smoother multi-VM operation</li>
+        <li>Add Kali Linux as a third VM for cybersecurity labs</li>
+      </ul>
+    </div>
+
+    <div class="lab-nav">
+      <a href="lab-001.html">← Lab 001: Disassemble a Desktop</a>
+      <a href="index.html#labs">All Labs</a>
+      <a href="lab-003.html">Lab 003: First Linux Commands →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <span class="f-brand">Tezana</span>
+    <span>© 2026 · IT Labs Portfolio · Built with GitHub Pages</span>
+    <a href="#hero">↑ Top</a>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('on');
+    ro.unobserve(e.target);
+  });
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
