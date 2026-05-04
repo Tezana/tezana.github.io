@@ -234,13 +234,20 @@ footer a:hover{color:var(--white)}
         <div class="status-item si-done"><span>✓</span>HP EliteDesk 800 G3 Mini selected and received</div>
         <div class="status-item si-done"><span>✓</span>BIOS virtualization (VT-x) verified and enabled</div>
         <div class="status-item si-done"><span>✓</span>Windows 11 Pro installed from scratch</div>
-        <div class="status-item si-done"><span>✓</span>VMware Workstation Pro installation started</div>
+        <div class="status-item si-done"><span>✓</span>VMware Workstation Pro installed</div>
         <div class="status-item si-done"><span>✓</span>C:\IT-Labs folder structure created</div>
+        <div class="status-item si-done"><span>✓</span>Ubuntu Desktop ISO downloaded</div>
+        <div class="status-item si-done"><span>✓</span>Windows 10 ISO downloaded</div>
+        <div class="status-item si-done"><span>✓</span>Cisco Packet Tracer downloaded</div>
+        <div class="status-item si-done"><span>✓</span>Wireshark downloaded</div>
+        <div class="status-item si-done"><span>✓</span>Nmap downloaded</div>
+        <div class="status-item si-done"><span>✓</span>PuTTY downloaded</div>
+        <div class="status-item si-done"><span>✓</span>OBS Studio downloaded</div>
+        <div class="status-item si-done"><span>✓</span>7-Zip downloaded</div>
       </div>
       <div class="status-card">
         <div class="status-card-title">⏳ In Progress</div>
         <div class="status-item si-wip"><span>○</span>VMware default VM location configured</div>
-        <div class="status-item si-wip"><span>○</span>Ubuntu ISO downloaded and saved</div>
         <div class="status-item si-wip"><span>○</span>Ubuntu-Lab-01 VM created</div>
         <div class="status-item si-wip"><span>○</span>Ubuntu installed and updated</div>
         <div class="status-item si-wip"><span>○</span>Lab tools installed in Ubuntu VM</div>
@@ -249,8 +256,9 @@ footer a:hover{color:var(--white)}
       <div class="status-card">
         <div class="status-card-title">📋 Planned</div>
         <div class="status-item si-plan"><span>–</span>Windows-Lab-01 VM created</div>
-        <div class="status-item si-plan"><span>–</span>Cisco Packet Tracer installed on host</div>
         <div class="status-item si-plan"><span>–</span>First Packet Tracer networking lab</div>
+        <div class="status-item si-plan"><span>–</span>First Wireshark packet capture</div>
+        <div class="status-item si-plan"><span>–</span>First Nmap scan in lab</div>
         <div class="status-item si-plan"><span>–</span>RAM upgrade to 16GB</div>
         <div class="status-item si-plan"><span>–</span>Kali Linux VM added</div>
       </div>
@@ -277,13 +285,17 @@ footer a:hover{color:var(--white)}
         <div class="info-card-title">Tools Used</div>
         <ul>
           <li>HP EliteDesk 800 G3 Mini</li>
-          <li>Bootable USB drive</li>
-          <li>Windows 11 Pro ISO</li>
-          <li>Ubuntu Desktop ISO</li>
-          <li>VMware Workstation Pro</li>
-          <li>Cisco Packet Tracer</li>
-          <li>Balena Etcher — bootable USB creator</li>
-          <li>ShareX — screenshot tool</li>
+          <li>VMware Workstation Pro — hypervisor</li>
+          <li>Ubuntu Desktop ISO — Linux VM</li>
+          <li>Windows 10 ISO — Windows VM</li>
+          <li>Cisco Packet Tracer — network simulation</li>
+          <li>Wireshark — network traffic analysis</li>
+          <li>Nmap — port scanning and recon</li>
+          <li>PuTTY — SSH client</li>
+          <li>OBS Studio — lab recording</li>
+          <li>7-Zip — file extraction</li>
+          <li>VS Code — notes and documentation</li>
+          <li>GitHub Desktop — portfolio uploads</li>
         </ul>
       </div>
       <div class="info-card">
@@ -439,22 +451,34 @@ footer a:hover{color:var(--white)}
     </div>
 
     <div class="writeup-block reveal">
-      <h3>Step 5 — Installed and Configured VMware Workstation Pro</h3>
-      <p>Downloaded VMware Workstation Pro and completed the installation. After installation configured the default virtual machine storage location via <strong style="color:var(--white)">Edit → Preferences → Workspace → Default location for virtual machines</strong> and pointed it to <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">C:\IT-Labs\02-Virtual-Machines</code>.</p>
-      <p class="placeholder">// Add VMware installation screenshots and the Preferences configuration screen here.</p>
+      <h3>Step 5 — Downloaded and Installed All Core Lab Tools</h3>
+      <p>On May 4, 2026 downloaded and installed all core software tools needed to build the virtual lab environment. Each tool was selected for a specific purpose aligned with CompTIA A+, networking, Linux, and cybersecurity practice goals.</p>
+      <ul class="step-list" style="margin-top:1rem">
+        <li><span class="step-num">TOOL 01</span><strong style="color:var(--white)">VMware Workstation Pro</strong> — Hypervisor to create and manage virtual machines</li>
+        <li><span class="step-num">TOOL 02</span><strong style="color:var(--white)">Ubuntu Desktop ISO</strong> — Saved to C:\IT-Labs\01-ISOs for Linux VM creation</li>
+        <li><span class="step-num">TOOL 03</span><strong style="color:var(--white)">Windows 10 ISO</strong> — Saved to C:\IT-Labs\01-ISOs for Windows VM creation</li>
+        <li><span class="step-num">TOOL 04</span><strong style="color:var(--white)">Cisco Packet Tracer</strong> — Network simulation for routers, switches, PCs, and servers</li>
+        <li><span class="step-num">TOOL 05</span><strong style="color:var(--white)">Wireshark</strong> — Network traffic capture and analysis for networking and cybersecurity labs</li>
+        <li><span class="step-num">TOOL 06</span><strong style="color:var(--white)">Nmap</strong> — Port scanning and network discovery for security testing inside the lab</li>
+        <li><span class="step-num">TOOL 07</span><strong style="color:var(--white)">PuTTY</strong> — SSH client for connecting into Linux systems and network devices</li>
+        <li><span class="step-num">TOOL 08</span><strong style="color:var(--white)">OBS Studio</strong> — Screen recording for lab walkthroughs and project demonstrations</li>
+        <li><span class="step-num">TOOL 09</span><strong style="color:var(--white)">7-Zip</strong> — File extraction for ZIP, ISO-related files, and downloaded tool packages</li>
+      </ul>
+      <p style="margin-top:1rem">These tools were chosen to build a strong beginner-friendly IT lab foundation — creating a safe and organized environment to practice real-world technical skills without using a personal machine for risky testing.</p>
+      <p class="placeholder">// Add screenshots of your downloaded tools, installation screens, and the C:\IT-Labs\08-Tools folder here.</p>
     </div>
 
     <div class="writeup-block reveal">
-      <h3>Step 6 — Downloaded Ubuntu ISO and Created Ubuntu-Lab-01 VM</h3>
-      <p class="placeholder">// Document this step as you complete it. Include: where you downloaded Ubuntu from, how you saved it to C:\IT-Labs\01-ISOs, the VM creation settings in VMware, and screenshots of each configuration screen.</p>
+      <h3>Step 6 — Create Ubuntu-Lab-01 VM (In Progress)</h3>
+      <p>Both ISOs are downloaded and saved to <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">C:\IT-Labs\01-ISOs</code>. The next step is creating the first virtual machine in VMware Workstation Pro using the Ubuntu ISO.</p>
       <ul class="step-list" style="margin-top:1rem">
-        <li><span class="step-num">NEXT 01</span>Download Ubuntu Desktop ISO — save to C:\IT-Labs\01-ISOs</li>
-        <li><span class="step-num">NEXT 02</span>In VMware click New Virtual Machine</li>
-        <li><span class="step-num">NEXT 03</span>Select Ubuntu ISO as installation source</li>
-        <li><span class="step-num">NEXT 04</span>Configure: 2GB RAM, 2 CPU cores, 30GB storage, NAT network</li>
-        <li><span class="step-num">NEXT 05</span>Complete Ubuntu installation and run all updates</li>
-        <li><span class="step-num">NEXT 06</span>Install tools: nmap, openssh-server, net-tools, curl, git</li>
-        <li><span class="step-num">NEXT 07</span>Take VMware snapshot — name it: Clean Install - Before Labs</li>
+        <li><span class="step-num">NEXT 01</span>Open VMware Workstation Pro and click New Virtual Machine</li>
+        <li><span class="step-num">NEXT 02</span>Select Ubuntu ISO from C:\IT-Labs\01-ISOs as the installation source</li>
+        <li><span class="step-num">NEXT 03</span>Configure VM: 2GB RAM, 2 CPU cores, 30GB storage, NAT network</li>
+        <li><span class="step-num">NEXT 04</span>Complete Ubuntu installation and run all system updates</li>
+        <li><span class="step-num">NEXT 05</span>Install lab tools: nmap, openssh-server, net-tools, curl, git</li>
+        <li><span class="step-num">NEXT 06</span>Take VMware snapshot — name it: Clean Install - Before Labs</li>
+        <li><span class="step-num">NEXT 07</span>Repeat process for Windows-Lab-01 using Windows 10 ISO</li>
       </ul>
     </div>
 
