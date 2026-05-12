@@ -191,8 +191,9 @@ footer a:hover{color:var(--white)}
     <h1 class="lab-title">Setting Up a<br>Virtual Lab</h1>
     <p class="lab-desc">
       Building a personal IT lab environment from the ground up on a refurbished
-      HP EliteDesk 800 G3 Mini, and finishing with a fully configured virtualization 
-      environment running Ubuntu and Windows virtual machines ready for hands-on IT practice.
+      HP EliteDesk 800 G3 Mini — building a fully configured virtualization
+      with a fully configured virtualization environment running Ubuntu and Windows
+      virtual machines ready for hands-on IT practice.
     </p>
     <div class="meta-row">
       <div class="meta-item">
@@ -242,7 +243,7 @@ footer a:hover{color:var(--white)}
         <div class="status-item si-done"><span>✓</span>Nmap downloaded</div>
         <div class="status-item si-done"><span>✓</span>PuTTY downloaded</div>
         <div class="status-item si-done"><span>✓</span>OBS Studio downloaded</div>
-        <div class="status-item si-done"><span>✓</span>7-Zip downloaded</div>
+        <div class="status-item si-done"><span>✓</span>RAM upgraded — Crucial 32GB DDR4 2400 SO-DIMM (2x16GB)</div>
       </div>
       <div class="status-card">
         <div class="status-card-title">⏳ In Progress</div>
@@ -258,7 +259,6 @@ footer a:hover{color:var(--white)}
         <div class="status-item si-plan"><span>–</span>First Packet Tracer networking lab</div>
         <div class="status-item si-plan"><span>–</span>First Wireshark packet capture</div>
         <div class="status-item si-plan"><span>–</span>First Nmap scan in lab</div>
-        <div class="status-item si-plan"><span>–</span>RAM upgrade to 16GB</div>
         <div class="status-item si-plan"><span>–</span>Kali Linux VM added</div>
       </div>
     </div>
@@ -328,11 +328,11 @@ footer a:hover{color:var(--white)}
           <tr><th>Component</th><th>Specification</th><th>Lab Notes</th></tr>
         </thead>
         <tbody>
-          <tr><td>Computer</td><td>HP EliteDesk 800 G3 Mini</td><td>Refurbished — purchased on eBay with no OS</td></tr>
+          <tr><td>Computer</td><td>HP EliteDesk 800 G3 Mini</td><td>Refurbished — purchased on eBay with Windows 11 pre-installed</td></tr>
           <tr><td>Processor</td><td>Intel Core i5-7500T @ 2.70 GHz</td><td>Supports Intel VT-x — required for VMware ✓</td></tr>
-          <tr><td>RAM</td><td>8 GB DDR4</td><td>Supports up to 32GB — upgrade to 16GB planned</td></tr>
+          <tr><td>RAM</td><td>32 GB DDR4 2400 SO-DIMM (2x16GB)</td><td>Upgraded — Crucial 32GB Kit · Max capacity reached ✓</td></tr>
           <tr><td>Storage</td><td>256 GB SSD</td><td>Sufficient for host OS and 2 VMs</td></tr>
-          <tr><td>Operating System</td><td>Windows 11 Pro</td><td>Installed from scratch — no OS on arrival</td></tr>
+          <tr><td>Operating System</td><td>Windows 11 Pro</td><td>Pre-installed — came with the machine on arrival</td></tr>
           <tr><td>Graphics</td><td>Intel HD Graphics (integrated)</td><td>Sufficient for lab and VM work</td></tr>
           <tr><td>Connectivity</td><td>USB 2.0, USB 3.0, USB 3.1, DisplayPort, HDMI</td><td>All ports verified working</td></tr>
           <tr><td>Network</td><td>Built-in Wi-Fi + Bluetooth</td><td>Wi-Fi connected and confirmed working</td></tr>
@@ -382,7 +382,7 @@ footer a:hover{color:var(--white)}
 
     <div class="writeup-block reveal">
       <h3>Two-VM Lab Plan — NAT Network Mode</h3>
-      <p>Both VMs use NAT networking — allowing internet access while keeping the lab isolated and safe from the home network. Avoid running both VMs at the same time until RAM is upgraded to 16GB.</p>
+      <p>Both VMs use NAT networking — allowing internet access while keeping the lab isolated and safe from the home network. With 32GB of RAM installed both VMs can run simultaneously without performance issues.</p>
       <table class="vm-table" style="margin-top:1rem">
         <thead>
           <tr><th>VM Name</th><th>OS</th><th>Purpose</th><th>Settings</th><th>Status</th></tr>
@@ -418,7 +418,7 @@ footer a:hover{color:var(--white)}
 
     <div class="writeup-block reveal">
       <h3>Step 1 — Received the Lab PC and Verified Hardware</h3>
-      <p>Selected the HP EliteDesk 800 G3 Mini as a dedicated lab computer and purchased it refurbished on eBay.</p>
+      <p>Selected the HP EliteDesk 800 G3 Mini as a dedicated lab computer and purchased it refurbished on eBay. The machine arrived with Windows 11 Pro already installed — ready to begin setting up the virtualization environment.</p>
       <p>Connected monitor, keyboard, and mouse. Powered on the machine to enter BIOS and verify the hardware was functional before beginning the OS installation.</p>
       <p class="placeholder">// Add your photos and specific BIOS findings here when you complete your write-up.</p>
     </div>
@@ -430,17 +430,16 @@ footer a:hover{color:var(--white)}
     </div>
 
     <div class="writeup-block reveal">
-      <h3>Step 3 — Created Bootable USB and Installed Windows 11 Pro</h3>
-      <p>Downloaded the Windows 11 Pro ISO and used Balena Etcher to write it to a bootable USB drive. Inserted the USB into the HP EliteDesk and pressed <strong style="color:var(--white)">F9</strong> to open the boot menu. Selected the USB drive and followed the Windows installation steps.</p>
+      <h3>Step 3 — Verified Windows 11 Pro and Ran Updates</h3>
+      <p>The HP EliteDesk arrived with Windows 11 Pro already installed. Connected the machine to Wi-Fi, confirmed internet access, and ran Windows Update to make sure all updates and drivers were current before beginning the lab setup.</p>
       <ul class="step-list" style="margin-top:1rem">
-        <li><span class="step-num">STEP 01</span>Selected language, time, and keyboard settings</li>
-        <li><span class="step-num">STEP 02</span>Chose Custom installation to do a clean install on the SSD</li>
-        <li><span class="step-num">STEP 03</span>Completed Windows setup — created a local account</li>
-        <li><span class="step-num">STEP 04</span>Connected to Wi-Fi and confirmed internet access</li>
-        <li><span class="step-num">STEP 05</span>Ran Windows Update — installed all available updates</li>
-        <li><span class="step-num">STEP 06</span>Checked Device Manager — confirmed all drivers working</li>
+        <li><span class="step-num">STEP 01</span>Powered on the machine and confirmed Windows 11 Pro loaded correctly</li>
+        <li><span class="step-num">STEP 02</span>Connected to Wi-Fi and confirmed internet access</li>
+        <li><span class="step-num">STEP 03</span>Ran Windows Update — installed all available updates</li>
+        <li><span class="step-num">STEP 04</span>Checked Device Manager — confirmed all drivers working correctly</li>
+        <li><span class="step-num">STEP 05</span>Verified system specs — Settings → System → About</li>
       </ul>
-      <p class="placeholder" style="margin-top:1rem">// Add your Windows installation screenshots here.</p>
+      <p class="placeholder" style="margin-top:1rem">// Add your Windows desktop screenshot and Device Manager screenshot here.</p>
     </div>
 
     <div class="writeup-block reveal">
@@ -450,7 +449,22 @@ footer a:hover{color:var(--white)}
     </div>
 
     <div class="writeup-block reveal">
-      <h3>Step 5 — Downloaded and Installed All Core Lab Tools</h3>
+      <h3>Step 5 — RAM Upgrade — 8GB → 32GB</h3>
+      <p>Upgraded the HP EliteDesk 800 G3 Mini from the original 8GB of RAM to a full 32GB using a Crucial 32GB DDR4 2400 SO-DIMM Kit (2x16GB). This upgrade maxes out the machine's RAM capacity and significantly improves the lab's ability to run multiple virtual machines simultaneously without performance issues.</p>
+      <ul class="step-list" style="margin-top:1rem">
+        <li><span class="step-num">STEP 01</span>Powered off the HP EliteDesk and disconnected all cables</li>
+        <li><span class="step-num">STEP 02</span>Opened the case and located the two SO-DIMM RAM slots on the motherboard</li>
+        <li><span class="step-num">STEP 03</span>Removed the original 8GB RAM modules by releasing the retention clips</li>
+        <li><span class="step-num">STEP 04</span>Inserted both Crucial 16GB DDR4 2400 SO-DIMM sticks — one in each slot</li>
+        <li><span class="step-num">STEP 05</span>Reassembled the case and powered the machine back on</li>
+        <li><span class="step-num">STEP 06</span>Verified 32GB recognized in Windows — Settings → System → About</li>
+      </ul>
+      <p style="margin-top:1rem">With 32GB of RAM the lab can now comfortably run the Windows host OS plus two virtual machines simultaneously — Ubuntu-Lab-01 and Windows-Lab-01 — without performance degradation.</p>
+      <p class="placeholder">// Add photos of the RAM upgrade process and a screenshot of Windows showing 32GB recognized here.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step 6 — Downloaded and Installed All Core Lab Tools</h3>
       <p>On May 4, 2026 downloaded and installed all core software tools needed to build the virtual lab environment. Each tool was selected for a specific purpose aligned with CompTIA A+, networking, Linux, and cybersecurity practice goals.</p>
       <ul class="step-list" style="margin-top:1rem">
         <li><span class="step-num">TOOL 01</span><strong style="color:var(--white)">VMware Workstation Pro</strong> — Hypervisor to create and manage virtual machines</li>
@@ -603,7 +617,7 @@ footer a:hover{color:var(--white)}
     <div class="lessons-grid reveal">
       <div class="lesson-card">
         <div class="lesson-num">LESSON 01</div>
-        <div class="lesson-text">Starting from a bare machine is the best way to learn. Every step — BIOS, bootable USB, OS install, drivers — builds real skills that apply directly to IT support and data center work.</div>
+        <div class="lesson-text">Verifying your starting point before making changes is essential. Confirming Windows 11 was pre-installed, running updates, and checking Device Manager ensures a clean stable foundation before adding virtualization software.</div>
       </div>
       <div class="lesson-card">
         <div class="lesson-num">LESSON 02</div>
