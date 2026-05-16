@@ -259,6 +259,7 @@ footer a:hover{color:var(--white)}
         <div class="status-item si-plan"><span>–</span>First Packet Tracer networking lab</div>
         <div class="status-item si-plan"><span>–</span>First Wireshark packet capture</div>
         <div class="status-item si-plan"><span>–</span>First Nmap scan in lab</div>
+        <div class="status-item si-plan"><span>–</span>RAM upgrade — cannot open case currently</div>
         <div class="status-item si-plan"><span>–</span>Kali Linux VM added</div>
       </div>
     </div>
@@ -330,7 +331,7 @@ footer a:hover{color:var(--white)}
         <tbody>
           <tr><td>Computer</td><td>HP EliteDesk 800 G3 Mini</td><td>Refurbished — purchased on eBay with Windows 11 pre-installed</td></tr>
           <tr><td>Processor</td><td>Intel Core i5-7500T @ 2.70 GHz</td><td>Supports Intel VT-x — required for VMware ✓</td></tr>
-          <tr><td>RAM</td><td>32 GB DDR4 2400 SO-DIMM (2x16GB)</td><td>Upgraded — Crucial 32GB Kit · Max capacity reached ✓</td></tr>
+          <tr><td>RAM</td><td>8 GB DDR4</td><td>Upgrade planned — cannot open case currently · Max 32GB supported</td></tr>
           <tr><td>Storage</td><td>256 GB SSD</td><td>Sufficient for host OS and 2 VMs</td></tr>
           <tr><td>Operating System</td><td>Windows 11 Pro</td><td>Pre-installed — came with the machine on arrival</td></tr>
           <tr><td>Graphics</td><td>Intel HD Graphics (integrated)</td><td>Sufficient for lab and VM work</td></tr>
@@ -382,7 +383,7 @@ footer a:hover{color:var(--white)}
 
     <div class="writeup-block reveal">
       <h3>Two-VM Lab Plan — NAT Network Mode</h3>
-      <p>Both VMs use NAT networking — allowing internet access while keeping the lab isolated and safe from the home network. With 32GB of RAM installed both VMs can run simultaneously without performance issues.</p>
+      <p>Both VMs use NAT networking — allowing internet access while keeping the lab isolated and safe from the home network. With 8GB of RAM run only ONE VM at a time to avoid performance issues.</p>
       <table class="vm-table" style="margin-top:1rem">
         <thead>
           <tr><th>VM Name</th><th>OS</th><th>Purpose</th><th>Settings</th><th>Status</th></tr>
@@ -449,22 +450,7 @@ footer a:hover{color:var(--white)}
     </div>
 
     <div class="writeup-block reveal">
-      <h3>Step 5 — RAM Upgrade — 8GB → 32GB</h3>
-      <p>Upgraded the HP EliteDesk 800 G3 Mini from the original 8GB of RAM to a full 32GB using a Crucial 32GB DDR4 2400 SO-DIMM Kit (2x16GB). This upgrade maxes out the machine's RAM capacity and significantly improves the lab's ability to run multiple virtual machines simultaneously without performance issues.</p>
-      <ul class="step-list" style="margin-top:1rem">
-        <li><span class="step-num">STEP 01</span>Powered off the HP EliteDesk and disconnected all cables</li>
-        <li><span class="step-num">STEP 02</span>Opened the case and located the two SO-DIMM RAM slots on the motherboard</li>
-        <li><span class="step-num">STEP 03</span>Removed the original 8GB RAM modules by releasing the retention clips</li>
-        <li><span class="step-num">STEP 04</span>Inserted both Crucial 16GB DDR4 2400 SO-DIMM sticks — one in each slot</li>
-        <li><span class="step-num">STEP 05</span>Reassembled the case and powered the machine back on</li>
-        <li><span class="step-num">STEP 06</span>Verified 32GB recognized in Windows — Settings → System → About</li>
-      </ul>
-      <p style="margin-top:1rem">With 32GB of RAM the lab can now comfortably run the Windows host OS plus two virtual machines simultaneously — Ubuntu-Lab-01 and Windows-Lab-01 — without performance degradation.</p>
-      <p class="placeholder">// Add photos of the RAM upgrade process and a screenshot of Windows showing 32GB recognized here.</p>
-    </div>
-
-    <div class="writeup-block reveal">
-      <h3>Step 6 — Downloaded and Installed All Core Lab Tools</h3>
+      <h3>Step 5 — Downloaded and Installed All Core Lab Tools</h3>
       <p>On May 4, 2026 downloaded and installed all core software tools needed to build the virtual lab environment. Each tool was selected for a specific purpose aligned with CompTIA A+, networking, Linux, and cybersecurity practice goals.</p>
       <ul class="step-list" style="margin-top:1rem">
         <li><span class="step-num">TOOL 01</span><strong style="color:var(--white)">VMware Workstation Pro</strong> — Hypervisor to create and manage virtual machines</li>
@@ -614,7 +600,7 @@ footer a:hover{color:var(--white)}
       </div>
       <div class="lesson-card">
         <div class="lesson-num">LESSON 05</div>
-        <div class="lesson-text">RAM planning matters. With 8GB shared between the host and VMs running one VM at a time is the safe approach. A 16GB upgrade is planned to allow smoother multi-VM operation.</div>
+        <div class="lesson-text">RAM planning matters. With 8GB shared between the host OS and VMs, running only one VM at a time is the safest approach. Close all unnecessary apps on Windows before starting a VM. A RAM upgrade is planned once the case can be opened.</div>
       </div>
       <div class="lesson-card">
         <div class="lesson-num">LESSON 06</div>
@@ -643,7 +629,7 @@ footer a:hover{color:var(--white)}
         <li>Create Windows-Lab-01 VM for Windows troubleshooting practice</li>
         <li>Install Cisco Packet Tracer on the Windows host</li>
         <li>Complete first Cisco Packet Tracer networking lab</li>
-        <li>Upgrade RAM from 8GB to 16GB for smoother multi-VM operation</li>
+        <li>Upgrade RAM to 32GB once the HP EliteDesk case can be opened</li>
         <li>Add Kali Linux as a third VM for cybersecurity labs</li>
       </ul>
     </div>
