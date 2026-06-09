@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LAB-003 | Security Pro — Strengthen Security Foundations | Tezana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--white:#f4f7fa;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+  --nav:66px;--max:1100px;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.875rem;line-height:1.75;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;border-radius:2px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 2rem}
+.sec{padding:4rem 0}
+.ruled{height:1px;background:linear-gradient(90deg,transparent,var(--b3) 35%,var(--b3) 65%,transparent)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;height:var(--nav);background:rgba(6,8,11,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b0);display:flex;align-items:center;transition:border-color .3s,box-shadow .3s}
+#nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid var(--b2);color:var(--silver);background:transparent;transition:all .2s}
+.back-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* HERO */
+#hero{padding-top:calc(var(--nav) + 4rem);padding-bottom:3rem;background:var(--abyss);position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(176,188,200,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.lab-eyebrow{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.lab-eyebrow::before{content:'';width:20px;height:1px;background:var(--steel)}
+.lab-num{font-family:var(--fm);font-size:.65rem;letter-spacing:.22em;color:var(--dim);margin-bottom:.5rem}
+h1.lab-title{font-family:var(--fh);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--white);line-height:1.05;letter-spacing:.02em;margin-bottom:1.25rem}
+.lab-desc{font-size:.88rem;line-height:1.9;color:var(--silver);max-width:65ch;margin-bottom:2rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b0)}
+.meta-item{display:flex;flex-direction:column;gap:.2rem}
+.meta-label{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+.meta-value{font-family:var(--fh);font-size:.82rem;font-weight:600;color:var(--white)}
+.badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid currentColor;line-height:1.6}
+.b-done{color:var(--fog);border-color:rgba(205,213,222,.35)}
+.b-wip{color:var(--silver);border-color:rgba(136,150,168,.28)}
+
+/* EYEBROW + TITLE */
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';width:16px;height:1px;background:var(--steel)}
+.sec-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:.03em;margin-bottom:1.5rem}
+.sec-title span{color:var(--mid);font-weight:300}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem}
+.info-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.info-card:hover{border-color:var(--b1)}
+.info-card-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding-bottom:.6rem;margin-bottom:.75rem;border-bottom:1px solid var(--b0)}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.info-card ul li{font-size:.76rem;color:var(--silver);padding-left:.75rem;position:relative}
+.info-card ul li::before{content:'→';position:absolute;left:0;color:var(--steel);font-size:.65rem}
+
+/* CASE STUDY CARDS */
+.case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:2rem}
+.case-card{background:var(--deep);border:1px solid var(--b1);padding:1.5rem;transition:border-color .2s}
+.case-card:hover{border-color:var(--b2)}
+.case-num{font-family:var(--fm);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:.4rem}
+.case-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.4rem;line-height:1.3}
+.case-org{font-size:.72rem;color:var(--silver);margin-bottom:.75rem;font-style:italic}
+.case-body{font-size:.78rem;line-height:1.8;color:var(--silver)}
+
+/* WRITE-UP BLOCKS */
+.writeup-block{background:var(--deep);border:1px solid var(--b0);padding:2rem;margin-bottom:1.25rem;transition:border-color .2s}
+.writeup-block:hover{border-color:var(--b1)}
+.writeup-block h3{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.85rem;letter-spacing:.03em;padding-bottom:.65rem;border-bottom:1px solid var(--b0)}
+.writeup-block p{font-size:.82rem;line-height:1.9;color:var(--silver);margin-bottom:.75rem}
+.writeup-block p:last-child{margin-bottom:0}
+.writeup-block ul{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem}
+.writeup-block ul li{font-size:.82rem;color:var(--silver);padding-left:1.2rem;position:relative;line-height:1.7}
+.writeup-block ul li::before{content:'→';position:absolute;left:0;color:var(--steel)}
+
+/* STEP LIST */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.step-list li{display:flex;gap:1rem;align-items:flex-start;font-size:.82rem;color:var(--silver);padding:.6rem .75rem;border-left:1px solid var(--b1);transition:background .2s}
+.step-list li:hover{background:var(--coal);border-color:var(--b2)}
+.step-num{font-family:var(--fh);font-size:.58rem;font-weight:700;letter-spacing:.14em;color:var(--steel);white-space:nowrap;padding-top:.15rem;min-width:65px}
+
+/* PHOTO GRID */
+.photo-section-title{font-family:var(--fh);font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--white);padding:.5rem .75rem;background:var(--coal);border:1px solid var(--b1);margin-bottom:1px}
+.photo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--b0);border:1px solid var(--b0);margin-bottom:2rem}
+.photo-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b0);border:1px solid var(--b0);margin-bottom:2rem}
+.photo-item{background:var(--deep);overflow:hidden;position:relative}
+.photo-item img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:grayscale(10%);transition:filter .3s,transform .3s;display:block}
+.photo-item:hover img{filter:grayscale(0%);transform:scale(1.02)}
+.photo-caption{padding:.5rem .65rem;font-size:.62rem;letter-spacing:.08em;color:var(--steel);border-top:1px solid var(--b0);line-height:1.5}
+.photo-placeholder{width:100%;aspect-ratio:16/9;background:var(--coal);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem}
+.photo-placeholder .ph-num{font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--steel)}
+.photo-placeholder .ph-name{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* LESSONS */
+.lessons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.lesson-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.lesson-card:hover{border-color:var(--b1)}
+.lesson-num{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:var(--steel);margin-bottom:.4rem}
+.lesson-text{font-size:.78rem;line-height:1.8;color:var(--silver)}
+
+/* NEXT STEPS */
+.next-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.next-list li{font-size:.82rem;color:var(--silver);padding:.6rem .75rem .6rem 2rem;border-bottom:1px solid var(--b0);position:relative;transition:background .2s}
+.next-list li:last-child{border-bottom:none}
+.next-list li:hover{background:var(--coal)}
+.next-list li::before{content:'→';position:absolute;left:.75rem;color:var(--steel)}
+
+/* LAB NAV */
+.lab-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;border-top:1px solid var(--b0)}
+.lab-nav a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.6rem 1.25rem;border:1px solid var(--b2);color:var(--silver);transition:all .2s}
+.lab-nav a:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b0);padding:1.5rem 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;letter-spacing:.1em;color:var(--steel)}
+footer a{transition:color .2s}
+footer a:hover{color:var(--white)}
+.f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .info-grid{grid-template-columns:1fr}
+  .case-grid{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:1fr}
+  .photo-grid-3{grid-template-columns:repeat(2,1fr)}
+  .lessons-grid{grid-template-columns:1fr}
+  .lab-nav{flex-direction:column;gap:1rem;text-align:center}
+  footer .wrap{flex-direction:column;gap:.5rem;text-align:center}
+}
+@media(max-width:480px){
+  .photo-grid-3{grid-template-columns:1fr}
+  .wrap{padding:0 1.2rem}
+  .sec{padding:3rem 0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">TEZANA</a>
+    <a href="index.html#labs" class="back-btn">← Back to Labs</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="lab-eyebrow">IT Labs Portfolio · Microsoft AI Skills Fest</div>
+    <div class="lab-num">LAB-003</div>
+    <h1 class="lab-title">Security Pro —<br>Strengthen Security Foundations</h1>
+    <p class="lab-desc">
+      A Microsoft AI Skills Fest interactive lab building a core understanding of modern security
+      concepts, threats, and protections across identities, data, devices, infrastructure,
+      and AI systems. Completed two real-world security scenarios using drag-and-drop
+      architecture design, hotspot threat analysis, multiple-choice assessments, and
+      Zero Trust implementation planning — all within Microsoft's guided interactive learning environment.
+    </p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span><span class="badge b-done">Completed</span></span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Category</span>
+        <span class="meta-value">Cybersecurity / Zero Trust</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Platform</span>
+        <span class="meta-value">Microsoft AI Skills Fest</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Format</span>
+        <span class="meta-value">Interactive Case Study</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Completed</span>
+        <span class="meta-value">June 8, 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LAB DETAILS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Overview</div>
+    <h2 class="sec-title">Lab <span>Details</span></h2>
+
+    <div class="info-grid reveal">
+      <div class="info-card">
+        <div class="info-card-title">Objective</div>
+        <ul>
+          <li>Analyze real-world security scenarios for fictitious organizations</li>
+          <li>Identify security gaps across multicloud and hybrid environments</li>
+          <li>Apply Zero Trust principles to architecture design</li>
+          <li>Map Microsoft security tools to specific threats</li>
+          <li>Design and sequence secure solutions end-to-end</li>
+          <li>Reflect on DevSecOps maturity and governance gaps</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Tools & Technologies</div>
+        <ul>
+          <li>Microsoft Defender for Endpoint</li>
+          <li>Microsoft Defender for IoT</li>
+          <li>Microsoft Sentinel — SIEM & SOAR</li>
+          <li>Azure Arc — hybrid governance</li>
+          <li>Microsoft Intune — endpoint management</li>
+          <li>Azure Key Vault — secrets management</li>
+          <li>GitHub Advanced Security</li>
+          <li>Azure Private Link</li>
+          <li>Defender for Cloud DevOps</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Skills Demonstrated</div>
+        <ul>
+          <li>Zero Trust architectural reasoning</li>
+          <li>Threat analysis and risk assessment</li>
+          <li>Multicloud security design (Azure + AWS)</li>
+          <li>Hybrid infrastructure security planning</li>
+          <li>DevSecOps principles and CI/CD security</li>
+          <li>OT/IoT security awareness</li>
+          <li>Endpoint and identity management</li>
+          <li>Security operations and threat detection</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CASE STUDY OVERVIEW -->
+    <div class="eyebrow">// Case Studies Completed</div>
+    <h2 class="sec-title" style="margin-bottom:1rem">Two <span>Scenarios</span></h2>
+
+    <div class="case-grid reveal">
+      <div class="case-card">
+        <div class="case-num">CASE STUDY 01</div>
+        <div class="case-title">Securing Apps and Data</div>
+        <div class="case-org">Fabrikam Inc. — Fictitious e-commerce organization</div>
+        <div class="case-body">
+          Fabrikam operates across Azure and AWS deploying microservices in AKS and EKS clusters.
+          The scenario presented fragmented DevOps security practices including manual secret
+          rotation, public database endpoints, and inconsistent CI/CD pipeline controls exposing
+          the organization to misconfigurations, credential leaks, and delayed threat detection.
+        </div>
+      </div>
+      <div class="case-card">
+        <div class="case-num">CASE STUDY 02</div>
+        <div class="case-title">Securing Endpoints and Infrastructure</div>
+        <div class="case-org">Litware Inc. — Fictitious global manufacturing company (40+ sites)</div>
+        <div class="case-body">
+          Litware struggles with fragmented security across IT and OT environments. Regional
+          autonomy created inconsistent governance, decentralized endpoint management, and
+          delayed patching. Legacy industrial systems with default settings and flat networks
+          increased exposure while security telemetry was siloed in regional tools creating
+          enterprise-wide blind spots.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- WRITE-UP -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Write-Up</div>
+    <h2 class="sec-title">Lab <span>Documentation</span></h2>
+
+    <!-- CASE STUDY 01 -->
+    <div class="writeup-block reveal">
+      <h3>Case Study 01 — Securing Apps and Data (Fabrikam Inc.)</h3>
+      <p><strong style="color:var(--white)">Situation Assessment:</strong> Reviewed Fabrikam Inc.'s dual-cloud environment running microservices across Azure Kubernetes Service (AKS) and Amazon Elastic Kubernetes Service (EKS). Identified the following security gaps:</p>
+      <ul>
+        <li>Static Kubernetes secrets and long-lived tokens used for service-to-service authentication with manual rotation and limited visibility</li>
+        <li>Database connections relying on public endpoints and connection strings — no network-layer isolation</li>
+        <li>CI/CD pipelines lacking centralized security governance — misconfigurations reaching production</li>
+        <li>Open-source dependency management relying on manual developer vigilance without integrated scanning</li>
+        <li>Monitoring fragmented across cloud-native tools with inconsistent triage and limited threat detection</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Case Study 01 — Threat Analysis</h3>
+      <p>Translated the operational weaknesses into tangible threats and identified the following risks:</p>
+      <ul>
+        <li><strong style="color:var(--white)">Credential exposure</strong> — manual secret handling and static tokens create high-value targets for attackers</li>
+        <li><strong style="color:var(--white)">Misconfiguration vulnerabilities</strong> — infrastructure-as-code and admission policy gaps introduce persistent attack surfaces</li>
+        <li><strong style="color:var(--white)">Supply chain risks</strong> — unscanned dependencies and insecure CI/CD workflows expose the build pipeline</li>
+        <li><strong style="color:var(--white)">Data exposure</strong> — public database endpoints and insufficient encryption put sensitive data at risk</li>
+        <li><strong style="color:var(--white)">Delayed detection</strong> — fragmented monitoring and reactive diagnostics slow incident response</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Case Study 01 — Architectural Solution Designed</h3>
+      <p>Designed a Zero Trust–aligned DevSecOps framework using integrated Microsoft tools to address Fabrikam's risks:</p>
+      <ul>
+        <li><strong style="color:var(--white)">Azure Arc</strong> — extends governance and policy enforcement to Amazon EKS clusters across both clouds</li>
+        <li><strong style="color:var(--white)">GitHub Advanced Security + Defender for Cloud DevOps</strong> — enables shift-left security through code and infrastructure scanning</li>
+        <li><strong style="color:var(--white)">Workload identities</strong> — replaces static credentials with short-lived tokens tied to pod identities</li>
+        <li><strong style="color:var(--white)">Azure Key Vault + Always Encrypted + Azure Private Link</strong> — strengthens data protection and secure connectivity</li>
+        <li><strong style="color:var(--white)">Microsoft Sentinel</strong> — correlates telemetry across pipelines, runtimes, and cloud apps for unified threat detection</li>
+      </ul>
+    </div>
+
+    <!-- CASE STUDY 02 -->
+    <div class="writeup-block reveal">
+      <h3>Case Study 02 — Securing Endpoints and Infrastructure (Litware Inc.)</h3>
+      <p><strong style="color:var(--white)">Situation Assessment:</strong> Reviewed the current architecture at Litware Inc. — a global manufacturer with more than 40 sites spanning IT and OT environments. Completed a hotspot activity identifying risks across the live architecture diagram including Litware plant, facility, edge computing nodes, SIEM tools, Azure subscriptions, and Entra tenant. Identified the following security gaps:</p>
+      <ul>
+        <li>Decentralized endpoint management leading to inconsistent patching and delayed remediation</li>
+        <li>OT/IoT systems operating on flat networks with default credentials and legacy protocols — uptime prioritized over security</li>
+        <li>Regional cloud deployments lacking centralized governance — visibility and configuration gaps across sites</li>
+        <li>Security telemetry processed locally using disparate SIEM tools — no enterprise-wide threat correlation</li>
+        <li>Public internet used for telemetry flow — exposing sensitive operational data</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Case Study 02 — Threat Analysis</h3>
+      <p>Identified the following threats resulting from Litware's operational weaknesses:</p>
+      <ul>
+        <li><strong style="color:var(--white)">Malware entry</strong> — unmanaged endpoints and inconsistent patching create wide-open attack surfaces</li>
+        <li><strong style="color:var(--white)">Lateral movement</strong> — OT/IoT flat networks and default credentials allow attackers to move freely</li>
+        <li><strong style="color:var(--white)">Misconfigured cloud resources</strong> — decentralized provisioning creates exploitable gaps across regional deployments</li>
+        <li><strong style="color:var(--white)">Third-party access risks</strong> — unmanaged contractor devices accessing internal systems without governance</li>
+        <li><strong style="color:var(--white)">Blind spots in threat detection</strong> — siloed telemetry and skill disparities across regions limit visibility</li>
+        <li><strong style="color:var(--white)">Telemetry exposure</strong> — sensitive operational data transmitted over public internet paths</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Case Study 02 — Architectural Solution Designed</h3>
+      <p>Designed a Zero Trust–aligned hybrid security framework and sequenced the implementation steps using the drag-and-drop activity and carousel-based deployment visualization:</p>
+      <ul>
+        <li><strong style="color:var(--white)">Microsoft Intune + Defender for Endpoint</strong> — unified endpoint management and compliance enforcement across all 40+ sites</li>
+        <li><strong style="color:var(--white)">Defender for IoT</strong> — agentless, protocol-aware monitoring of OT environments without disrupting operations</li>
+        <li><strong style="color:var(--white)">Azure Arc + Defender for Cloud</strong> — extends governance and threat protection to hybrid infrastructure across all regions</li>
+        <li><strong style="color:var(--white)">IoT Hub + IoT Edge + Private Endpoints</strong> — secure telemetry routing and cloud integration — eliminates public internet exposure</li>
+        <li><strong style="color:var(--white)">Microsoft Sentinel + Defender XDR</strong> — centralized threat correlation and response across IT, OT, and cloud domains</li>
+      </ul>
+      <p>Implementation was sequenced across five phases: establish endpoint security baseline → enhance threat detection and automated response → deploy centralized security monitoring → secure OT and IoT assets → modernize edge and hybrid infrastructure.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- PHOTOS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Lab Screenshots</div>
+    <h2 class="sec-title">Documentation <span>Screenshots</span></h2>
+    <p style="font-size:.8rem;color:var(--silver);margin-bottom:2rem;line-height:1.8">
+      Screenshots taken during the interactive lab. Upload to
+      <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">assets/images/</code>
+      named <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">lab003-01.jpg</code>,
+      <code style="color:var(--mist);background:var(--coal);padding:.1rem .4rem">lab003-02.jpg</code> etc.
+    </p>
+
+    <!-- GROUP 1 — Case Study 02 Architecture Review -->
+    <div class="photo-section-title">// Case Study 02 — Architecture Review at Litware Inc.</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab003-01.jpg" alt="Litware architecture review"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">01</div><div class="ph-name">lab003-01.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 01 — Interactive case study: Reviewing the current architecture at Litware Inc. — showing plant, facility, edge computing nodes, SIEM, Azure subscriptions, and Entra tenant</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab003-02.jpg" alt="Lab screenshot 02"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">02</div><div class="ph-name">lab003-02.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 02 — Add your caption here</div>
+      </div>
+    </div>
+
+    <!-- GROUP 2 — Threat Analysis -->
+    <div class="photo-section-title">// Threat Analysis & Hotspot Activity</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab003-03.jpg" alt="Threat analysis"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">03</div><div class="ph-name">lab003-03.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 03 — Add your caption here</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab003-04.jpg" alt="Hotspot activity"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">04</div><div class="ph-name">lab003-04.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 04 — Add your caption here</div>
+      </div>
+    </div>
+
+    <!-- GROUP 3 — Solution Architecture -->
+    <div class="photo-section-title">// Drag-and-Drop Architecture Design</div>
+    <div class="photo-grid reveal">
+      <div class="photo-item">
+        <img src="assets/images/lab003-05.jpg" alt="Architecture design"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">05</div><div class="ph-name">lab003-05.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 05 — Add your caption here</div>
+      </div>
+      <div class="photo-item">
+        <img src="assets/images/lab003-06.jpg" alt="Implementation steps"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="photo-placeholder" style="display:none">
+          <div class="ph-num">06</div><div class="ph-name">lab003-06.jpg</div>
+        </div>
+        <div class="photo-caption">Photo 06 — Add your caption here</div>
+      </div>
+    </div>
+
+    <p style="font-size:.75rem;color:var(--dim);text-align:center;padding:1rem 1.5rem;border:1px dashed var(--b1)">
+      // Upload additional screenshots to assets/images/ named lab003-07.jpg and above — add photo-item blocks following the same pattern
+    </p>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LESSONS LEARNED -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Takeaways</div>
+    <h2 class="sec-title">Lessons <span>Learned</span></h2>
+
+    <div class="lessons-grid reveal">
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 01</div>
+        <div class="lesson-text">Zero Trust is not a product — it is a framework. No single tool implements Zero Trust. It requires layered controls across identity, data, devices, applications, and infrastructure working together with consistent policy enforcement.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 02</div>
+        <div class="lesson-text">Fragmented monitoring creates blind spots that attackers exploit. When telemetry is siloed across regional tools, threat correlation becomes impossible. Centralized SIEM like Microsoft Sentinel is essential for enterprise-wide visibility.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 03</div>
+        <div class="lesson-text">OT and IoT security requires a different approach. Legacy industrial systems prioritize uptime over security. Agentless monitoring tools like Defender for IoT are necessary because traditional agents cannot be installed on industrial equipment.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 04</div>
+        <div class="lesson-text">Shift-left security means catching problems before they reach production. Integrating GitHub Advanced Security and Defender for Cloud DevOps into CI/CD pipelines finds misconfigurations and vulnerabilities at the code level — not after deployment.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 05</div>
+        <div class="lesson-text">Static credentials are a critical risk. Long-lived tokens and manually rotated secrets are high-value targets. Replacing them with workload identities and short-lived tokens tied to specific pod identities eliminates credential sprawl.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 06</div>
+        <div class="lesson-text">Architecture decisions have real security consequences. Every design choice — flat networks, public endpoints, decentralized governance — creates specific, exploitable vulnerabilities. Security must be designed in, not added on top.</div>
+      </div>
+    </div>
+
+    <div class="lab-nav" style="margin-top:2rem">
+      <a href="lab-002.html">← Lab 002: Setting Up a Virtual Lab</a>
+      <a href="index.html#labs">Back to All Labs</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <span class="f-brand">Tezana</span>
+    <span>© 2026 · IT Labs Portfolio · Built with GitHub Pages</span>
+    <a href="#hero">↑ Top</a>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('on');
+    ro.unobserve(e.target);
+  });
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>
