@@ -138,7 +138,7 @@ h1.hname .last{display:block;font-weight:300;color:var(--fog)}
 .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
 .chip{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .52rem;border:1px solid var(--b0);color:var(--steel);transition:border-color .2s,color .2s}
 .lc:hover .chip{border-color:var(--b1);color:var(--mid)}
-#projects{background:var(--abyss)}
+#ctf{background:var(--abyss)}
 .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
 .pc{border:1px solid var(--b0);padding:1.9rem;background:var(--deep);position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
 .pc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);opacity:0;transition:opacity .3s}
@@ -199,7 +199,7 @@ footer a:hover{color:var(--white)}
     <ul class="nav-desk">
       <li><a href="#about">About</a></li>
       <li><a href="#labs">Labs</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#ctf">CTF</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -342,20 +342,26 @@ footer a:hover{color:var(--white)}
     </div>
   </div>
 </section>
+
+<div class="ruled"></div>
+
+<section id="ctf" class="sec">
   <div class="wrap">
-    <div class="eyebrow">// 03 — Projects</div>
-    <h2 class="sec-title">Portfolio <span>Projects</span></h2>
-    <div class="proj-grid">
-      <div class="pc reveal">
-  <div class="pc-num">COMPETITION</div>
-  <div class="pc-title">DoD Cyber Sentinel Challenge 2025</div>
-  <p class="pc-prob">Competed solo in a Department of Defense-level Capture the Flag cybersecurity competition against 2,151 national participants.</p>
-  <p class="pc-body">Solved challenges across networking, reconnaissance, web application testing, OSINT, and advanced forensics using professional security tools. Finished ranked <strong style="color:var(--white)">#767 out of 2,151 competitors</strong> — top 36% nationally. Earned 1,200 points across 6 challenge categories including packet analysis, virtual host enumeration, RTSP enumeration, memory forensics, and geolocation OSINT.</p>
-  <p class="pc-tools"><strong>Tools:</strong> Kali Linux, Nmap, Wireshark, Burp Suite, Volatility 3, CyberChef, Gobuster, exiftool, Hashcat, ffprobe</p>
-  <a href="dod-cyber-sentinel.html" class="btn-card">View Full Write-Up →</a>
-</div>
-
-
+    <div class="eyebrow">// 03 — Competition</div>
+    <h2 class="sec-title">Capture the Flag <span>Competition</span></h2>
+    <div class="labs-grid">
+      <a href="dod-cyber-sentinel.html" class="lc reveal">
+        <div class="lc-row1"><span class="lc-num">CTF-001</span><span class="badge b-done">Completed</span></div>
+        <div class="lc-title">DoD Cyber Sentinel Challenge 2025</div>
+        <div class="lc-cat">Cybersecurity / Capture the Flag / Solo Competitor</div>
+        <p class="lc-sum">Competed solo in a Department of Defense-level Capture the Flag cybersecurity competition against 2,151 national participants. Finished ranked <strong style="color:var(--white)">#767 out of 2,151 competitors</strong> — top 36% nationally. Earned 1,200 points across 6 challenge categories.</p>
+        <div class="lc-meta">
+          <span><strong>Rank:</strong> #767 out of 2,151 participants</span>
+          <span><strong>Tools:</strong> Kali Linux, Nmap, Wireshark, Burp Suite, Volatility 3, CyberChef, Gobuster, exiftool, Hashcat, ffprobe</span>
+          <span><strong>Categories:</strong> Networking, Recon, Web, OSINT, Forensics</span>
+        </div>
+        <div class="chips"><span class="chip">CTF</span><span class="chip">Solo</span><span class="chip">DoD</span><span class="chip">Wireshark</span><span class="chip">Nmap</span><span class="chip">OSINT</span><span class="chip">Forensics</span></div>
+      </a>
     </div>
   </div>
 </section>
