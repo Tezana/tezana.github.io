@@ -7,7 +7,6 @@
   <title>Tezana | IT Labs Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -44,8 +43,6 @@ img{display:block;max-width:100%}
 .btn:hover::after{transform:translateX(0)}
 .btn-ghost{border-color:var(--b2);color:var(--silver)}
 .btn-ghost:hover{border-color:var(--b2);color:var(--mist)}
-.btn-card{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--b2);color:var(--silver);background:transparent;display:inline-block;transition:all .2s}
-.btn-card:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
 .badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid currentColor;line-height:1.6}
 .b-done{color:var(--fog);border-color:rgba(205,213,222,.35)}
 .b-wip{color:var(--silver);border-color:rgba(136,150,168,.28)}
@@ -54,7 +51,6 @@ img{display:block;max-width:100%}
 #nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
 #nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
 .nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
-.nav-logo span{font-weight:300;color:var(--silver)}
 .nav-desk{list-style:none;display:flex;align-items:center;gap:2.25rem}
 .nav-desk a{font-family:var(--fh);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mid);position:relative;transition:color .2s}
 .nav-desk a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--fog);transform:scaleX(0);transform-origin:left;transition:transform .25s}
@@ -108,9 +104,6 @@ h1.hname .last{display:block;font-weight:300;color:var(--fog)}
 .pf-inner::after{bottom:0;left:0;border-bottom:1px solid var(--steel);border-left:1px solid var(--steel)}
 .pf-inner img{width:100%;display:block;filter:grayscale(100%) contrast(1.06);transition:filter .45s}
 .pf-outer:hover .pf-inner img{filter:grayscale(55%) contrast(1.08)}
-.pf-placeholder{width:100%;aspect-ratio:3/4;background:var(--coal);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem}
-.pf-placeholder .initials{font-family:var(--fh);font-size:4rem;font-weight:800;color:var(--steel);letter-spacing:.05em}
-.pf-placeholder .ph-label{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);text-align:center}
 .pf-scan{position:absolute;left:0;right:0;height:70px;background:linear-gradient(transparent,rgba(200,210,220,.05),transparent);pointer-events:none;z-index:3;top:-70px;animation:scan 3.8s linear infinite}
 @keyframes scan{to{top:110%}}
 .pf-hud{position:absolute;bottom:0;left:0;right:0;z-index:5;padding:2.5rem .8rem .6rem;background:linear-gradient(transparent,rgba(6,8,11,.88));display:flex;justify-content:space-between;font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
@@ -118,9 +111,7 @@ h1.hname .last{display:block;font-weight:300;color:var(--fog)}
 .pf-id{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--fm);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);background:var(--void);padding:0 .7rem;white-space:nowrap;z-index:6}
 .vid-tag{position:absolute;bottom:1.75rem;right:1.75rem;z-index:10;display:flex;align-items:center;gap:.45rem;font-family:var(--fm);font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);border:1px solid var(--b0);background:rgba(6,8,11,.55);padding:.3rem .7rem;backdrop-filter:blur(8px)}
 .vid-dot{width:5px;height:5px;border-radius:50%;background:var(--dim);animation:blink 1.9s ease infinite}
-#about{background:var(--abyss)}
 .about-grid{display:grid;grid-template-columns:1fr 1.45fr;gap:5rem;align-items:start}
-.about-body p{font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1.1rem}
 .focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-top:1.75rem}
 .fi{font-size:.71rem;color:var(--silver);padding:.42rem .55rem;border-left:1px solid var(--steel);transition:border-color .2s,color .2s}
 .fi::before{content:'→ ';color:var(--steel)}
@@ -138,27 +129,6 @@ h1.hname .last{display:block;font-weight:300;color:var(--fog)}
 .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
 .chip{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .52rem;border:1px solid var(--b0);color:var(--steel);transition:border-color .2s,color .2s}
 .lc:hover .chip{border-color:var(--b1);color:var(--mid)}
-#ctf{background:var(--abyss)}
-.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
-.pc{border:1px solid var(--b0);padding:1.9rem;background:var(--deep);position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
-.pc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--b2),transparent);opacity:0;transition:opacity .3s}
-.pc:hover{border-color:var(--b2);box-shadow:var(--glow-sm)}
-.pc:hover::after{opacity:1}
-.pc-num{font-family:var(--fm);font-size:.52rem;letter-spacing:.22em;color:var(--steel);margin-bottom:.55rem}
-.pc-title{font-family:var(--fh);font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.45rem}
-.pc-prob{font-size:.72rem;color:var(--steel);font-style:italic;margin-bottom:.8rem;line-height:1.65}
-.pc-body{font-size:.77rem;line-height:1.85;color:var(--silver);margin-bottom:.85rem}
-.pc-tools{font-size:.64rem;color:var(--steel);margin-bottom:1.2rem}
-.pc-tools strong{color:var(--mid);font-weight:400}
-.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
-.sg{background:var(--deep);border:1px solid var(--b0);padding:1.4rem;transition:border-color .2s}
-.sg:hover{border-color:var(--b1)}
-.sg:last-child{grid-column:1/-1}
-.sg-h{font-family:var(--fh);font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--white);padding-bottom:.7rem;margin-bottom:.95rem;border-bottom:1px solid var(--b0)}
-.tags{display:flex;flex-wrap:wrap;gap:.38rem}
-.sk{font-size:.62rem;letter-spacing:.08em;padding:.28rem .66rem;background:var(--coal);color:var(--silver);border:1px solid transparent;transition:all .2s}
-.sk:hover{border-color:var(--b2);background:var(--gun);color:var(--white)}
-#certs{background:var(--abyss)}
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:1rem}
 .cc{border:1px solid var(--b0);padding:1.4rem;background:var(--deep);transition:border-color .2s}
 .cc:hover{border-color:var(--b2)}
@@ -174,7 +144,13 @@ h1.hname .last{display:block;font-weight:300;color:var(--fog)}
 .tl li:last-child{border-bottom:none}
 .tl li::before{content:'';position:absolute;left:-1.75rem;top:50%;transform:translateY(-50%);width:7px;height:7px;border:1px solid var(--steel);background:var(--void)}
 .tl li strong{display:block;font-family:var(--fh);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);font-weight:700;margin-bottom:.1rem}
-#contact{background:var(--abyss)}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+.sg{background:var(--deep);border:1px solid var(--b0);padding:1.4rem;transition:border-color .2s}
+.sg:hover{border-color:var(--b1)}
+.sg-h{font-family:var(--fh);font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--white);padding-bottom:.7rem;margin-bottom:.95rem;border-bottom:1px solid var(--b0)}
+.tags{display:flex;flex-wrap:wrap;gap:.38rem}
+.sk{font-size:.62rem;letter-spacing:.08em;padding:.28rem .66rem;background:var(--coal);color:var(--silver);border:1px solid transparent;transition:all .2s}
+.sk:hover{border-color:var(--b2);background:var(--gun);color:var(--white)}
 .con-c{max-width:640px;margin:0 auto;text-align:center}
 .con-c p{font-size:.83rem;line-height:1.9;color:var(--mid);margin-bottom:2.5rem}
 .con-links{display:flex;justify-content:center;flex-wrap:wrap;gap:.9rem}
@@ -186,8 +162,8 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;font-
 footer a{transition:color .2s}
 footer a:hover{color:var(--white)}
 .f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid);letter-spacing:.06em}
-@media(max-width:1024px){.sk-grid{grid-template-columns:repeat(2,1fr)}.sg:last-child{grid-column:auto}}
-@media(max-width:820px){.hero-in{grid-template-columns:1fr;gap:3rem}.pf-wrap{order:-1}.pf-outer{max-width:300px;margin:0 auto}.about-grid,.doc-grid{grid-template-columns:1fr;gap:3rem}.labs-grid,.proj-grid{grid-template-columns:1fr}.nav-desk{display:none}footer .wrap{flex-direction:column;gap:.5rem;text-align:center}}
+@media(max-width:1024px){.sk-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:820px){.hero-in{grid-template-columns:1fr;gap:3rem}.pf-wrap{order:-1}.pf-outer{max-width:300px;margin:0 auto}.about-grid,.doc-grid{grid-template-columns:1fr;gap:3rem}.labs-grid{grid-template-columns:1fr}.nav-desk{display:none}footer .wrap{flex-direction:column;gap:.5rem;text-align:center}}
 @media(max-width:540px){.sk-grid{grid-template-columns:1fr}.wrap{padding:0 1.2rem}.sec{padding:4rem 0}}
 </style>
 </head>
@@ -198,11 +174,11 @@ footer a:hover{color:var(--white)}
   <div class="wrap">
     <a href="#home" class="nav-logo">IT PORTFOLIO</a>
     <ul class="nav-desk">
-      <li><a href="#ai-labs">AI Labs</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#certs">Certs</a></li>
+      <li><a href="#ai-labs">AI Labs</a></li>
       <li><a href="#labs">IT Labs</a></li>
       <li><a href="#ctf">CTF</a></li>
-      <li><a href="#skills">Skills</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="hbg" id="hbg" aria-label="Menu">
@@ -216,8 +192,11 @@ footer a:hover{color:var(--white)}
   <div class="dd-head"><span>Navigation</span><span class="dd-dot"></span></div>
   <ul class="dd-list">
     <li><a href="#home">Home <span class="dd-arr">→</span></a></li>
+    <li><a href="#about">About <span class="dd-arr">→</span></a></li>
+    <li><a href="#certs">Certs <span class="dd-arr">→</span></a></li>
     <li><a href="#ai-labs">AI Labs <span class="dd-arr">→</span></a></li>
     <li><a href="#labs">IT Labs <span class="dd-arr">→</span></a></li>
+    <li><a href="#ctf">CTF <span class="dd-arr">→</span></a></li>
     <li><a href="https://www.linkedin.com/in/tezanawhite/" target="_blank" rel="noopener">LinkedIn <span class="dd-arr">↗</span></a></li>
     <li><a href="https://github.com/tezana" target="_blank" rel="noopener">GitHub <span class="dd-arr">↗</span></a></li>
     <li><a href="#contact">Contact <span class="dd-arr">→</span></a></li>
@@ -240,7 +219,7 @@ footer a:hover{color:var(--white)}
         <p class="hero-hl"><span id="tw">IT Support | Cybersecurity | Cloud | AI/ML Infrastructure Engineer Labs</span><span class="cursor">_</span></p>
         <p class="hero-sub">Building hands-on technical skills through real-world labs, troubleshooting, and project documentation.</p>
         <div class="hero-btns">
-          <a href="#ai-labs" class="btn">View My Work</a>
+          <a href="#about" class="btn">View My Work</a>
           <a href="https://github.com/tezana" target="_blank" rel="noopener" class="btn btn-ghost">View GitHub ↗</a>
         </div>
         <div class="hstats">
@@ -270,10 +249,130 @@ footer a:hover{color:var(--white)}
 
 <div class="ruled"></div>
 
-<!-- ── 01 — AI LABS ── -->
+<!-- ── 01 — ABOUT ── -->
+<section id="about" class="sec">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <div class="eyebrow">// 01 — About</div>
+        <h2 class="sec-title">Who I Am<br><span>&amp; What I'm Building</span></h2>
+        <a href="#contact" class="btn btn-ghost" style="margin-top:1rem">Get In Touch →</a>
+      </div>
+      <div class="reveal">
+        <p style="font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1.1rem">I am a U.S. Army veteran and IT professional focused on IT Support and AI Enablement — building practical skills across technical support, troubleshooting, cybersecurity, cloud fundamentals, and AI technologies. My military background shaped how I approach technology: with discipline, attention to detail, clear communication, and a mission-focused mindset.</p>
+        <p style="font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1.1rem">This portfolio highlights my hands-on labs and projects across hardware, networking, operating systems, virtualization, cybersecurity, and cloud environments. Each project documents the tools used, the steps taken, the problems encountered, and the lessons learned.</p>
+        <p style="font-size:.83rem;line-height:1.9;color:var(--silver);margin-bottom:1.1rem">My goal is to grow into roles where IT support and AI intersect — using emerging technologies to make support operations smarter, faster, and more effective.</p>
+        <p style="font-family:var(--fh);font-size:.68rem;letter-spacing:.2em;color:var(--white);margin-top:1.75rem;margin-bottom:.55rem;font-weight:700;text-transform:uppercase;">Current Focus Areas</p>
+        <div class="focus-grid">
+          <span class="fi">IT Support &amp; AI Enablement</span>
+          <span class="fi">CompTIA Security+</span>
+          <span class="fi">Cybersecurity Foundations</span>
+          <span class="fi">Cloud Fundamentals</span>
+          <span class="fi">AI Technologies</span>
+          <span class="fi">Linux &amp; Command-Line</span>
+          <span class="fi">Technical Documentation</span>
+          <span class="fi">Help Desk Workflows</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- ── 02 — CERTIFICATIONS ── -->
+<section id="certs" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 02 — Certifications</div>
+    <h2 class="sec-title">Credentials &amp; <span>Cert Progress</span></h2>
+    <div class="cert-grid">
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">Google Cybersecurity Professional Certificate</div>
+        <div class="cc-focus">Cybersecurity foundations, threat analysis, security tools, and incident response via Google.</div>
+        <div class="cc-date">✓ Completed</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">Google IT Support Professional Certificate</div>
+        <div class="cc-focus">Technical support fundamentals, networking, operating systems, system administration, and IT security via Google.</div>
+        <div class="cc-date">✓ Completed</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">Google Project Management Professional Certificate</div>
+        <div class="cc-focus">Project management foundations, Agile, Scrum, risk management, and stakeholder communication via Google.</div>
+        <div class="cc-date">✓ Completed</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">Google AI Essentials Specialization Certificate</div>
+        <div class="cc-focus">AI fundamentals, prompt engineering, using AI tools responsibly, and applying AI to workplace tasks via Google.</div>
+        <div class="cc-date">✓ Completed</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">CompTIA A+ Certified</div>
+        <div class="cc-focus">Hardware, networking, operating systems, security, cloud computing, and troubleshooting fundamentals — validated through CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) examinations.</div>
+        <div class="cc-date">✓ Completed — 2026</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-done">Completed</span>
+        <div class="cc-name">OSHA 10-Hour General Industry Certification</div>
+        <div class="cc-focus">Workplace safety standards, hazard identification, personal protective equipment, emergency procedures, and OSHA compliance requirements for general industry environments.</div>
+        <div class="cc-date">✓ Completed — June 2026</div>
+      </div>
+
+      <div class="cc reveal">
+        <span class="badge b-wip">In Progress</span>
+        <div class="cc-name">CompTIA Security+</div>
+        <div class="cc-focus">Core cybersecurity skills covering threats, vulnerabilities, cryptography, identity management, and security operations — aligned with DoD 8570 requirements.</div>
+        <div class="cc-date">▸ In Progress — 2026</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- ── 03 — PROCESS ── -->
+<section id="documentation" class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// 03 — Process</div>
+    <h2 class="sec-title">How I Document <span>My Labs</span></h2>
+    <div class="doc-grid">
+      <div class="doc-body reveal">
+        <p>Every lab in this portfolio is documented to show not just <em>what</em> I built, but <em>how</em> I thought through the process. Each entry includes the objective, tools used, steps completed, issues encountered, troubleshooting actions, screenshots, lessons learned, and next steps.</p>
+        <p>This approach prepares me to communicate technical work clearly — in tickets, runbooks, post-mortems, and interviews.</p>
+      </div>
+      <div class="reveal">
+        <ol class="tl">
+          <li><strong>Step 01</strong>Plan the lab objective and scope</li>
+          <li><strong>Step 02</strong>Build the environment or scenario</li>
+          <li><strong>Step 03</strong>Document each step as it happens</li>
+          <li><strong>Step 04</strong>Troubleshoot issues and record root cause</li>
+          <li><strong>Step 05</strong>Capture screenshots and command output</li>
+          <li><strong>Step 06</strong>Write lessons learned and next steps</li>
+          <li><strong>Step 07</strong>Publish to GitHub Pages with a dedicated lab page</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- ── 04 — AI LABS ── -->
 <section id="ai-labs" class="sec">
   <div class="wrap">
-    <div class="eyebrow">// 01 — AI Labs</div>
+    <div class="eyebrow">// 04 — AI Labs</div>
     <h2 class="sec-title">AI-Enabled <span>Projects</span></h2>
     <div class="labs-grid">
 
@@ -306,41 +405,10 @@ footer a:hover{color:var(--white)}
 
 <div class="ruled"></div>
 
-<!-- ── 02 — ABOUT ── -->
-<section id="about" class="sec">
-  <div class="wrap">
-    <div class="about-grid">
-      <div>
-        <div class="eyebrow">// 02 — About</div>
-        <h2 class="sec-title">Who I Am<br><span>&amp; What I'm Building</span></h2>
-        <a href="#contact" class="btn btn-ghost" style="margin-top:1rem">Get In Touch →</a>
-      </div>
-      <div class="reveal">
-        <p>I am a U.S. Army veteran and IT professional focused on IT Support and AI Enablement — building practical skills across technical support, troubleshooting, cybersecurity, cloud fundamentals, and AI technologies. My military background shaped how I approach technology: with discipline, attention to detail, clear communication, and a mission-focused mindset.</p>
-        <p>This portfolio highlights my hands-on labs and projects across hardware, networking, operating systems, virtualization, cybersecurity, and cloud environments. Each project documents the tools used, the steps taken, the problems encountered, and the lessons learned.</p>
-        <p>My goal is to grow into roles where IT support and AI intersect — using emerging technologies to make support operations smarter, faster, and more effective.</p>
-        <p style="font-family:var(--fh);font-size:.68rem;letter-spacing:.2em;color:var(--white);margin-top:1.75rem;margin-bottom:.55rem;font-weight:700;text-transform:uppercase;">Current Focus Areas</p>
-        <div class="focus-grid">
-          <span class="fi">IT Support &amp; AI Enablement</span>
-          <span class="fi">CompTIA Security+</span>
-          <span class="fi">Cybersecurity Foundations</span>
-          <span class="fi">Cloud Fundamentals</span>
-          <span class="fi">AI Technologies</span>
-          <span class="fi">Linux &amp; Command-Line</span>
-          <span class="fi">Technical Documentation</span>
-          <span class="fi">Help Desk Workflows</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="ruled"></div>
-
-<!-- ── 03 — IT LABS ── -->
+<!-- ── 05 — IT LABS ── -->
 <section id="labs" class="sec">
   <div class="wrap">
-    <div class="eyebrow">// 03 — Portfolio</div>
+    <div class="eyebrow">// 05 — Portfolio</div>
     <h2 class="sec-title">Hands-On <span>IT Labs</span></h2>
     <div class="labs-grid">
 
@@ -402,10 +470,10 @@ footer a:hover{color:var(--white)}
 
 <div class="ruled"></div>
 
-<!-- ── 04 — CTF ── -->
+<!-- ── 06 — CTF ── -->
 <section id="ctf" class="sec">
   <div class="wrap">
-    <div class="eyebrow">// 04 — Competition</div>
+    <div class="eyebrow">// 06 — Competition</div>
     <h2 class="sec-title">Capture the Flag <span>Competition</span></h2>
     <div class="labs-grid">
       <a href="dod-cyber-sentinel.html" class="lc reveal">
@@ -426,141 +494,10 @@ footer a:hover{color:var(--white)}
 
 <div class="ruled"></div>
 
-<!-- ── 05 — SKILLS ── -->
-<section id="skills" class="sec">
-  <div class="wrap">
-    <div class="eyebrow">// 05 — Skills</div>
-    <h2 class="sec-title">Technical <span>Skill Areas</span></h2>
-    <div class="sk-grid">
-      <div class="sg reveal">
-        <div class="sg-h">IT Support</div>
-        <div class="tags">
-          <span class="sk">Troubleshooting</span><span class="sk">Hardware Basics</span><span class="sk">Operating Systems</span><span class="sk">Ticketing Workflows</span><span class="sk">Customer Support</span><span class="sk">Tech Documentation</span>
-        </div>
-      </div>
-      <div class="sg reveal">
-        <div class="sg-h">Networking</div>
-        <div class="tags">
-          <span class="sk">TCP/IP</span><span class="sk">DNS</span><span class="sk">DHCP</span><span class="sk">Ethernet</span><span class="sk">Wi-Fi Standards</span><span class="sk">CLI Diagnostics</span>
-        </div>
-      </div>
-      <div class="sg reveal">
-        <div class="sg-h">Cybersecurity</div>
-        <div class="tags">
-          <span class="sk">Security Fundamentals</span><span class="sk">Access Control</span><span class="sk">Risk Awareness</span><span class="sk">Vuln Concepts</span><span class="sk">Security Docs</span>
-        </div>
-      </div>
-      <div class="sg reveal">
-        <div class="sg-h">Cloud &amp; AI/ML Infrastructure</div>
-        <div class="tags">
-          <span class="sk">Cloud Fundamentals</span><span class="sk">Virtualization</span><span class="sk">Machine Learning Fundamentals</span><span class="sk">AI Tools &amp; Workflows</span><span class="sk">Prompt Engineering</span><span class="sk">AI/ML Infrastructure Operations</span>
-        </div>
-      </div>
-      <div class="sg reveal">
-        <div class="sg-h">Tools &amp; Platforms</div>
-        <div class="tags">
-          <span class="sk">GitHub</span><span class="sk">VS Code</span><span class="sk">Windows</span><span class="sk">Linux</span><span class="sk">PowerShell</span><span class="sk">Command Prompt</span><span class="sk">Virtual Machines</span><span class="sk">VMware Workstation Pro</span><span class="sk">Wireshark</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="ruled"></div>
-
-<!-- ── 06 — CERTIFICATIONS ── -->
-<section id="certs" class="sec">
-  <div class="wrap">
-    <div class="eyebrow">// 06 — Certifications</div>
-    <h2 class="sec-title">Credentials &amp; <span>Cert Progress</span></h2>
-    <div class="cert-grid">
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">Google Cybersecurity Professional Certificate</div>
-        <div class="cc-focus">Cybersecurity foundations, threat analysis, security tools, and incident response via Google.</div>
-        <div class="cc-date">✓ Completed</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">Google IT Support Professional Certificate</div>
-        <div class="cc-focus">Technical support fundamentals, networking, operating systems, system administration, and IT security via Google.</div>
-        <div class="cc-date">✓ Completed</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">Google Project Management Professional Certificate</div>
-        <div class="cc-focus">Project management foundations, Agile, Scrum, risk management, and stakeholder communication via Google.</div>
-        <div class="cc-date">✓ Completed</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">Google AI Essentials Specialization Certificate</div>
-        <div class="cc-focus">AI fundamentals, prompt engineering, using AI tools responsibly, and applying AI to workplace tasks via Google.</div>
-        <div class="cc-date">✓ Completed</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">CompTIA A+ Certified</div>
-        <div class="cc-focus">Hardware, networking, operating systems, security, cloud computing, and troubleshooting fundamentals — validated through CompTIA A+ Core 1 (220-1101) and Core 2 (220-1102) examinations.</div>
-        <div class="cc-date">✓ Completed — 2026</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-done">Completed</span>
-        <div class="cc-name">OSHA 10-Hour General Industry Certification</div>
-        <div class="cc-focus">Workplace safety standards, hazard identification, personal protective equipment, emergency procedures, and OSHA compliance requirements for general industry environments.</div>
-        <div class="cc-date">✓ Completed — June 2026</div>
-      </div>
-
-      <div class="cc reveal">
-        <span class="badge b-wip">In Progress</span>
-        <div class="cc-name">CompTIA Security+</div>
-        <div class="cc-focus">Core cybersecurity skills covering threats, vulnerabilities, cryptography, identity management, and security operations — aligned with DoD 8570 requirements.</div>
-        <div class="cc-date">▸ In Progress — 2026</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="ruled"></div>
-
-<!-- ── 07 — PROCESS ── -->
-<section id="documentation" class="sec">
-  <div class="wrap">
-    <div class="eyebrow">// 07 — Process</div>
-    <h2 class="sec-title">How I Document <span>My Labs</span></h2>
-    <div class="doc-grid">
-      <div class="doc-body reveal">
-        <p>Every lab in this portfolio is documented to show not just <em>what</em> I built, but <em>how</em> I thought through the process. Each entry includes the objective, tools used, steps completed, issues encountered, troubleshooting actions, screenshots, lessons learned, and next steps.</p>
-        <p>This approach prepares me to communicate technical work clearly — in tickets, runbooks, post-mortems, and interviews.</p>
-      </div>
-      <div class="reveal">
-        <ol class="tl">
-          <li><strong>Step 01</strong>Plan the lab objective and scope</li>
-          <li><strong>Step 02</strong>Build the environment or scenario</li>
-          <li><strong>Step 03</strong>Document each step as it happens</li>
-          <li><strong>Step 04</strong>Troubleshoot issues and record root cause</li>
-          <li><strong>Step 05</strong>Capture screenshots and command output</li>
-          <li><strong>Step 06</strong>Write lessons learned and next steps</li>
-          <li><strong>Step 07</strong>Publish to GitHub Pages with a dedicated lab page</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="ruled"></div>
-
-<!-- ── 08 — CONTACT ── -->
+<!-- ── 07 — CONTACT ── -->
 <section id="contact" class="sec">
   <div class="wrap">
-    <div class="eyebrow">// 08 — Contact</div>
+    <div class="eyebrow">// 07 — Contact</div>
     <div class="con-c">
       <h2 class="sec-title" style="text-align:center">Let's <span>Connect</span></h2>
       <p>I'm actively building my technical portfolio and open to IT support, AI/ML Infrastructure Engineer, cloud, machine learning, AI, and technical operations opportunities. Reach out through any of the links below.</p>
