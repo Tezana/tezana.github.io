@@ -1,1016 +1,432 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGENT-001 // IT Help Desk Triage Simulator</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AGENT-001 | IT Help Desk Triage Agent | Tezana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap');
-
-  :root {
-    --bg: #060a0f;
-    --bg2: #0b1018;
-    --bg3: #111824;
-    --bg4: #1a2333;
-    --cyan: #00d4ff;
-    --cyan-dim: #00d4ff33;
-    --cyan-mid: #00d4ff88;
-    --purple: #7c3aed;
-    --purple-dim: #7c3aed22;
-    --green: #10b981;
-    --green-dim: #10b98122;
-    --amber: #f59e0b;
-    --amber-dim: #f59e0b22;
-    --red: #ef4444;
-    --red-dim: #ef444422;
-    --text: #e2e8f0;
-    --text-muted: #64748b;
-    --text-dim: #334155;
-    --border: #1e2d3d;
-    --border-bright: #00d4ff44;
-    --mono: 'Share Tech Mono', monospace;
-    --sans: 'Inter', sans-serif;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* scanline overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.015) 2px, rgba(0,212,255,0.015) 4px);
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* HEADER */
-  header {
-    border-bottom: 1px solid var(--border-bright);
-    padding: 0 24px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg2);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--cyan);
-    letter-spacing: 0.1em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .logo-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .score-display {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-
-  .score-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .score-num {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--cyan);
-  }
-
-  .score-label {
-    color: var(--text-muted);
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .score-divider { width: 1px; height: 32px; background: var(--border); }
-
-  .mode-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 4px 10px;
-    border: 1px solid var(--cyan-mid);
-    color: var(--cyan);
-    letter-spacing: 0.1em;
-    background: var(--cyan-dim);
-  }
-
-  /* LAYOUT */
-  .app {
-    display: grid;
-    grid-template-columns: 260px 1fr 360px;
-    height: calc(100vh - 52px);
-    overflow: hidden;
-  }
-
-  /* TICKET QUEUE */
-  .queue {
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    background: var(--bg2);
-  }
-
-  .panel-header {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: var(--bg2);
-    z-index: 10;
-  }
-
-  .ticket-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background 0.15s;
-    position: relative;
-  }
-
-  .ticket-item:hover { background: var(--bg3); }
-
-  .ticket-item.active {
-    background: var(--bg3);
-    border-left: 2px solid var(--cyan);
-  }
-
-  .ticket-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--cyan);
-    box-shadow: 0 0 8px var(--cyan);
-  }
-
-  .ticket-item.done { opacity: 0.5; }
-  .ticket-item.done .ticket-id { color: var(--green); }
-
-  .ticket-id {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--cyan);
-    margin-bottom: 3px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .ticket-subject {
-    font-size: 12px;
-    color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 4px;
-  }
-
-  .ticket-dept {
-    font-size: 10px;
-    color: var(--text-muted);
-  }
-
-  .check-icon { color: var(--green); font-size: 11px; }
-  .edge-tag {
-    font-size: 9px;
-    padding: 1px 5px;
-    background: var(--amber-dim);
-    color: var(--amber);
-    border: 1px solid var(--amber);
-    font-family: var(--mono);
-    letter-spacing: 0.05em;
-  }
-
-  /* MAIN PANEL */
-  .main {
-    overflow-y: auto;
-    background: var(--bg);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .empty-state {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--text-dim);
-    font-family: var(--mono);
-    text-align: center;
-  }
-
-  .empty-icon { font-size: 36px; opacity: 0.3; }
-
-  .ticket-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    padding: 20px;
-  }
-
-  .ticket-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 16px;
-    gap: 16px;
-  }
-
-  .ticket-card-id {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--cyan);
-    margin-bottom: 6px;
-    letter-spacing: 0.1em;
-  }
-
-  .ticket-card-subject {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.3;
-  }
-
-  .meta-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .meta-label {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    font-family: var(--mono);
-  }
-
-  .meta-value {
-    font-size: 12px;
-    color: var(--text);
-  }
-
-  .section-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 6px;
-  }
-
-  .description-box {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 16px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text);
-    border-left: 3px solid var(--cyan-mid);
-  }
-
-  .edge-case-warning {
-    background: var(--amber-dim);
-    border: 1px solid var(--amber);
-    border-left: 3px solid var(--amber);
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--amber);
-    display: flex;
-    gap: 8px;
-    align-items: flex-start;
-  }
-
-  /* TRIAGE PANEL */
-  .triage {
-    border-left: 1px solid var(--border);
-    overflow-y: auto;
-    background: var(--bg2);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .triage-form {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    flex: 1;
-  }
-
-  .field-group { display: flex; flex-direction: column; gap: 6px; }
-
-  .field-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-  }
-
-  select, textarea {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13px;
-    padding: 8px 10px;
-    outline: none;
-    width: 100%;
-    transition: border-color 0.15s;
-    appearance: none;
-  }
-
-  select:focus, textarea:focus {
-    border-color: var(--cyan-mid);
-    box-shadow: 0 0 0 1px var(--cyan-dim);
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 90px;
-    line-height: 1.6;
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-  }
-
-  .toggle-label { font-size: 13px; color: var(--text); }
-  .toggle-sub { font-size: 11px; color: var(--text-muted); }
-
-  .toggle {
-    width: 40px; height: 22px;
-    background: var(--bg4);
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.2s;
-    flex-shrink: 0;
-  }
-
-  .toggle.on { background: var(--red); border-color: var(--red); }
-
-  .toggle::after {
-    content: '';
-    position: absolute;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    top: 2px; left: 2px;
-    transition: left 0.2s, background 0.2s;
-  }
-
-  .toggle.on::after { left: 20px; background: white; }
-
-  .submit-btn {
-    padding: 12px;
-    background: var(--cyan-dim);
-    border: 1px solid var(--cyan-mid);
-    color: var(--cyan);
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background 0.15s;
-    width: 100%;
-  }
-
-  .submit-btn:hover { background: var(--cyan); color: var(--bg); }
-  .submit-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  /* RESULTS */
-  .result-panel {
-    padding: 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .result-header {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-  }
-
-  .result-field { font-size: 11px; color: var(--text-muted); font-family: var(--mono); }
-  .result-compare { display: flex; gap: 6px; align-items: center; }
-
-  .result-yours {
-    font-size: 11px;
-    font-family: var(--mono);
-    padding: 2px 6px;
-  }
-
-  .result-ai {
-    font-size: 11px;
-    font-family: var(--mono);
-    padding: 2px 6px;
-    color: var(--cyan);
-    border: 1px solid var(--cyan-dim);
-    background: var(--cyan-dim);
-  }
-
-  .match { color: var(--green); }
-  .no-match { color: var(--red); }
-
-  .kb-reveal {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--purple);
-    padding: 12px;
-  }
-
-  .kb-reveal-title {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--purple);
-    font-family: var(--mono);
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-  }
-
-  .kb-steps { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-
-  .kb-steps li {
-    display: flex;
-    gap: 8px;
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--text);
-  }
-
-  .kb-steps li::before {
-    content: attr(data-n);
-    color: var(--purple);
-    font-family: var(--mono);
-    font-size: 10px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .response-reveal {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--green);
-    padding: 12px;
-    font-size: 12px;
-    line-height: 1.7;
-    color: var(--text);
-    font-family: var(--mono);
-    white-space: pre-wrap;
-  }
-
-  .next-btn {
-    padding: 10px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.15s;
-    width: 100%;
-  }
-
-  .next-btn:hover { border-color: var(--cyan-mid); color: var(--cyan); }
-
-  /* PRIORITY BADGES */
-  .badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 8px;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .badge-critical { background: var(--red-dim); color: var(--red); border: 1px solid var(--red); }
-  .badge-high { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
-  .badge-medium { background: var(--cyan-dim); color: var(--cyan); border: 1px solid var(--cyan); }
-  .badge-low { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
-
-  .score-bar-wrap {
-    height: 3px;
-    background: var(--border);
-    width: 100%;
-    margin-top: 6px;
-  }
-
-  .score-bar {
-    height: 100%;
-    background: var(--cyan);
-    box-shadow: 0 0 6px var(--cyan);
-    transition: width 0.4s ease;
-  }
-
-  /* Filter bar */
-  .filter-bar {
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .filter-btn {
-    font-family: var(--mono);
-    font-size: 9px;
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: all 0.15s;
-  }
-
-  .filter-btn:hover, .filter-btn.active { border-color: var(--cyan-mid); color: var(--cyan); background: var(--cyan-dim); }
-
-  /* scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); }
-  ::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
-
-  .stat-row { display: flex; gap: 2px; }
-  .stat-seg { height: 4px; flex: 1; background: var(--border); }
-  .stat-seg.filled { background: var(--cyan); }
-  .stat-seg.filled-green { background: var(--green); }
-
-  .intro-bar {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--cyan);
-    padding: 16px 20px;
-  }
-
-  .intro-title {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--cyan);
-    margin-bottom: 8px;
-    letter-spacing: 0.08em;
-  }
-
-  .intro-body { font-size: 13px; line-height: 1.7; color: var(--text-muted); }
-  .intro-body strong { color: var(--text); font-weight: 500; }
-
-  select option { background: #111824; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--white:#f4f7fa;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+  --nav:66px;--max:1100px;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.875rem;line-height:1.75;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%;border-radius:2px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--abyss)}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 2rem}
+.sec{padding:4rem 0}
+.ruled{height:1px;background:linear-gradient(90deg,transparent,var(--b3) 35%,var(--b3) 65%,transparent)}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:600;height:var(--nav);background:rgba(6,8,11,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--b0);display:flex;align-items:center;transition:border-color .3s,box-shadow .3s}
+#nav.scrolled{border-bottom-color:var(--b2);box-shadow:0 4px 32px rgba(0,0,0,.55)}
+#nav .wrap{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{font-family:var(--fh);font-size:1.05rem;font-weight:800;letter-spacing:.08em;color:var(--white)}
+.back-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid var(--b2);color:var(--silver);background:transparent;transition:all .2s}
+.back-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* HERO */
+#hero{padding-top:calc(var(--nav) + 4rem);padding-bottom:3rem;background:var(--abyss);position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(176,188,200,.04) 1px,transparent 1px);background-size:36px 36px;pointer-events:none}
+.lab-eyebrow{display:flex;align-items:center;gap:.75rem;font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem}
+.lab-eyebrow::before{content:'';width:20px;height:1px;background:var(--steel)}
+.lab-num{font-family:var(--fm);font-size:.65rem;letter-spacing:.22em;color:var(--dim);margin-bottom:.5rem}
+h1.lab-title{font-family:var(--fh);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--white);line-height:1.05;letter-spacing:.02em;margin-bottom:1.25rem}
+.lab-desc{font-size:.88rem;line-height:1.9;color:var(--silver);max-width:65ch;margin-bottom:2rem}
+.meta-row{display:flex;flex-wrap:wrap;gap:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b0)}
+.meta-item{display:flex;flex-direction:column;gap:.2rem}
+.meta-label{font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+.meta-value{font-family:var(--fh);font-size:.82rem;font-weight:600;color:var(--white)}
+.badge{display:inline-block;font-family:var(--fh);font-size:.5rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid currentColor;line-height:1.6}
+.b-done{color:var(--fog);border-color:rgba(205,213,222,.35)}
+
+/* EYEBROW + TITLE */
+.eyebrow{font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.eyebrow::before{content:'';width:16px;height:1px;background:var(--steel)}
+.sec-title{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--white);letter-spacing:.03em;margin-bottom:1.5rem}
+.sec-title span{color:var(--mid);font-weight:300}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem}
+.info-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.info-card:hover{border-color:var(--b1)}
+.info-card-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--white);padding-bottom:.6rem;margin-bottom:.75rem;border-bottom:1px solid var(--b0)}
+.info-card ul{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.info-card ul li{font-size:.76rem;color:var(--silver);padding-left:.75rem;position:relative}
+.info-card ul li::before{content:'→';position:absolute;left:0;color:var(--steel);font-size:.65rem}
+
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);margin-bottom:3rem}
+.stat-card{background:var(--coal);padding:1.25rem;text-align:center;transition:background .2s}
+.stat-card:hover{background:var(--gun)}
+.stat-num{font-family:var(--fh);font-size:1.8rem;font-weight:800;color:var(--white);line-height:1;margin-bottom:.35rem}
+.stat-label{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)}
+
+/* WRITE-UP BLOCKS */
+.writeup-block{background:var(--deep);border:1px solid var(--b0);padding:2rem;margin-bottom:1.25rem;transition:border-color .2s}
+.writeup-block:hover{border-color:var(--b1)}
+.writeup-block h3{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin-bottom:.85rem;letter-spacing:.03em;padding-bottom:.65rem;border-bottom:1px solid var(--b0)}
+.writeup-block p{font-size:.82rem;line-height:1.9;color:var(--silver);margin-bottom:.75rem}
+.writeup-block p:last-child{margin-bottom:0}
+.writeup-block ul{list-style:none;display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem}
+.writeup-block ul li{font-size:.82rem;color:var(--silver);padding-left:1.2rem;position:relative;line-height:1.7}
+.writeup-block ul li::before{content:'→';position:absolute;left:0;color:var(--steel)}
+
+/* STEP LIST */
+.step-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.step-list li{display:flex;gap:1rem;align-items:flex-start;font-size:.82rem;color:var(--silver);padding:.6rem .75rem;border-left:1px solid var(--b1);transition:background .2s}
+.step-list li:hover{background:var(--coal);border-color:var(--b2)}
+.step-num{font-family:var(--fh);font-size:.58rem;font-weight:700;letter-spacing:.14em;color:var(--steel);white-space:nowrap;padding-top:.15rem;min-width:65px}
+
+/* AGENT EMBED */
+.agent-wrap{
+  border:1px solid var(--b2);
+  position:relative;
+  overflow:hidden;
+  background:var(--coal);
+  margin-bottom:.5rem;
+}
+.agent-wrap::before,.agent-wrap::after{
+  content:'';position:absolute;width:20px;height:20px;z-index:3;pointer-events:none
+}
+.agent-wrap::before{top:0;left:0;border-top:1px solid var(--steel);border-left:1px solid var(--steel)}
+.agent-wrap::after{bottom:0;right:0;border-bottom:1px solid var(--steel);border-right:1px solid var(--steel)}
+.agent-wrap iframe{
+  width:100%;
+  height:700px;
+  border:none;
+  display:block;
+}
+.agent-label{
+  font-family:var(--fm);font-size:.58rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);
+  padding:.5rem .75rem;background:var(--coal);
+  border:1px solid var(--b0);border-top:0;
+  margin-bottom:2rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.agent-label a{
+  color:var(--silver);text-decoration:none;
+  transition:color .2s;font-size:.58rem;
+}
+.agent-label a:hover{color:var(--white)}
+
+/* LESSONS */
+.lessons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.lesson-card{background:var(--coal);border:1px solid var(--b0);padding:1.25rem;transition:border-color .2s}
+.lesson-card:hover{border-color:var(--b1)}
+.lesson-num{font-family:var(--fm);font-size:.55rem;letter-spacing:.2em;color:var(--steel);margin-bottom:.4rem}
+.lesson-text{font-size:.78rem;line-height:1.8;color:var(--silver)}
+
+/* LAB NAV */
+.lab-nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 0;border-top:1px solid var(--b0)}
+.lab-nav a{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.6rem 1.25rem;border:1px solid var(--b2);color:var(--silver);transition:all .2s}
+.lab-nav a:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--b0);padding:1.5rem 0}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:.62rem;letter-spacing:.1em;color:var(--steel)}
+footer a{transition:color .2s}
+footer a:hover{color:var(--white)}
+.f-brand{font-family:var(--fh);font-size:.78rem;font-weight:700;color:var(--mid)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+.reveal.on{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .info-grid{grid-template-columns:1fr}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .lessons-grid{grid-template-columns:1fr}
+  .agent-wrap iframe{height:550px}
+  .lab-nav{flex-direction:column;gap:1rem;text-align:center}
+  footer .wrap{flex-direction:column;gap:.5rem;text-align:center}
+}
+@media(max-width:480px){
+  .wrap{padding:0 1.2rem}
+  .sec{padding:3rem 0}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .agent-wrap iframe{height:480px}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    AGENT-001 // IT HELP DESK TRIAGE SIMULATOR
+<!-- NAV -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo">TEZANA</a>
+    <a href="index.html#labs" class="back-btn">← Back to Labs</a>
   </div>
-  <div class="score-display">
-    <div class="score-item">
-      <span class="score-num" id="hdr-correct">0</span>
-      <span class="score-label">Correct</span>
-    </div>
-    <div class="score-divider"></div>
-    <div class="score-item">
-      <span class="score-num" id="hdr-done">0</span>
-      <span class="score-label">Triaged</span>
-    </div>
-    <div class="score-divider"></div>
-    <div class="score-item">
-      <span class="score-num" id="hdr-pct">—</span>
-      <span class="score-label">Accuracy</span>
-    </div>
-    <div class="score-divider"></div>
-    <span class="mode-badge">SIMULATION MODE</span>
-  </div>
-</header>
+</nav>
 
-<div class="app">
-
-  <!-- TICKET QUEUE -->
-  <div class="queue">
-    <div class="panel-header">
-      <span>Ticket Queue</span>
-      <span id="queue-count">22 open</span>
-    </div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="setFilter('all')">All</button>
-      <button class="filter-btn" onclick="setFilter('open')">Open</button>
-      <button class="filter-btn" onclick="setFilter('done')">Done</button>
-      <button class="filter-btn" onclick="setFilter('edge')">Edge cases</button>
-    </div>
-    <div id="ticket-list"></div>
-  </div>
-
-  <!-- MAIN PANEL -->
-  <div class="main" id="main-panel">
-    <div class="empty-state">
-      <div class="empty-icon">◈</div>
-      <div style="font-size:13px; color:var(--text-muted);">Select a ticket to begin triage</div>
-      <div style="font-size:11px; color:var(--text-dim); max-width:260px; line-height:1.6;">
-        Work through each ticket by selecting a category, priority, and escalation decision — then compare your judgment to the AI agent's output.
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="lab-eyebrow">AI Agent Lab · Claude API · IT Support</div>
+    <div class="lab-num">AGENT-001</div>
+    <h1 class="lab-title">IT Help Desk<br>Triage Agent</h1>
+    <p class="lab-desc">
+      A fully functional AI-powered IT Help Desk Triage Simulator built using the
+      Claude API. The agent classifies support tickets by category and urgency,
+      matches issues to a knowledge base, drafts first-response messages, and flags
+      tickets for escalation — evaluated across 22 synthetic tickets including
+      4 deliberate edge cases designed to test real-world judgment.
+    </p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span><span class="badge b-done">Live</span></span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Type</span>
+        <span class="meta-value">AI Agent</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">API</span>
+        <span class="meta-value">Claude API (Anthropic)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Tickets</span>
+        <span class="meta-value">22 including 4 edge cases</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Hosted</span>
+        <span class="meta-value">GitHub Pages</span>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- TRIAGE PANEL -->
-  <div class="triage" id="triage-panel">
-    <div class="panel-header">Triage Workspace</div>
-    <div style="padding:24px; color:var(--text-dim); font-family:var(--mono); font-size:11px; line-height:1.8;">
-      No ticket selected.<br><br>
-      Choose a ticket from the queue to begin.
+<div class="ruled"></div>
+
+<!-- STATS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Agent Overview</div>
+    <h2 class="sec-title">Agent <span>At a Glance</span></h2>
+
+    <div class="stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-num">22</div>
+        <div class="stat-label">Total Tickets</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Edge Cases</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Priority Levels</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Ticket Categories</div>
+      </div>
+    </div>
+
+    <!-- LAB DETAILS -->
+    <div class="eyebrow">// Overview</div>
+    <h2 class="sec-title">Lab <span>Details</span></h2>
+
+    <div class="info-grid reveal">
+      <div class="info-card">
+        <div class="info-card-title">What the Agent Does</div>
+        <ul>
+          <li>Classifies IT support tickets by category</li>
+          <li>Assigns urgency and priority levels</li>
+          <li>Matches issues to a knowledge base</li>
+          <li>Drafts a first-response message</li>
+          <li>Flags tickets for escalation when needed</li>
+          <li>Handles edge cases and ambiguous requests</li>
+          <li>Scores your triage decisions vs AI output</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Tools & Technologies</div>
+        <ul>
+          <li>Claude API — Anthropic</li>
+          <li>JavaScript — agent logic and UI</li>
+          <li>HTML5 + CSS3 — interface design</li>
+          <li>GitHub Pages — free hosting and deployment</li>
+          <li>JSON — ticket data and knowledge base</li>
+          <li>Tool-use architecture — structured AI outputs</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Skills Demonstrated</div>
+        <ul>
+          <li>AI agent design and architecture</li>
+          <li>Claude API integration</li>
+          <li>Tool-use and structured output patterns</li>
+          <li>IT Help Desk workflow knowledge</li>
+          <li>Ticket triage and escalation logic</li>
+          <li>AI Enablement applied to IT Support</li>
+          <li>Technical documentation and deployment</li>
+        </ul>
+      </div>
     </div>
   </div>
+</section>
 
-</div>
+<div class="ruled"></div>
+
+<!-- WRITE-UP -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// How It Was Built</div>
+    <h2 class="sec-title">Build <span>Documentation</span></h2>
+
+    <div class="writeup-block reveal">
+      <h3>The Problem This Agent Solves</h3>
+      <p>Help desk teams lose significant time manually sorting, categorizing, and prioritizing incoming IT support tickets. Without a structured triage system, urgent tickets can get buried, response times suffer, and technicians waste time on tickets that should have been escalated or routed differently from the start.</p>
+      <p>AGENT-001 was built to demonstrate how AI can be applied directly to this problem — automating the triage decision, drafting the first response, and flagging escalation needs so a technician can focus on resolution rather than classification.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Architecture — How the Agent Works</h3>
+      <p>The agent uses a <strong style="color:var(--white)">tool-use architecture</strong> built on the Claude API. When a ticket is submitted the agent does not simply generate free-form text — it calls structured tools that return specific, typed outputs for each triage decision.</p>
+      <ul>
+        <li><strong style="color:var(--white)">classify_ticket</strong> — determines the ticket category based on the issue described</li>
+        <li><strong style="color:var(--white)">assign_priority</strong> — evaluates urgency based on impact, affected users, and business criticality</li>
+        <li><strong style="color:var(--white)">match_knowledge_base</strong> — searches for relevant articles or known fixes that apply to the issue</li>
+        <li><strong style="color:var(--white)">draft_response</strong> — generates a professional first-response message aligned with the classification</li>
+        <li><strong style="color:var(--white)">flag_escalation</strong> — determines whether the ticket requires escalation and documents the reason</li>
+      </ul>
+      <p style="margin-top:.75rem">This tool-use pattern ensures the agent produces consistent, structured outputs rather than unpredictable free text — making it suitable for integration into a real help desk workflow.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Building the Ticket Dataset</h3>
+      <p>The simulation was built around <strong style="color:var(--white)">22 synthetic IT support tickets</strong> covering the most common help desk scenarios encountered in real-world IT support environments:</p>
+      <ul>
+        <li>Password resets and account lockouts</li>
+        <li>Hardware failures — laptop, monitor, keyboard, printer</li>
+        <li>Software installation and application errors</li>
+        <li>Network connectivity and VPN issues</li>
+        <li>Email and calendar problems</li>
+        <li>Access requests and permission issues</li>
+      </ul>
+      <p style="margin-top:.75rem"><strong style="color:var(--white)">4 deliberate edge cases</strong> were included to test the agent's real-world judgment — tickets that are ambiguous, have conflicting signals, involve security implications, or require escalation that is not immediately obvious from the surface description.</p>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Step-by-Step Build Process</h3>
+      <ul class="step-list">
+        <li><span class="step-num">STEP 01</span>Defined the core triage workflow — what decisions a help desk technician makes on every ticket and in what order</li>
+        <li><span class="step-num">STEP 02</span>Designed the tool-use architecture — broke each triage decision into a separate Claude API tool call with typed input and output schemas</li>
+        <li><span class="step-num">STEP 03</span>Built the ticket dataset — wrote 22 realistic IT support tickets across 5 categories with intentional variation in complexity and urgency</li>
+        <li><span class="step-num">STEP 04</span>Designed 4 edge cases — tickets with ambiguous signals, security implications, or escalation needs that are not immediately obvious</li>
+        <li><span class="step-num">STEP 05</span>Built the knowledge base — created reference articles for each ticket category the agent can match and surface in its response</li>
+        <li><span class="step-num">STEP 06</span>Built the simulation interface — designed the triage workspace where users make their own classification decisions before seeing the AI output</li>
+        <li><span class="step-num">STEP 07</span>Added the scoring system — tracks correct classifications, total triaged, and accuracy rate across the full ticket queue</li>
+        <li><span class="step-num">STEP 08</span>Deployed to GitHub Pages and tested across all 22 tickets including all 4 edge cases</li>
+      </ul>
+    </div>
+
+    <div class="writeup-block reveal">
+      <h3>Evaluation Results</h3>
+      <p>The agent was evaluated across all 22 tickets — 18 standard tickets and 4 edge cases. The simulation is designed so you can compare your own triage decisions to the agent's output in real time, building your own help desk judgment alongside the AI evaluation.</p>
+      <p>The edge cases were specifically designed to expose the limits of simple rule-based classification and demonstrate where AI reasoning adds value over keyword matching — particularly in tickets that combine multiple issue types, involve user frustration signals, or have security implications embedded in an otherwise routine request.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LIVE AGENT -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Live Demo</div>
+    <h2 class="sec-title">Try the Agent <span>— Live</span></h2>
+    <p style="font-size:.88rem;color:var(--silver);margin-bottom:1.5rem;line-height:1.9">
+      Work through the ticket queue below. For each ticket — select your own category, priority, and escalation decision — then see how the AI agent triages the same ticket. Your accuracy is tracked across all 22 tickets.
+    </p>
+
+    <div class="agent-wrap reveal">
+      <iframe
+        src="https://tezana.github.io/agent-001.html"
+        title="AGENT-001 — IT Help Desk Triage Simulator"
+        allow="clipboard-write"
+        loading="lazy">
+      </iframe>
+    </div>
+    <div class="agent-label">
+      <span>// AGENT-001 — IT Help Desk Triage Simulator — Live on GitHub Pages</span>
+      <a href="https://tezana.github.io/agent-001.html" target="_blank" rel="noopener">Open full screen →</a>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled"></div>
+
+<!-- LESSONS LEARNED -->
+<section class="sec">
+  <div class="wrap">
+    <div class="eyebrow">// Takeaways</div>
+    <h2 class="sec-title">Lessons <span>Learned</span></h2>
+
+    <div class="lessons-grid reveal">
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 01</div>
+        <div class="lesson-text">Tool-use architecture produces better AI outputs than free-form prompting. By breaking each triage decision into a separate structured tool call, the agent returns consistent, typed data rather than unpredictable paragraphs — making the output actually usable in a workflow.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 02</div>
+        <div class="lesson-text">Edge cases reveal the real value of AI reasoning. Simple keyword-matching can handle routine tickets. It is the ambiguous, multi-signal, and security-adjacent tickets where AI judgment adds measurable value over a rules-based system.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 03</div>
+        <div class="lesson-text">Building the dataset is part of the skill. Writing 22 realistic tickets required deep understanding of real help desk workflows, common failure patterns, and what makes a ticket genuinely ambiguous — domain knowledge that comes from IT experience.</div>
+      </div>
+      <div class="lesson-card">
+        <div class="lesson-num">LESSON 04</div>
+        <div class="lesson-text">AI Enablement is not about replacing technicians — it is about making them faster. This agent handles classification and first-response drafting so a technician can focus entirely on resolution. That is the right division of labor.</div>
+      </div>
+    </div>
+
+    <div class="lab-nav" style="margin-top:2rem">
+      <a href="index.html#labs">← Back to All Labs</a>
+      <a href="https://tezana.github.io/agent-001.html" target="_blank" rel="noopener">Open Agent Full Screen →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <span class="f-brand">Tezana</span>
+    <span>© 2026 · IT Labs Portfolio · Built with GitHub Pages</span>
+    <a href="#hero">↑ Top</a>
+  </div>
+</footer>
 
 <script>
-const TICKETS = [
-  { id:"TKT-1001", subject:"Laptop is completely dead", dept:"Finance", requester:"J. Alvarez", description:"I tried turning on my laptop this morning and nothing happens. No lights, no sound, nothing on the screen.", gt:{ category:"Hardware", priority:"High", kb:"KB-001", kb_title:"Laptop won't power on", escalate:false, response:"Hi J. Alvarez,\n\nThank you for reaching out. I'm sorry to hear your laptop isn't responding.\n\nPlease try these steps:\n1. Ensure the power adapter is firmly connected and the outlet is working.\n2. Hold the power button for 15 seconds, then try powering on again.\n3. If available, test with a different power adapter.\n\nIf none of these steps work, we'll escalate to our hardware team for a full diagnostic. Please reply and let us know the outcome.\n\nIT Support" }, edge:false },
-  { id:"TKT-1002", subject:"Can't see anything on my second monitor", dept:"Marketing", requester:"R. Chen", description:"My external monitor isn't showing anything even though it's plugged in and turned on.", gt:{ category:"Hardware", priority:"Low", kb:"KB-002", kb_title:"External monitor not detected", escalate:false, response:"Hi R. Chen,\n\nThanks for writing in. Here are a few things to check:\n\n1. Try reseating the cable at both ends.\n2. Test a different cable or port (HDMI/DisplayPort/USB-C).\n3. Press Windows+P and confirm the display mode is correct.\n4. Update your graphics driver if the issue persists.\n\nLet us know how it goes!\n\nIT Support" }, edge:false },
-  { id:"TKT-1003", subject:"Printer in break room won't print", dept:"Operations", requester:"D. Okafor", description:"Tried printing a document and the printer says offline. There's also paper stuck in the tray.", gt:{ category:"Hardware", priority:"Low", kb:"KB-003", kb_title:"Printer offline or paper jam", escalate:false, response:"Hi D. Okafor,\n\nPlease clear any visible paper from the tray first, following the jam guide on the printer lid.\n\nThen try:\n1. Restart the printer and wait 30 seconds.\n2. On your PC, restart the Print Spooler service.\n3. Remove and re-add the printer if it still shows offline.\n\nLet us know if this gets you unblocked!\n\nIT Support" }, edge:false },
-  { id:"TKT-1004", subject:"Excel keeps crashing every time I open it", dept:"Accounting", requester:"M. Petrov", description:"Every time I try to open Excel it crashes within a few seconds. This has happened three times today and I have a report due.", gt:{ category:"Software", priority:"Medium", kb:"KB-004", kb_title:"Application crashes on launch", escalate:false, response:"Hi M. Petrov,\n\nI understand how disruptive this is, especially with a report due. Let's get this sorted.\n\nPlease try:\n1. Restart your computer and attempt to open Excel again.\n2. If it still crashes, try opening Excel in Safe Mode (hold Ctrl while launching).\n3. Check for any pending Office updates.\n\nIf the issue continues, we may need to do a repair install. I'll monitor your ticket closely.\n\nIT Support" }, edge:false },
-  { id:"TKT-1005", subject:"Adobe Acrobat says license expired", dept:"Legal", requester:"S. Whitfield", description:"Getting a message that my Adobe Acrobat license has expired and I can't edit PDFs anymore.", gt:{ category:"Software", priority:"Medium", kb:"KB-005", kb_title:"License activation error", escalate:false, response:"Hi S. Whitfield,\n\nThanks for flagging this. This is typically a license assignment issue on our end.\n\nPlease confirm you're connected to the corporate network or VPN, then sign out of Adobe and sign back in. If the issue persists, I'll check your license assignment in our software portal and re-activate it.\n\nIT Support" }, edge:false },
-  { id:"TKT-1006", subject:"Windows update stuck for hours", dept:"Sales", requester:"T. Nguyen", description:"My laptop has been stuck on the Windows update screen at 40 percent for over three hours now. I can't get any work done.", gt:{ category:"Software", priority:"Medium", kb:"KB-006", kb_title:"Windows Update stuck or failing", escalate:false, response:"Hi T. Nguyen,\n\nI'm sorry this has blocked your day. After 3+ hours at 40%, the update has likely stalled.\n\nPlease do a hard shutdown (hold the power button for 10 seconds), then power back on. Windows will usually roll back the failed update automatically. Once you're back at your desktop, let me know and we'll run the Windows Update Troubleshooter together.\n\nIT Support" }, edge:false },
-  { id:"TKT-1007", subject:"VPN won't connect, urgent client call soon", dept:"Sales", requester:"K. Brennan", description:"I cannot get VPN to connect and I have a client call in 10 minutes that needs VPN access. Please help ASAP.", gt:{ category:"Network", priority:"High", kb:"KB-007", kb_title:"VPN connection fails", escalate:true, response:"Hi K. Brennan,\n\nOn it right now. Quick things to try in the next few minutes:\n\n1. Close and reopen the VPN client completely.\n2. Confirm your internet connection is working (try a website).\n3. Make sure your MFA token/push notification goes through.\n\nIf none of these work in the next 2 minutes, call us directly at the IT hotline and we'll bridge you in. I'm escalating this now for immediate support.\n\nIT Support" }, edge:true, edgeNote:"Time pressure in description — does urgency language inflate priority above what the technical severity warrants?" },
-  { id:"TKT-1008", subject:"Wifi keeps cutting out all day", dept:"HR", requester:"A. Hassan", description:"My wifi connection has been dropping every 15-20 minutes all day. Very disruptive to my work.", gt:{ category:"Network", priority:"Medium", kb:"KB-008", kb_title:"Slow or intermittent Wi-Fi", escalate:false, response:"Hi A. Hassan,\n\nI'm sorry this has been disrupting your day. A few things that often help:\n\n1. Toggle Wi-Fi off and back on to reset the connection.\n2. Move a bit closer to the nearest access point if possible.\n3. Run a speed test at fast.com and note the results.\n\nIf it keeps dropping after these steps, send me the speed test results and I'll loop in the network team to check for access point issues in your area.\n\nIT Support" }, edge:false },
-  { id:"TKT-1009", subject:"Can't get to the shared finance drive", dept:"Finance", requester:"L. Moreau", description:"I'm unable to access the shared drive that the finance team uses. It says the path can't be found.", gt:{ category:"Network", priority:"Medium", kb:"KB-009", kb_title:"Unable to access shared network drive", escalate:false, response:"Hi L. Moreau,\n\nThis is usually a connectivity or permissions issue. Let's check a few things:\n\n1. Are you connected to VPN or on the office network?\n2. Can you access other shared drives?\n3. Try mapping the drive manually using the UNC path (\\\\server\\finance).\n\nIf you can see other drives but not the finance one, there may be a permissions issue I'll need to check on your account.\n\nIT Support" }, edge:false },
-  { id:"TKT-1010", subject:"Locked out of my account", dept:"IT", requester:"B. Okonkwo", description:"I typed my password wrong too many times and now my account is locked. I need to get back in.", gt:{ category:"Account & Access", priority:"High", kb:"KB-010", kb_title:"Password reset / account lockout", escalate:false, response:"Hi B. Okonkwo,\n\nI'll get you back in right away. Per our security policy, I'll need to verify your identity before unlocking the account — please expect a call to your registered number in the next few minutes.\n\nOnce verified, I'll unlock your account and issue a temporary password. You'll be prompted to set a new one on first login.\n\nIT Support" }, edge:false },
-  { id:"TKT-1011", subject:"Not getting MFA push notifications", dept:"Engineering", requester:"C. Delacroix", description:"When I try to log in I'm not receiving the MFA push notification on my phone at all.", gt:{ category:"Account & Access", priority:"High", kb:"KB-011", kb_title:"MFA push notifications not received", escalate:false, response:"Hi C. Delacroix,\n\nNo MFA push is a common issue with a few simple fixes:\n\n1. Check that your authenticator app has mobile data or Wi-Fi.\n2. Check your phone's time/date is set to automatic — TOTP codes break if time is off.\n3. Try requesting the push again, or use a backup code if available.\n\nIf your phone was recently replaced, your MFA device registration may need to be updated. Let me know and I'll walk you through it.\n\nIT Support" }, edge:false },
-  { id:"TKT-1012", subject:"Access denied opening HR folder", dept:"HR", requester:"P. Saunders", description:"I get an access denied error when I try to open the HR shared folder I usually use.", gt:{ category:"Account & Access", priority:"Medium", kb:"KB-012", kb_title:"Permission denied accessing shared folder", escalate:false, response:"Hi P. Saunders,\n\nAn access denied error on a folder you normally use often means your group membership token needs to refresh.\n\nPlease try logging off your computer completely and logging back in. If that doesn't work, I'll check your security group membership on the backend — it's possible something changed in a recent policy update.\n\nIT Support" }, edge:false },
-  { id:"TKT-1013", subject:"Outlook hasn't sent or received anything since this morning", dept:"Marketing", requester:"G. Romano", description:"My Outlook has not synced any new emails since around 9am and I can't send anything either.", gt:{ category:"Email", priority:"Medium", kb:"KB-013", kb_title:"Outlook not syncing / send-receive errors", escalate:false, response:"Hi G. Romano,\n\nLet's get Outlook syncing again. Please try these steps:\n\n1. Check your internet and VPN connection.\n2. Close and reopen Outlook. If it asks to work offline, decline.\n3. Try opening Outlook in Safe Mode (search 'Outlook /safe' in Start).\n\nIf it still won't sync, I'll run a profile repair on your machine. Let me know what you find.\n\nIT Support" }, edge:false },
-  { id:"TKT-1014", subject:"Can't send emails, mailbox full", dept:"Sales", requester:"N. Ferreira", description:"I'm getting a message that I can't send emails because my mailbox storage is full.", gt:{ category:"Email", priority:"Low", kb:"KB-014", kb_title:"Mailbox full / storage quota exceeded", escalate:false, response:"Hi N. Ferreira,\n\nYour mailbox has hit its storage limit. The fastest fix is to:\n\n1. Empty your Deleted Items and Junk Email folders.\n2. Archive or delete any emails with large attachments.\n\nOnce you're under quota, sending will resume automatically. If you need a permanent quota increase, I can submit a request — just let me know.\n\nIT Support" }, edge:false },
-  { id:"TKT-1015", subject:"I think I got a phishing email", dept:"Finance", requester:"E. Whitaker", description:"I just got an email asking me to verify my password by clicking a link. It looks suspicious and I haven't clicked it.", gt:{ category:"Security", priority:"Critical", kb:"KB-015", kb_title:"Suspected phishing email reported", escalate:true, response:"Hi E. Whitaker,\n\nGood instinct — do NOT click any links or open attachments in that email.\n\nPlease forward the email as an attachment to security@company.com right now, then delete it from your inbox.\n\nI'm escalating this to our security operations team immediately for investigation. If you did click anything or enter any credentials, please let me know urgently so we can take protective action on your account.\n\nIT Security" }, edge:false },
-  { id:"TKT-1016", subject:"Left my work laptop on the train", dept:"Operations", requester:"V. Kowalski", description:"I realized on my commute home that I left my work laptop on the train this morning. I don't know if I'll get it back.", gt:{ category:"Security", priority:"Critical", kb:"KB-016", kb_title:"Lost or stolen device", escalate:true, response:"Hi V. Kowalski,\n\nI'm initiating an emergency response right now.\n\nImmediate actions being taken:\n— Remote lock initiated on your device via MDM\n— Your credentials are being temporarily suspended as a precaution\n— Security incident ticket opened\n\nPlease call the IT security hotline immediately so we can complete the incident report. Do not log into any company systems from a personal device until we've completed the verification.\n\nIT Security" }, edge:false },
-  { id:"TKT-1017", subject:"Alert about sign-in from another country", dept:"Engineering", requester:"H. Adebayo", description:"I got an alert saying someone signed into my account from a country I've never been to. I didn't do this.", gt:{ category:"Security", priority:"Critical", kb:"KB-017", kb_title:"Suspicious login alert / unrecognized device", escalate:true, response:"Hi H. Adebayo,\n\nThis is being treated as a potential account compromise. Immediate actions:\n\n1. Your password has been force-reset — check your recovery email for instructions.\n2. All active sessions have been revoked.\n3. Our security team is reviewing the sign-in logs now.\n\nPlease call the IT security hotline to verify your identity and complete the incident response. Do not attempt to log in until you hear from us.\n\nIT Security" }, edge:false },
-  { id:"TKT-1018", subject:"Remote desktop won't connect from home", dept:"Engineering", requester:"F. Lindqvist", description:"I'm trying to remote into my office PC from home and the connection just times out.", gt:{ category:"Remote/Mobile", priority:"Medium", kb:"KB-018", kb_title:"Remote Desktop connection failure", escalate:false, response:"Hi F. Lindqvist,\n\nRDP timeouts from home are most often a VPN issue. Please check:\n\n1. Is your VPN connected before you attempt RDP?\n2. Is your office PC powered on? (Ask someone on-site or check Wake-on-LAN.)\n3. Try the full machine hostname instead of just the name.\n\nIf VPN is connected and the machine is on but it still times out, there may be a firewall rule I'll need to check.\n\nIT Support" }, edge:false },
-  { id:"TKT-1019", subject:"VPN client install keeps failing", dept:"IT", requester:"O. Schmidt", description:"Every time I try to install the new VPN client it fails partway through with a certificate error.", gt:{ category:"Remote/Mobile", priority:"Medium", kb:"KB-019", kb_title:"VPN client installation or certificate error", escalate:false, response:"Hi O. Schmidt,\n\nA certificate error during VPN install usually means one of two things:\n\n1. The system clock is off — check your date/time is set to automatic.\n2. The installer package is outdated — download the latest version from the IT portal.\n\nIf both of those look fine, the machine may be missing the required root certificate. I can push it remotely if you let me know your machine name.\n\nIT Support" }, edge:false },
-  { id:"TKT-1020", subject:"Nothing is working today", dept:"Sales", requester:"Q. Reyes", description:"My computer is acting weird, I can't open anything properly and the internet seems down too. This is the third time this week and I'm losing my patience with this.", gt:{ category:"Network", priority:"Medium", kb:null, kb_title:"No single match — ambiguous", escalate:true, response:"Hi Q. Reyes,\n\nI completely understand your frustration — this is the third time this week and that's not acceptable. I'm personally taking ownership of this ticket.\n\nBefore I can diagnose, I need to ask a couple of questions:\n1. Can you open any applications at all, or is nothing responding?\n2. Does your Wi-Fi show as connected?\n\nThis sounds like it could be network, software, or even a hardware issue — I don't want to send you down the wrong path. Please reply or call me directly and we'll get to the bottom of this today.\n\nIT Support" }, edge:true, edgeNote:"Ambiguous — spans Network, Software, and Hardware. The 'correct' move is to ask a clarifying question, not guess a category." },
-  { id:"TKT-1021", subject:"Is this email legit? Says I owe IT $50 for software", dept:"Marketing", requester:"I. Marchetti", description:"Got a weird email saying I need to pay $50 to IT for some software license or my account gets suspended. Seems off but wanted to check.", gt:{ category:"Security", priority:"Critical", kb:"KB-015", kb_title:"Suspected phishing email reported", escalate:true, response:"Hi I. Marchetti,\n\nYou're right to question this — this is a phishing attempt. IT will never ask you to pay for software by email, and we do not suspend accounts this way.\n\nPlease do NOT click any links or send any payment. Forward the email to security@company.com then delete it.\n\nI'm escalating to our security team now. Great instinct to check before acting.\n\nIT Security" }, edge:true, edgeNote:"Phishing report disguised as a casual question — no technical vocabulary. Tests intent detection, not keyword matching." },
-  { id:"TKT-1022", subject:"URGENT - need this fixed right now, manager waiting", dept:"Operations", requester:"W. Dubois", description:"Can't access the project folder and my manager needs the deliverable in an hour. This is extremely urgent, please help immediately.", gt:{ category:"Account & Access", priority:"Medium", kb:"KB-012", kb_title:"Permission denied accessing shared folder", escalate:false, response:"Hi W. Dubois,\n\nI'm on this right now. A folder access issue is usually a quick fix.\n\nPlease log off your computer and log back in first — this refreshes your permissions token and resolves about half of these cases immediately.\n\nIf you're still blocked after that, reply and I'll check your security group membership directly. We'll get you to that deliverable.\n\nIT Support" }, edge:true, edgeNote:"'URGENT' and managerial pressure language — but the underlying issue is a routine Medium permissions problem. Priority should not be inflated by tone alone." }
-];
-
-const KB = {
-  "KB-001": { steps: ["Confirm power adapter is firmly connected and outlet is functioning","Hold power button for 15 seconds to discharge residual power, then retry","Try a different power adapter/cable if available","Check for any visible battery swelling or damage","If no response after above steps, escalate to Tier 2 hardware desk for diagnostic"] },
-  "KB-002": { steps: ["Verify cable connection at both monitor and laptop ends","Try a different video cable or port (HDMI/DisplayPort/USB-C)","Press Windows+P to confirm display mode is set correctly","Update or reinstall graphics driver","Test monitor with a different device to rule out monitor hardware failure"] },
-  "KB-003": { steps: ["Clear any visible paper jams following manufacturer guide","Restart the print spooler service on the workstation","Confirm printer is powered on and network/cable connected","Remove and re-add the printer queue if status remains offline","Escalate to facilities/print vendor if hardware fault is suspected"] },
-  "KB-004": { steps: ["Restart the workstation and retry launching the application","Check for pending application or OS updates","Clear application cache/temp files if applicable","Reinstall the application if crash persists","Collect crash logs and escalate to application support if unresolved"] },
-  "KB-005": { steps: ["Confirm user is connected to corporate network or VPN","Verify license assignment in software management portal","Re-enter license key or trigger re-activation from admin console","Escalate to software licensing team if seat allocation issue suspected"] },
-  "KB-006": { steps: ["Run the built-in Windows Update Troubleshooter","Clear the Windows Update cache (SoftwareDistribution folder)","Manually download and install the update package","Check available disk space, as low storage can block updates","Escalate to desktop engineering if update continues to fail"] },
-  "KB-007": { steps: ["Confirm internet connectivity is working outside the VPN client","Restart the VPN client application","Verify VPN credentials and MFA token are current","Check for VPN client software updates","Escalate to network team if certificate or gateway-side issue is suspected"] },
-  "KB-008": { steps: ["Run a speed test and note results for comparison","Restart the wireless adapter or toggle Wi-Fi off/on","Move closer to the access point to rule out signal strength issues","Check for known outages or congestion reported by network team","Escalate to network team with speed test results if issue persists"] },
-  "KB-009": { steps: ["Confirm user is connected to VPN or on-site network","Verify the user has correct permissions assigned to the share","Attempt to remap the drive manually using the UNC path","Restart the workstation to refresh network sessions","Escalate to systems team if share-level permissions need adjustment"] },
-  "KB-010": { steps: ["Verify user identity per security policy before resetting credentials","Unlock the account in the identity management console","Issue a temporary password and require change at next login","Confirm MFA enrollment is still valid","Escalate to identity/security team if repeated lockouts suggest compromise"] },
-  "KB-011": { steps: ["Confirm the authenticator app has network connectivity","Check that device time is synced correctly (affects TOTP codes)","Resend the push notification or generate a backup code","Re-register the MFA device if it was recently replaced","Escalate to identity team if MFA service outage is suspected"] },
-  "KB-012": { steps: ["Confirm the correct security group membership for the resource","Submit or verify an access request ticket if permission was never granted","Have user log off and back on to refresh group membership tokens","Escalate to resource owner for approval if access was recently revoked"] },
-  "KB-013": { steps: ["Check internet/VPN connectivity","Restart Outlook in safe mode to rule out add-in conflicts","Repair the Outlook profile via Control Panel > Mail","Verify mailbox storage quota has not been exceeded","Escalate to messaging team if server-side sync issue is suspected"] },
-  "KB-014": { steps: ["Advise user to archive or delete large attachments and old items","Empty Deleted Items and Junk Email folders","Request a temporary quota increase if business-justified","Escalate to messaging team for permanent quota adjustment if recurring"] },
-  "KB-015": { steps: ["Do not click links or open attachments in the reported email","Forward the email to the security team's phishing reporting mailbox","Check if other users received the same email (mass phishing campaign)","If credentials were entered, immediately reset the affected account's password","Escalate to security operations for full investigation"] },
-  "KB-016": { steps: ["Immediately initiate remote lock/wipe via MDM console","Disable the associated user account credentials pending investigation","Document time, location, and circumstances of loss for security report","Escalate to security operations and physical security per incident policy","Issue a replacement device once incident is logged and closed"] },
-  "KB-017": { steps: ["Confirm with the user whether the login was legitimate","If unrecognized, force a password reset and revoke active sessions","Review sign-in logs for additional suspicious activity","Re-verify MFA enrollment to ensure attacker did not register a new device","Escalate to security operations for full account compromise investigation"] },
-  "KB-018": { steps: ["Confirm target machine is powered on and network-reachable","Verify VPN connection is active if connecting from outside the network","Check that Remote Desktop is enabled on the target machine","Confirm the user account has remote access permissions","Escalate to desktop support if firewall or group policy is blocking access"] },
-  "KB-019": { steps: ["Confirm the device meets minimum OS requirements for the VPN client","Reinstall the VPN client using the latest approved version","Check that the device's system clock is accurate (certificate validation depends on it)","Reissue or reinstall the required client certificate","Escalate to network/security team if certificate authority issue is suspected"] }
-};
-
-const CATEGORIES = ["Hardware","Software","Network","Account & Access","Email","Security","Remote/Mobile"];
-const PRIORITIES = ["Low","Medium","High","Critical"];
-
-let state = { current: null, done: {}, filter: 'all', escalate: false };
-
-function priorityBadge(p) {
-  const cls = { Low:'badge-low', Medium:'badge-medium', High:'badge-high', Critical:'badge-critical' };
-  return `<span class="badge ${cls[p]||'badge-medium'}">${p}</span>`;
-}
-
-function setFilter(f) {
-  state.filter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  renderQueue();
-}
-
-function renderQueue() {
-  const list = document.getElementById('ticket-list');
-  const filtered = TICKETS.filter(t => {
-    if (state.filter === 'open') return !state.done[t.id];
-    if (state.filter === 'done') return !!state.done[t.id];
-    if (state.filter === 'edge') return t.edge;
-    return true;
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), {passive:true});
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('on');
+    ro.unobserve(e.target);
   });
-  document.getElementById('queue-count').textContent = `${filtered.length} shown`;
-  list.innerHTML = filtered.map(t => `
-    <div class="ticket-item ${state.current === t.id ? 'active':''} ${state.done[t.id]?'done':''}" onclick="selectTicket('${t.id}')">
-      <div class="ticket-id">
-        <span>${t.id}</span>
-        <span>
-          ${t.edge ? '<span class="edge-tag">EDGE</span>' : ''}
-          ${state.done[t.id] ? '<span class="check-icon">✓</span>' : ''}
-        </span>
-      </div>
-      <div class="ticket-subject">${t.subject}</div>
-      <div class="ticket-dept">${t.requester} · ${t.dept}</div>
-    </div>
-  `).join('');
-}
-
-function selectTicket(id) {
-  state.current = id;
-  state.escalate = false;
-  renderQueue();
-  renderMain();
-  renderTriage();
-}
-
-function renderMain() {
-  const t = TICKETS.find(x => x.id === state.current);
-  if (!t) return;
-  const result = state.done[t.id];
-
-  document.getElementById('main-panel').innerHTML = `
-    <div class="intro-bar">
-      <div class="intro-title">// How to use this simulator</div>
-      <div class="intro-body">
-        Read the ticket description. In the triage panel on the right, select the <strong>category</strong>, <strong>priority</strong>, and <strong>escalation decision</strong> — then write a brief <strong>first-response draft</strong>. Click <strong>Submit Triage</strong> to compare your judgment against the AI agent's output.
-      </div>
-    </div>
-
-    <div class="ticket-card">
-      <div class="ticket-card-header">
-        <div>
-          <div class="ticket-card-id">${t.id} // INCOMING TICKET</div>
-          <div class="ticket-card-subject">${t.subject}</div>
-        </div>
-        ${result ? priorityBadge(t.gt.priority) : '<span style="font-family:var(--mono);font-size:10px;color:var(--amber);padding:4px 8px;border:1px solid var(--amber);background:var(--amber-dim);">PENDING TRIAGE</span>'}
-      </div>
-      <div class="meta-row" style="margin-bottom:16px;">
-        <div class="meta-item"><div class="meta-label">Requester</div><div class="meta-value">${t.requester}</div></div>
-        <div class="meta-item"><div class="meta-label">Department</div><div class="meta-value">${t.dept}</div></div>
-        <div class="meta-item"><div class="meta-label">Category (AI)</div><div class="meta-value" style="color:var(--cyan)">${result ? t.gt.category : '—'}</div></div>
-      </div>
-      <div class="section-label">Ticket description</div>
-      <div class="description-box">"${t.description}"</div>
-      ${t.edge ? `<div class="edge-case-warning" style="margin-top:12px;"><span>⚠</span><span><strong>Edge case:</strong> ${t.edgeNote}</span></div>` : ''}
-    </div>
-
-    ${result ? renderMainResult(t, result) : ''}
-  `;
-}
-
-function renderMainResult(t, result) {
-  const cats = result.catMatch ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--red)">✗</span>';
-  const pris = result.priMatch ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--red)">✗</span>';
-  const escs = result.escMatch ? '<span style="color:var(--green)">✓</span>' : '<span style="color:var(--red)">✗</span>';
-  const score = [result.catMatch, result.priMatch, result.escMatch].filter(Boolean).length;
-
-  return `
-    <div class="ticket-card">
-      <div class="section-label" style="margin-bottom:12px;">Your triage vs. AI agent output</div>
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">
-        <div class="result-row">
-          <span class="result-field">Category</span>
-          <div class="result-compare">
-            <span class="result-yours">${result.yourCat}</span>
-            <span style="color:var(--text-dim);font-size:10px;">→</span>
-            <span class="result-ai">${t.gt.category}</span>
-            <span>${cats}</span>
-          </div>
-        </div>
-        <div class="result-row">
-          <span class="result-field">Priority</span>
-          <div class="result-compare">
-            <span class="result-yours">${result.yourPri}</span>
-            <span style="color:var(--text-dim);font-size:10px;">→</span>
-            <span class="result-ai">${t.gt.priority}</span>
-            <span>${pris}</span>
-          </div>
-        </div>
-        <div class="result-row">
-          <span class="result-field">Escalate</span>
-          <div class="result-compare">
-            <span class="result-yours">${result.yourEsc ? 'Yes':'No'}</span>
-            <span style="color:var(--text-dim);font-size:10px;">→</span>
-            <span class="result-ai">${t.gt.escalate ? 'Yes':'No'}</span>
-            <span>${escs}</span>
-          </div>
-        </div>
-      </div>
-
-      <div style="margin-bottom:16px;">
-        <div class="section-label">AI agent — KB match & resolution steps</div>
-        <div class="kb-reveal">
-          <div class="kb-reveal-title">${t.gt.kb ? t.gt.kb + ' // ' + t.gt.kb_title : 'No direct KB match — agent recommended clarifying question'}</div>
-          ${t.gt.kb && KB[t.gt.kb] ? `<ul class="kb-steps">${KB[t.gt.kb].steps.map((s,i)=>`<li data-n="${i+1}."> ${s}</li>`).join('')}</ul>` : ''}
-        </div>
-      </div>
-
-      <div>
-        <div class="section-label">AI agent — draft first response</div>
-        <div class="response-reveal">${t.gt.response}</div>
-      </div>
-    </div>
-  `;
-}
-
-function renderTriage() {
-  const t = TICKETS.find(x => x.id === state.current);
-  if (!t) return;
-  const done = state.done[t.id];
-  const panel = document.getElementById('triage-panel');
-
-  if (done) {
-    const score = [done.catMatch, done.priMatch, done.escMatch].filter(Boolean).length;
-    const pct = Math.round((score/3)*100);
-    panel.innerHTML = `
-      <div class="panel-header">Triage Workspace</div>
-      <div class="triage-form">
-        <div style="text-align:center;padding:20px 0;">
-          <div style="font-family:var(--mono);font-size:28px;font-weight:600;color:${score===3?'var(--green)':score>=2?'var(--cyan)':'var(--amber)'};">${score}/3</div>
-          <div style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:4px;">fields matched</div>
-          <div class="score-bar-wrap" style="margin-top:12px;"><div class="score-bar" style="width:${pct}%"></div></div>
-        </div>
-        <button class="next-btn" onclick="nextTicket()">Next ticket →</button>
-        <button class="next-btn" onclick="retriage('${t.id}')">Re-triage this ticket</button>
-      </div>
-    `;
-    return;
-  }
-
-  panel.innerHTML = `
-    <div class="panel-header">Triage Workspace</div>
-    <div class="triage-form">
-      <div class="field-group">
-        <div class="field-label">Issue category</div>
-        <select id="sel-cat">
-          <option value="">— Select category —</option>
-          ${CATEGORIES.map(c=>`<option>${c}</option>`).join('')}
-        </select>
-      </div>
-      <div class="field-group">
-        <div class="field-label">Priority level</div>
-        <select id="sel-pri">
-          <option value="">— Select priority —</option>
-          ${PRIORITIES.map(p=>`<option>${p}</option>`).join('')}
-        </select>
-      </div>
-      <div class="field-group">
-        <div class="field-label">Escalation decision</div>
-        <div class="toggle-row">
-          <div>
-            <div class="toggle-label">Escalate to Tier 2?</div>
-            <div class="toggle-sub">Route to human or security team</div>
-          </div>
-          <div class="toggle ${state.escalate?'on':''}" id="esc-toggle" onclick="toggleEsc()"></div>
-        </div>
-      </div>
-      <div class="field-group">
-        <div class="field-label">Draft first response <span style="color:var(--text-dim)">(optional)</span></div>
-        <textarea id="draft-response" placeholder="Dear [requester], Thank you for reaching out..."></textarea>
-      </div>
-      <button class="submit-btn" onclick="submitTriage()">Submit Triage</button>
-    </div>
-  `;
-}
-
-function toggleEsc() {
-  state.escalate = !state.escalate;
-  document.getElementById('esc-toggle').classList.toggle('on', state.escalate);
-}
-
-function submitTriage() {
-  const cat = document.getElementById('sel-cat').value;
-  const pri = document.getElementById('sel-pri').value;
-  if (!cat || !pri) { alert('Please select a category and priority before submitting.'); return; }
-
-  const t = TICKETS.find(x => x.id === state.current);
-  const catMatch = cat === t.gt.category;
-  const priMatch = pri === t.gt.priority;
-  const escMatch = state.escalate === t.gt.escalate;
-
-  state.done[t.id] = {
-    yourCat: cat, yourPri: pri, yourEsc: state.escalate,
-    catMatch, priMatch, escMatch
-  };
-
-  updateScores();
-  renderQueue();
-  renderMain();
-  renderTriage();
-}
-
-function retriage(id) {
-  delete state.done[id];
-  state.escalate = false;
-  renderQueue();
-  renderMain();
-  renderTriage();
-}
-
-function nextTicket() {
-  const idx = TICKETS.findIndex(t => t.id === state.current);
-  const next = TICKETS.find((t, i) => i > idx && !state.done[t.id]);
-  if (next) selectTicket(next.id);
-  else {
-    state.current = null;
-    document.getElementById('main-panel').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">◈</div>
-        <div style="font-size:16px;color:var(--cyan);font-family:var(--mono);">All tickets triaged</div>
-        <div style="font-size:12px;color:var(--text-muted);">Check your accuracy score in the header.</div>
-      </div>`;
-    document.getElementById('triage-panel').innerHTML = `<div class="panel-header">Triage Workspace</div>`;
-    renderQueue();
-  }
-}
-
-function updateScores() {
-  const done = Object.values(state.done);
-  const total = done.length;
-  const correct = done.filter(d => d.catMatch && d.priMatch && d.escMatch).length;
-  document.getElementById('hdr-correct').textContent = correct;
-  document.getElementById('hdr-done').textContent = total;
-  document.getElementById('hdr-pct').textContent = total > 0 ? Math.round((correct/total)*100)+'%' : '—';
-}
-
-renderQueue();
+}, {threshold:.08});
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 </script>
 </body>
 </html>
