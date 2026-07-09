@@ -352,21 +352,34 @@ footer a:hover{color:var(--white)}
   <div class="wrap">
     <div class="eyebrow">// Live Demo</div>
     <h2 class="sec-title">Try the Agent <span>— Live</span></h2>
-    <p style="font-size:.88rem;color:var(--silver);margin-bottom:1.5rem;line-height:1.9">
-      Work through the ticket queue below. For each ticket — select your own category, priority, and escalation decision — then see how the AI agent triages the same ticket. Your accuracy is tracked across all 22 tickets.
+    <p style="font-size:.88rem;color:var(--silver);margin-bottom:2rem;line-height:1.9">
+      Work through the ticket queue in the live simulator. For each ticket — select your own category, priority, and escalation decision — then see how the AI agent triages the same ticket. Your accuracy is tracked across all 22 tickets including 4 deliberate edge cases.
     </p>
 
-    <div class="agent-wrap reveal">
-      <iframe
-        src="https://tezana.github.io/agent-001.html"
-        title="AGENT-001 — IT Help Desk Triage Simulator"
-        allow="clipboard-write"
-        loading="lazy">
-      </iframe>
+    <div class="reveal" style="background:var(--deep);border:1px solid var(--b2);padding:3rem 2rem;text-align:center">
+      <div style="font-family:var(--fm);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem">// AGENT-001 · IT Help Desk Triage Simulator · Live on GitHub Pages</div>
+      <div style="font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--white);margin-bottom:.75rem">IT Help Desk Triage Simulator</div>
+      <p style="font-size:.82rem;color:var(--silver);max-width:50ch;margin:0 auto 2rem;line-height:1.9">22 tickets · 4 edge cases · Real-time AI triage · Accuracy scoring. Click below to open the live agent and test your help desk judgment against the AI.</p>
+      <a href="https://tezana.github.io/agent-001.html" target="_blank" rel="noopener"
+        style="display:inline-flex;align-items:center;gap:.75rem;font-family:var(--fh);font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:1rem 2.5rem;background:var(--white);color:var(--void);border:none;cursor:pointer;transition:opacity .2s;text-decoration:none">
+        Launch Live Agent →
+      </a>
+      <div style="margin-top:1.5rem;font-family:var(--fm);font-size:.65rem;color:var(--dim)">Opens in a new tab · No login required · Free to use</div>
     </div>
-    <div class="agent-label">
-      <span>// AGENT-001 — IT Help Desk Triage Simulator — Live on GitHub Pages</span>
-      <a href="https://tezana.github.io/agent-001.html" target="_blank" rel="noopener">Open full screen →</a>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b0);border:1px solid var(--b0);margin-top:1px">
+      <div style="background:var(--coal);padding:1.25rem;text-align:center">
+        <div style="font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:.25rem">22</div>
+        <div style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)">Tickets in Queue</div>
+      </div>
+      <div style="background:var(--coal);padding:1.25rem;text-align:center">
+        <div style="font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:.25rem">4</div>
+        <div style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)">Edge Cases</div>
+      </div>
+      <div style="background:var(--coal);padding:1.25rem;text-align:center">
+        <div style="font-family:var(--fh);font-size:1.4rem;font-weight:800;color:var(--white);margin-bottom:.25rem">Live</div>
+        <div style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--steel)">Accuracy Tracking</div>
+      </div>
     </div>
 
   </div>
