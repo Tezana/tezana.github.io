@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AGENT-001 // IT Help Desk Triage Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+:root{
+  --void:#06080b;--abyss:#0b0e12;--deep:#10141a;--coal:#171c23;
+  --gun:#1f252e;--steel:#2b3240;--dim:#3d4655;--mid:#5a6678;
+  --silver:#8896a8;--mist:#b0bcc8;--fog:#cdd5de;--white:#f4f7fa;
+  --b0:rgba(176,188,200,.06);--b1:rgba(176,188,200,.12);
+  --b2:rgba(176,188,200,.22);--b3:rgba(176,188,200,.40);
+  --green:#2ea043;--green-t:#0d2818;
+  --yellow:#f0883e;--yellow-t:#2a1a08;
+  --red:#da3633;--red-t:#2d0f0e;
+  --blue:#58a6ff;--blue-t:#0d1f3c;
+  --fh:'Exo 2',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+body{background:var(--void);color:var(--mist);font-family:var(--fm);font-size:.85rem;line-height:1.6;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+
+/* ── HEADER ── */
+header{background:var(--abyss);border-bottom:1px solid var(--b1);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:100}
+.hdr-left{display:flex;align-items:center;gap:1rem}
+.agent-id{font-family:var(--fh);font-size:.75rem;font-weight:800;letter-spacing:.2em;color:var(--white)}
+.agent-id span{color:var(--silver);font-weight:300}
+.hdr-right{display:flex;align-items:center;gap:1.5rem}
+.score-item{display:flex;flex-direction:column;align-items:center;gap:.1rem}
+.score-num{font-family:var(--fh);font-size:1.1rem;font-weight:800;color:var(--white);line-height:1}
+.score-lbl{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--steel)}
+.accuracy{font-family:var(--fh);font-size:.8rem;font-weight:700;padding:.2rem .6rem;border:1px solid var(--b2);color:var(--silver)}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:280px 1fr;flex:1;min-height:0;height:calc(100vh - 53px)}
+
+/* ── QUEUE PANEL ── */
+.queue-panel{border-right:1px solid var(--b1);display:flex;flex-direction:column;overflow:hidden;background:var(--abyss)}
+.queue-header{padding:.75rem 1rem;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.queue-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--white)}
+.queue-count{font-family:var(--fh);font-size:.65rem;color:var(--steel)}
+.filters{display:flex;gap:0;border-bottom:1px solid var(--b1);flex-shrink:0}
+.filter-btn{flex:1;padding:.45rem .5rem;font-family:var(--fm);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);background:transparent;border:none;border-right:1px solid var(--b1);cursor:pointer;transition:all .15s}
+.filter-btn:last-child{border-right:none}
+.filter-btn.active{color:var(--white);background:var(--coal)}
+.filter-btn:hover:not(.active){color:var(--silver);background:var(--b0)}
+.queue-list{overflow-y:auto;flex:1}
+.ticket-item{padding:.75rem 1rem;border-bottom:1px solid var(--b0);cursor:pointer;transition:background .15s;display:flex;flex-direction:column;gap:.3rem}
+.ticket-item:hover{background:var(--b0)}
+.ticket-item.active{background:var(--coal);border-left:2px solid var(--silver)}
+.ticket-item.done{opacity:.55}
+.ti-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.ti-id{font-family:var(--fh);font-size:.6rem;font-weight:700;letter-spacing:.12em;color:var(--steel)}
+.ti-badge{font-family:var(--fh);font-size:.48rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.15rem .4rem;border:1px solid currentColor}
+.ti-title{font-size:.75rem;color:var(--mist);line-height:1.4;font-family:var(--fh)}
+.ti-cat{font-size:.6rem;color:var(--dim);letter-spacing:.06em}
+.badge-high{color:var(--red)}
+.badge-medium{color:var(--yellow)}
+.badge-low{color:var(--green)}
+.badge-edge{color:var(--blue)}
+.badge-done{color:var(--silver)}
+
+/* ── MAIN AREA ── */
+.main-area{display:flex;flex-direction:column;overflow:hidden}
+
+/* ── TICKET DETAIL ── */
+.ticket-detail{border-bottom:1px solid var(--b1);padding:1.25rem 1.5rem;flex-shrink:0;background:var(--deep)}
+.detail-empty{color:var(--dim);font-size:.78rem;display:flex;align-items:center;justify-content:center;height:100px;letter-spacing:.06em}
+.detail-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.75rem}
+.detail-id{font-family:var(--fm);font-size:.6rem;letter-spacing:.2em;color:var(--steel)}
+.detail-title{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--white);margin:.2rem 0 .5rem}
+.detail-meta{display:flex;gap:1rem;font-size:.65rem;color:var(--silver)}
+.detail-meta span b{color:var(--mist)}
+.detail-body{font-size:.82rem;line-height:1.8;color:var(--silver);margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--b0)}
+.edge-flag{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fh);font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid var(--blue);color:var(--blue);margin-top:.5rem}
+
+/* ── TRIAGE WORKSPACE ── */
+.triage-area{flex:1;overflow-y:auto;padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.triage-empty{display:flex;align-items:center;justify-content:center;flex:1;flex-direction:column;gap:.5rem;color:var(--dim)}
+.triage-empty .big{font-family:var(--fh);font-size:1.1rem;color:var(--steel)}
+.triage-section-title{font-family:var(--fh);font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--steel);margin-bottom:.6rem}
+.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.choice-btn{padding:.6rem .75rem;background:var(--coal);border:1px solid var(--b1);color:var(--silver);font-family:var(--fh);font-size:.72rem;cursor:pointer;transition:all .15s;text-align:left}
+.choice-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+.choice-btn.selected{border-color:var(--silver);color:var(--white);background:var(--gun)}
+.choice-btn.correct{border-color:var(--green);color:var(--green);background:var(--green-t)}
+.choice-btn.wrong{border-color:var(--red);color:var(--red);background:var(--red-t)}
+.escalate-row{display:flex;gap:.5rem}
+.escalate-row .choice-btn{flex:1}
+.submit-btn{padding:.75rem 1.5rem;background:var(--white);color:var(--void);font-family:var(--fh);font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:none;cursor:pointer;transition:opacity .2s;align-self:flex-start}
+.submit-btn:hover{opacity:.85}
+.submit-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* ── RESULT PANEL ── */
+.result-panel{background:var(--coal);border:1px solid var(--b1);padding:1.25rem}
+.result-title{font-family:var(--fh);font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--white);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:1px solid var(--b0)}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem}
+.result-item{display:flex;flex-direction:column;gap:.25rem}
+.result-label{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--steel)}
+.result-yours{font-family:var(--fh);font-size:.8rem;color:var(--silver)}
+.result-ai{font-family:var(--fh);font-size:.8rem;font-weight:700}
+.result-match{color:var(--green)}
+.result-miss{color:var(--red)}
+.result-response{margin-top:.75rem;padding:.75rem;background:var(--deep);border-left:2px solid var(--b2);font-size:.78rem;line-height:1.8;color:var(--silver)}
+.result-response strong{color:var(--white);display:block;margin-bottom:.35rem;font-family:var(--fh);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase}
+.next-btn{margin-top:.75rem;padding:.6rem 1.25rem;background:transparent;border:1px solid var(--b2);color:var(--silver);font-family:var(--fh);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.next-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
+
+/* ── RESOLUTION NOTES ── */
+.notes-area{width:100%;min-height:90px;background:var(--coal);border:1px solid var(--b1);color:var(--mist);font-family:var(--fm);font-size:.8rem;padding:.75rem;resize:vertical;line-height:1.7;transition:border-color .2s;outline:none}
+.notes-area::placeholder{color:var(--dim)}
+.notes-area:focus{border-color:var(--b3)}
+.notes-area:disabled{opacity:.5;resize:none}
+.notes-compare{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.notes-col{display:flex;flex-direction:column;gap:.4rem}
+.notes-col-title{font-family:var(--fh);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);padding-bottom:.35rem;border-bottom:1px solid var(--b0)}
+.notes-col-body{font-size:.78rem;line-height:1.8;color:var(--silver);padding:.6rem;background:var(--deep);border:1px solid var(--b0)}
+.notes-col-body.yours{border-color:var(--b1)}
+.notes-col-body.ai{border-color:var(--green);color:var(--mist)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .app{grid-template-columns:1fr;height:auto}
+  .queue-panel{height:300px}
+  .main-area{min-height:500px}
+  .hdr-right{gap:.75rem}
+  .choice-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-left">
+    <div class="agent-id">AGENT-001 <span>// IT Help Desk Triage Simulator</span></div>
+  </div>
+  <div class="hdr-right">
+    <div class="score-item">
+      <div class="score-num" id="scoreCorrect">0</div>
+      <div class="score-lbl">Correct</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num" id="scoreTotal">0</div>
+      <div class="score-lbl">Triaged</div>
+    </div>
+    <div class="accuracy" id="scoreAccuracy">— Accuracy</div>
+    <div class="score-item" style="font-family:var(--fh);font-size:.6rem;font-weight:700;letter-spacing:.12em;color:var(--blue);border:1px solid var(--blue);padding:.2rem .6rem">SIMULATION MODE</div>
+  </div>
+</header>
+
+<!-- APP -->
+<div class="app">
+
+  <!-- QUEUE PANEL -->
+  <aside class="queue-panel">
+    <div class="queue-header">
+      <span class="queue-title">Ticket Queue</span>
+      <span class="queue-count" id="queueCount">22 open</span>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="open">Open</button>
+      <button class="filter-btn" data-filter="done">Done</button>
+      <button class="filter-btn" data-filter="edge">Edge cases</button>
+    </div>
+    <div class="queue-list" id="queueList"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-area">
+
+    <!-- TICKET DETAIL -->
+    <div class="ticket-detail" id="ticketDetail">
+      <div class="detail-empty">◈ &nbsp; Select a ticket to begin triage</div>
+    </div>
+
+    <!-- TRIAGE WORKSPACE -->
+    <div class="triage-area" id="triageArea">
+      <div class="triage-empty">
+        <div class="big">Triage Workspace</div>
+        <div>No ticket selected. &nbsp; Choose a ticket from the queue to begin.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── TICKET DATA ──────────────────────────────────────────────────────
+const TICKETS = [
+  // STANDARD TICKETS
+  {id:'T-001',title:'Cannot log into email',cat:'Account Access',priority:'High',escalate:false,edge:false,
+   body:'User reports being locked out of their Outlook account since this morning. They have tried resetting their password twice but keep getting an error saying their account is temporarily suspended.',
+   response:'Thank you for reaching out. Your account has been temporarily locked due to multiple failed login attempts — this is an automatic security measure. I have initiated an account unlock which will take effect within 15 minutes. Please do not attempt to log in during this time. If you are still unable to access your account after 15 minutes, please call the help desk directly.'},
+  {id:'T-002',title:'Laptop screen flickering',cat:'Hardware',priority:'Medium',escalate:false,edge:false,
+   body:'My laptop screen has been flickering for the past two days. It happens randomly and sometimes the screen goes black for a few seconds before coming back. The laptop is about 3 years old.',
+   response:'I have logged your hardware issue. Screen flickering on a 3-year-old device often indicates a loose display cable or failing backlight. Please bring your laptop to the IT office for an in-person assessment. In the meantime, connecting an external monitor will allow you to continue working without interruption.'},
+  {id:'T-003',title:'Printer not working',cat:'Hardware',priority:'Low',escalate:false,edge:false,
+   body:'The shared printer on the 3rd floor has not been printing since yesterday afternoon. Multiple users are affected.',
+   response:'Thank you for reporting this. A shared printer affecting multiple users has been escalated to our hardware team. A technician will be dispatched to the 3rd floor within the hour. In the meantime, please use the printer on the 2nd floor as an alternative.'},
+  {id:'T-004',title:'Slow computer performance',cat:'Software',priority:'Low',escalate:false,edge:false,
+   body:'My computer has been running very slowly for the past week. It takes several minutes to open applications and sometimes freezes completely.',
+   response:'I have logged your performance issue. Slow performance is often caused by insufficient disk space, background processes, or outdated drivers. I will remotely schedule a maintenance session for your machine tonight to run cleanup tools, clear temp files, and check for updates. You will receive a confirmation once the session is complete.'},
+  {id:'T-005',title:'VPN connection dropping',cat:'Network',priority:'High',escalate:false,edge:false,
+   body:'My VPN keeps disconnecting every 10-15 minutes when I am working from home. This is preventing me from accessing internal systems and is severely impacting my work.',
+   response:'I understand this is significantly impacting your productivity. VPN instability of this pattern often points to a timeout configuration or a local network conflict. I am pushing updated VPN client settings to your device now. Please reconnect after 5 minutes. If the issue persists, I will escalate to our network team for a direct session.'},
+  {id:'T-006',title:'New software installation request',cat:'Software',priority:'Low',escalate:true,edge:false,
+   body:'I need Adobe Acrobat Pro installed on my machine for a project. My manager has approved this.',
+   response:'Thank you for your request. Software installation requests require formal approval from your manager through the IT request portal. Please have your manager submit a formal software request at [portal link]. Once approved, installation will be completed within 24 hours.'},
+  {id:'T-007',title:'Forgot Windows password',cat:'Account Access',priority:'High',escalate:false,edge:false,
+   body:'I have forgotten my Windows login password and cannot get into my computer. I need this resolved urgently as I have a meeting in an hour.',
+   response:'I have verified your identity through secondary authentication. A temporary password reset link has been sent to your recovery email. Please use it within the next 30 minutes. Once logged in, you will be prompted to create a new password. If you do not have access to your recovery email, please call the help desk immediately for emergency identity verification.'},
+  {id:'T-008',title:'Teams audio not working in meetings',cat:'Software',priority:'Medium',escalate:false,edge:false,
+   body:'I cannot hear others in Microsoft Teams meetings and they cannot hear me. My microphone and speakers work fine with other applications.',
+   response:'This is a known issue with certain Teams client versions and audio driver combinations. I will push a Teams client update and audio driver refresh to your machine now. Please restart Teams and your audio devices after the update completes in approximately 5 minutes. If the issue persists, please rejoin your next meeting using the phone dial-in option provided in the meeting invite.'},
+  {id:'T-009',title:'Cannot access shared drive',cat:'Account Access',priority:'Medium',escalate:false,edge:false,
+   body:'I cannot access the Marketing shared drive that I have always been able to access. I am getting a permissions error.',
+   response:'Permissions errors on shared drives typically result from a group membership change or account update. I have checked your account and your Marketing drive access appears to have been removed during last week\'s quarterly permission review. I am submitting a re-authorization request to your manager for approval. You will receive access confirmation within 4 business hours.'},
+  {id:'T-010',title:'Email attachments not sending',cat:'Software',priority:'Medium',escalate:false,edge:false,
+   body:'When I try to send emails with attachments larger than 5MB they fail. I receive an error that says delivery failed. This has been an issue for the past week.',
+   response:'Your mail server has a 10MB attachment size limit and attachments over 5MB may be triggering a secondary filtering rule. I have adjusted your outbound mail settings to allow attachments up to 10MB. Please use our internal file sharing platform for files larger than 10MB. The adjustment will take effect within 15 minutes.'},
+  {id:'T-011',title:'Keyboard not responding',cat:'Hardware',priority:'Medium',escalate:false,edge:false,
+   body:'My keyboard stopped working this morning. Some keys work but others do not respond at all. I have already tried restarting my computer.',
+   response:'A partially unresponsive keyboard after restart indicates a hardware failure rather than a driver issue. I will arrange a keyboard replacement to be delivered to your desk within the next 2 hours. In the meantime, you can connect to your machine remotely from another device using Remote Desktop, or use the on-screen keyboard by pressing Windows + U.'},
+  {id:'T-012',title:'Need access to HR system',cat:'Account Access',priority:'Low',escalate:true,edge:false,
+   body:'I am a new employee who started this week and I still have not been set up with access to the HR system. My onboarding checklist says this should have been done on day one.',
+   response:'Welcome to the team! New employee system access is provisioned through HR and typically processes within 48 hours of your start date. I can see your provisioning request is in the queue. If you have not received access by end of business today, please have your manager contact HR directly to escalate the provisioning request.'},
+  {id:'T-013',title:'Monitor not displaying correctly',cat:'Hardware',priority:'Low',escalate:false,edge:false,
+   body:'My second monitor is showing incorrect colors — everything looks washed out and the contrast is off. It was working fine until I installed a graphics driver update last week.',
+   response:'Driver updates sometimes reset display profiles. I will remotely roll back the graphics driver update and reinstall the previous stable version on your machine tonight. Please restart your computer tomorrow morning. If you need an immediate fix, right-click the desktop and select Display Settings, then adjust the color profile for your second monitor.'},
+  {id:'T-014',title:'Internet connection intermittent',cat:'Network',priority:'High',escalate:false,edge:false,
+   body:'My internet connection at my workstation keeps dropping every few minutes. Other people nearby do not seem to be having the same issue.',
+   response:'Intermittent connection affecting a single workstation points to a failing network cable or port issue rather than a broader network problem. I have flagged your wall port for inspection. Please try moving your ethernet cable to the adjacent port as a temporary fix. A network technician will visit your workstation within 2 hours to diagnose and replace the cable or port as needed.'},
+  {id:'T-015',title:'Application keeps crashing',cat:'Software',priority:'Medium',escalate:false,edge:false,
+   body:'The CRM application crashes every time I try to run the quarterly sales report. This has been happening for three days and is blocking my ability to complete my month-end reporting.',
+   response:'CRM report crashes on a specific report often indicate a data corruption issue or memory constraint. I have escalated this to the CRM application team with your report parameters. As a workaround, try running the report in smaller date ranges. The application team will contact you within 4 hours with a resolution or further instructions.'},
+  {id:'T-016',title:'Cannot print from Mac',cat:'Hardware',priority:'Low',escalate:false,edge:false,
+   body:'I recently got a new Mac laptop and I cannot get it to connect to the office printers. My previous Windows laptop worked fine.',
+   response:'Mac printer setup requires a different driver package than Windows. I am sending you the Mac printer setup guide and will remotely install the correct printer drivers on your machine. Please connect to the VPN and I will complete the configuration within 30 minutes.'},
+  {id:'T-017',title:'Two-factor authentication not working',cat:'Account Access',priority:'High',escalate:false,edge:false,
+   body:'My authenticator app codes are not working when I try to log in. I am getting an invalid code error every time even though I just registered the app last week.',
+   response:'Authenticator code failures are often caused by a time sync issue between your phone and the authentication server. Please open your authenticator app settings and manually trigger a time sync. If the issue persists, I will generate a bypass code and re-register your authenticator — please call the help desk to complete this process as it requires identity verification for security purposes.'},
+  {id:'T-018',title:'Webcam not recognized',cat:'Hardware',priority:'Low',escalate:false,edge:false,
+   body:'My USB webcam is not being recognized by my computer. Device Manager shows an unknown device with an error. I need this working for video calls.',
+   response:'Unknown device errors for USB webcams typically indicate a missing or corrupted driver. I am remotely pushing the correct webcam driver to your machine now. Please unplug and replug the webcam after the driver installation completes in approximately 3 minutes. If it still does not appear, try a different USB port.'},
+
+  // EDGE CASES
+  {id:'T-019',title:'Colleague accessing my files',cat:'Security',priority:'High',escalate:true,edge:true,
+   body:'I noticed that a colleague has been accessing files in my personal project folder on the shared drive. I did not give them permission and I am not sure how long this has been happening. I am not sure if I should report this or just change my permissions.',
+   response:'This requires immediate escalation to the Security team. Unauthorized access to files — even between colleagues — is a potential security incident regardless of intent. I have opened a formal security incident ticket on your behalf. The Security team will contact you within 1 hour. Do not change any permissions or confront your colleague before speaking with Security, as doing so could interfere with the investigation.'},
+  {id:'T-020',title:'Password reset for a colleague',cat:'Account Access',priority:'High',escalate:true,edge:true,
+   body:'Hi, I am calling on behalf of my colleague Sarah. She is traveling and cannot access her email and asked me to call IT to reset her password. Can you reset it and give it to me so I can send it to her?',
+   response:'For security and compliance reasons, password resets cannot be completed on behalf of another employee regardless of circumstances. This policy exists to protect against social engineering attacks. Sarah must contact the IT help desk directly using her registered phone number or recovery email for identity verification. If she does not have access to these recovery methods, she will need to contact IT through her manager with formal verification.'},
+  {id:'T-021',title:'Computer running unusually hot',cat:'Hardware',priority:'Medium',escalate:true,edge:true,
+   body:'My laptop has been running very hot lately and the fan is constantly running at maximum speed. It is also running slower than usual. I dropped it last month but it seemed fine after that.',
+   response:'A laptop running hot with constant fan activity following a physical drop is a potential safety concern — damaged internal components can cause overheating that may lead to battery swelling or fire risk. Please stop using the device immediately and bring it to IT for physical inspection. Do not leave the device unattended while powered on or charging until it has been cleared. A loaner device will be provided.'},
+  {id:'T-022',title:'Cannot find files after system update',cat:'Software',priority:'High',escalate:true,edge:true,
+   body:'After the system update last night all of my files and desktop icons are gone. My Documents folder is empty. I had months of work saved locally and it is all gone. I am panicking.',
+   response:'I understand this is extremely stressful. The good news is that files are rarely permanently deleted by a system update — they are most often relocated or hidden. I am immediately escalating this to our data recovery team. Do not save any new files or install any applications until the recovery team has assessed your drive, as new data could overwrite recoverable files. The recovery team will contact you within 30 minutes. In future, please save all work to the network shared drive or OneDrive to prevent data loss from local system events.'},
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────
+let state = {
+  selected: null,
+  filter: 'all',
+  results: {}, // ticketId -> { cat, priority, escalate, correct }
+  choices: { cat: null, priority: null, escalate: null },
+  submitted: false,
+};
+
+// ── DOM REFS ────────────────────────────────────────────────────────────
+const queueList     = document.getElementById('queueList');
+const ticketDetail  = document.getElementById('ticketDetail');
+const triageArea    = document.getElementById('triageArea');
+const scoreCorrect  = document.getElementById('scoreCorrect');
+const scoreTotal    = document.getElementById('scoreTotal');
+const scoreAccuracy = document.getElementById('scoreAccuracy');
+const queueCount    = document.getElementById('queueCount');
+
+// ── CATEGORIES ──────────────────────────────────────────────────────────
+const CATEGORIES = ['Account Access','Hardware','Network','Software','Security'];
+const PRIORITIES = ['Low','Medium','High'];
+
+// ── RENDER QUEUE ────────────────────────────────────────────────────────
+function renderQueue() {
+  const visible = TICKETS.filter(t => {
+    if (state.filter === 'open')  return !state.results[t.id];
+    if (state.filter === 'done')  return  state.results[t.id];
+    if (state.filter === 'edge')  return  t.edge;
+    return true;
+  });
+  queueList.innerHTML = visible.map(t => {
+    const done = state.results[t.id];
+    const active = state.selected === t.id ? ' active' : '';
+    const doneClass = done ? ' done' : '';
+    const badgeClass = t.edge ? 'badge-edge' : '';
+    const badgeText  = t.edge ? 'EDGE' : '';
+    return `<div class="ticket-item${active}${doneClass}" data-id="${t.id}">
+      <div class="ti-top">
+        <span class="ti-id">${t.id}</span>
+        ${t.edge ? `<span class="ti-badge badge-edge">EDGE</span>` : ''}
+      </div>
+      <div class="ti-title">${t.title}</div>
+      <div class="ti-cat">${t.cat}</div>
+    </div>`;
+  }).join('');
+
+  const open = TICKETS.filter(t => !state.results[t.id]).length;
+  queueCount.textContent = `${open} open`;
+
+  queueList.querySelectorAll('.ticket-item').forEach(el => {
+    el.addEventListener('click', () => selectTicket(el.dataset.id));
+  });
+}
+
+// ── SELECT TICKET ────────────────────────────────────────────────────────
+function selectTicket(id) {
+  state.selected = id;
+  state.choices = { cat: null, priority: null, escalate: null, notes: '' };
+  state.submitted = false;
+  renderQueue();
+  renderDetail();
+  renderTriage();
+}
+
+// ── RENDER DETAIL ────────────────────────────────────────────────────────
+function renderDetail() {
+  if (!state.selected) {
+    ticketDetail.innerHTML = '<div class="detail-empty">◈ &nbsp; Select a ticket to begin triage</div>';
+    return;
+  }
+  const t = TICKETS.find(x => x.id === state.selected);
+  ticketDetail.innerHTML = `
+    <div class="detail-id">${t.id} &nbsp;·&nbsp; ${t.cat}</div>
+    <div class="detail-title">${t.title}</div>
+    <div class="detail-meta">
+      <span><b>Reported:</b> Today, ${randomTime()}</span>
+      <span><b>User:</b> ${randomUser()}</span>
+      <span><b>Department:</b> ${randomDept()}</span>
+    </div>
+    <div class="detail-body">${t.body}</div>
+    ${t.edge ? '<div class="edge-flag">⚠ Edge Case — Use careful judgment</div>' : ''}
+  `;
+}
+
+// ── RENDER TRIAGE ────────────────────────────────────────────────────────
+function renderTriage() {
+  if (!state.selected) {
+    triageArea.innerHTML = `<div class="triage-empty"><div class="big">Triage Workspace</div><div>No ticket selected. &nbsp; Choose a ticket from the queue to begin.</div></div>`;
+    return;
+  }
+  const t    = TICKETS.find(x => x.id === state.selected);
+  const done = state.results[t.id];
+  const submitted = done || state.submitted;
+
+  const catBtns = CATEGORIES.map(c => {
+    let cls = 'choice-btn';
+    if (submitted) {
+      if (c === t.cat && state.choices.cat === c) cls += ' correct';
+      else if (c === t.cat)                        cls += ' correct';
+      else if (c === state.choices.cat)            cls += ' wrong';
+    } else if (state.choices.cat === c)            cls += ' selected';
+    return `<button class="${cls}" data-type="cat" data-val="${c}">${c}</button>`;
+  }).join('');
+
+  const prioBtns = PRIORITIES.map(p => {
+    let cls = 'choice-btn';
+    if (submitted) {
+      if (p === t.priority && state.choices.priority === p) cls += ' correct';
+      else if (p === t.priority)                             cls += ' correct';
+      else if (p === state.choices.priority)                 cls += ' wrong';
+    } else if (state.choices.priority === p)                cls += ' selected';
+    return `<button class="${cls}" data-type="priority" data-val="${p}">${p}</button>`;
+  }).join('');
+
+  const escBtns = ['Escalate','Do Not Escalate'].map(e => {
+    const val = e === 'Escalate';
+    let cls = 'choice-btn';
+    if (submitted) {
+      if (val === t.escalate && state.choices.escalate === val) cls += ' correct';
+      else if (val === t.escalate)                               cls += ' correct';
+      else if (state.choices.escalate === val)                   cls += ' wrong';
+    } else if (state.choices.escalate === val)                  cls += ' selected';
+    return `<button class="${cls}" data-type="escalate" data-val="${val}">${e}</button>`;
+  }).join('');
+
+  const canSubmit = state.choices.cat && state.choices.priority && state.choices.escalate !== null && state.choices.notes && state.choices.notes.trim().length > 10;
+
+  let resultHTML = '';
+  if (submitted && done) {
+    const r = done;
+    const catMatch  = r.cat      === t.cat;
+    const prioMatch = r.priority === t.priority;
+    const escMatch  = r.escalate === t.escalate;
+    resultHTML = `
+      <div class="result-panel">
+        <div class="result-title">// AI Agent Triage Result</div>
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-label">Category</div>
+            <div class="result-yours">You: ${r.cat}</div>
+            <div class="result-ai ${catMatch ? 'result-match' : 'result-miss'}">AI: ${t.cat} ${catMatch ? '✓' : '✗'}</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Priority</div>
+            <div class="result-yours">You: ${r.priority}</div>
+            <div class="result-ai ${prioMatch ? 'result-match' : 'result-miss'}">AI: ${t.priority} ${prioMatch ? '✓' : '✗'}</div>
+          </div>
+          <div class="result-item">
+            <div class="result-label">Escalation</div>
+            <div class="result-yours">You: ${r.escalate ? 'Escalate' : 'Do Not Escalate'}</div>
+            <div class="result-ai ${escMatch ? 'result-match' : 'result-miss'}">AI: ${t.escalate ? 'Escalate' : 'Do Not Escalate'} ${escMatch ? '✓' : '✗'}</div>
+          </div>
+        </div>
+        <div class="notes-compare">
+          <div class="notes-col">
+            <div class="notes-col-title">// Your Resolution Notes</div>
+            <div class="notes-col-body yours">${r.notes || '<em style="color:var(--dim)">No notes provided</em>'}</div>
+          </div>
+          <div class="notes-col">
+            <div class="notes-col-title">// AI Recommended Response</div>
+            <div class="notes-col-body ai">${t.response}</div>
+          </div>
+        </div>
+        <button class="next-btn" id="nextBtn">Next Ticket →</button>
+      </div>`;
+  }
+
+  triageArea.innerHTML = `
+    <div>
+      <div class="triage-section-title">Step 1 — Select Category</div>
+      <div class="choice-grid">${catBtns}</div>
+    </div>
+    <div>
+      <div class="triage-section-title">Step 2 — Assign Priority</div>
+      <div class="choice-grid" style="grid-template-columns:repeat(3,1fr)">${prioBtns}</div>
+    </div>
+    <div>
+      <div class="triage-section-title">Step 3 — Escalation Decision</div>
+      <div class="escalate-row">${escBtns}</div>
+    </div>
+    <div>
+      <div class="triage-section-title">Step 4 — Resolution Notes</div>
+      <textarea class="notes-area" id="notesInput" placeholder="Describe what you would do to resolve this ticket. What steps would you take? What would you communicate to the user?" ${submitted ? 'disabled' : ''}>${submitted && done ? done.notes : (state.choices.notes || '')}</textarea>
+      <div style="font-size:.62rem;color:var(--dim);margin-top:.35rem">Minimum 10 characters required before submitting</div>
+    </div>
+    ${!submitted ? `<button class="submit-btn" id="submitBtn" ${canSubmit ? '' : 'disabled'}>Submit Triage Decision</button>` : ''}
+    ${resultHTML}
+  `;
+
+    // Bind choice buttons
+  if (!submitted) {
+    triageArea.querySelectorAll('.choice-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        const val  = type === 'escalate' ? btn.dataset.val === 'true' : btn.dataset.val;
+        state.choices[type] = val;
+        renderTriage();
+        // Restore notes after re-render
+        const ni = document.getElementById('notesInput');
+        if (ni) ni.value = state.choices.notes || '';
+      });
+    });
+    // Notes input listener
+    const notesInput = document.getElementById('notesInput');
+    if (notesInput) {
+      notesInput.addEventListener('input', () => {
+        state.choices.notes = notesInput.value;
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) {
+          const canSub = state.choices.cat && state.choices.priority &&
+                         state.choices.escalate !== null &&
+                         state.choices.notes.trim().length > 10;
+          submitBtn.disabled = !canSub;
+        }
+      });
+    }
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) submitBtn.addEventListener('click', submitTriage);
+  }
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.addEventListener('click', nextTicket);
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────
+function submitTriage() {
+  const t = TICKETS.find(x => x.id === state.selected);
+  // Capture latest notes value
+  const notesInput = document.getElementById('notesInput');
+  if (notesInput) state.choices.notes = notesInput.value;
+  const catOk   = state.choices.cat      === t.cat;
+  const prioOk  = state.choices.priority === t.priority;
+  const escOk   = state.choices.escalate === t.escalate;
+  const correct = catOk && prioOk && escOk;
+
+  state.results[t.id] = {
+    cat:      state.choices.cat,
+    priority: state.choices.priority,
+    escalate: state.choices.escalate,
+    notes:    state.choices.notes,
+    correct,
+  };
+  state.submitted = true;
+  updateScore();
+  renderQueue();
+  renderTriage();
+}
+
+// ── NEXT TICKET ──────────────────────────────────────────────────────────
+function nextTicket() {
+  const open = TICKETS.filter(t => !state.results[t.id]);
+  if (open.length > 0) selectTicket(open[0].id);
+  else {
+    state.selected = null;
+    renderQueue();
+    renderDetail();
+    triageArea.innerHTML = `<div class="triage-empty"><div class="big" style="color:var(--white)">All tickets triaged!</div><div>Final accuracy: ${scoreAccuracy.textContent}</div></div>`;
+  }
+}
+
+// ── SCORE ────────────────────────────────────────────────────────────────
+function updateScore() {
+  const total   = Object.keys(state.results).length;
+  const correct = Object.values(state.results).filter(r => r.correct).length;
+  const pct     = total > 0 ? Math.round((correct / total) * 100) : 0;
+  scoreCorrect.textContent  = correct;
+  scoreTotal.textContent    = total;
+  scoreAccuracy.textContent = total > 0 ? `${pct}% Accuracy` : '— Accuracy';
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function randomTime() {
+  const h = Math.floor(Math.random()*8)+8;
+  const m = String(Math.floor(Math.random()*60)).padStart(2,'0');
+  return `${h}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+}
+const USERS   = ['J. Martinez','A. Thompson','R. Patel','S. Johnson','M. Chen','D. Williams','K. Brown','L. Davis'];
+const DEPTS   = ['Sales','Marketing','Operations','Finance','HR','Engineering','Legal'];
+function randomUser() { return USERS[Math.floor(Math.random()*USERS.length)]; }
+function randomDept() { return DEPTS[Math.floor(Math.random()*DEPTS.length)]; }
+
+// ── FILTERS ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.filter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderQueue();
+  });
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+renderQueue();
+renderDetail();
+renderTriage();
+</script>
+</body>
+</html>
