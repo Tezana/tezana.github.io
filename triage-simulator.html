@@ -109,7 +109,17 @@ header{background:var(--abyss);border-bottom:1px solid var(--b1);padding:.75rem 
 .next-btn{margin-top:.75rem;padding:.6rem 1.25rem;background:transparent;border:1px solid var(--b2);color:var(--silver);font-family:var(--fh);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s}
 .next-btn:hover{border-color:var(--b3);color:var(--white);background:var(--gun)}
 
-/* ── SCROLLBAR ── */
+/* ── RESOLUTION NOTES ── */
+.notes-area{width:100%;min-height:90px;background:var(--coal);border:1px solid var(--b1);color:var(--mist);font-family:var(--fm);font-size:.8rem;padding:.75rem;resize:vertical;line-height:1.7;transition:border-color .2s;outline:none}
+.notes-area::placeholder{color:var(--dim)}
+.notes-area:focus{border-color:var(--b3)}
+.notes-area:disabled{opacity:.5;resize:none}
+.notes-compare{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.notes-col{display:flex;flex-direction:column;gap:.4rem}
+.notes-col-title{font-family:var(--fh);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);padding-bottom:.35rem;border-bottom:1px solid var(--b0)}
+.notes-col-body{font-size:.78rem;line-height:1.8;color:var(--silver);padding:.6rem;background:var(--deep);border:1px solid var(--b0)}
+.notes-col-body.yours{border-color:var(--b1)}
+.notes-col-body.ai{border-color:var(--green);color:var(--mist)}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--steel);border-radius:2px}
@@ -290,12 +300,12 @@ function renderQueue() {
     const done = state.results[t.id];
     const active = state.selected === t.id ? ' active' : '';
     const doneClass = done ? ' done' : '';
-    const badgeClass = t.edge ? 'badge-edge' : `badge-${t.priority.toLowerCase()}`;
-    const badgeText  = t.edge ? 'EDGE' : t.priority.toUpperCase();
+    const badgeClass = t.edge ? 'badge-edge' : '';
+    const badgeText  = t.edge ? 'EDGE' : '';
     return `<div class="ticket-item${active}${doneClass}" data-id="${t.id}">
       <div class="ti-top">
         <span class="ti-id">${t.id}</span>
-        <span class="ti-badge ${badgeClass}">${badgeText}</span>
+        ${t.edge ? `<span class="ti-badge badge-edge">EDGE</span>` : ''}
       </div>
       <div class="ti-title">${t.title}</div>
       <div class="ti-cat">${t.cat}</div>
@@ -313,7 +323,7 @@ function renderQueue() {
 // ── SELECT TICKET ────────────────────────────────────────────────────────
 function selectTicket(id) {
   state.selected = id;
-  state.choices = { cat: null, priority: null, escalate: null };
+  state.choices = { cat: null, priority: null, escalate: null, notes: '' };
   state.submitted = false;
   renderQueue();
   renderDetail();
@@ -381,7 +391,7 @@ function renderTriage() {
     return `<button class="${cls}" data-type="escalate" data-val="${val}">${e}</button>`;
   }).join('');
 
-  const canSubmit = state.choices.cat && state.choices.priority && state.choices.escalate !== null;
+  const canSubmit = state.choices.cat && state.choices.priority && state.choices.escalate !== null && state.choices.notes && state.choices.notes.trim().length > 10;
 
   let resultHTML = '';
   if (submitted && done) {
@@ -409,9 +419,15 @@ function renderTriage() {
             <div class="result-ai ${escMatch ? 'result-match' : 'result-miss'}">AI: ${t.escalate ? 'Escalate' : 'Do Not Escalate'} ${escMatch ? '✓' : '✗'}</div>
           </div>
         </div>
-        <div class="result-response">
-          <strong>// AI Draft Response</strong>
-          ${t.response}
+        <div class="notes-compare">
+          <div class="notes-col">
+            <div class="notes-col-title">// Your Resolution Notes</div>
+            <div class="notes-col-body yours">${r.notes || '<em style="color:var(--dim)">No notes provided</em>'}</div>
+          </div>
+          <div class="notes-col">
+            <div class="notes-col-title">// AI Recommended Response</div>
+            <div class="notes-col-body ai">${t.response}</div>
+          </div>
         </div>
         <button class="next-btn" id="nextBtn">Next Ticket →</button>
       </div>`;
@@ -430,11 +446,16 @@ function renderTriage() {
       <div class="triage-section-title">Step 3 — Escalation Decision</div>
       <div class="escalate-row">${escBtns}</div>
     </div>
+    <div>
+      <div class="triage-section-title">Step 4 — Resolution Notes</div>
+      <textarea class="notes-area" id="notesInput" placeholder="Describe what you would do to resolve this ticket. What steps would you take? What would you communicate to the user?" ${submitted ? 'disabled' : ''}>${submitted && done ? done.notes : (state.choices.notes || '')}</textarea>
+      <div style="font-size:.62rem;color:var(--dim);margin-top:.35rem">Minimum 10 characters required before submitting</div>
+    </div>
     ${!submitted ? `<button class="submit-btn" id="submitBtn" ${canSubmit ? '' : 'disabled'}>Submit Triage Decision</button>` : ''}
     ${resultHTML}
   `;
 
-  // Bind choice buttons
+    // Bind choice buttons
   if (!submitted) {
     triageArea.querySelectorAll('.choice-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -442,8 +463,25 @@ function renderTriage() {
         const val  = type === 'escalate' ? btn.dataset.val === 'true' : btn.dataset.val;
         state.choices[type] = val;
         renderTriage();
+        // Restore notes after re-render
+        const ni = document.getElementById('notesInput');
+        if (ni) ni.value = state.choices.notes || '';
       });
     });
+    // Notes input listener
+    const notesInput = document.getElementById('notesInput');
+    if (notesInput) {
+      notesInput.addEventListener('input', () => {
+        state.choices.notes = notesInput.value;
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) {
+          const canSub = state.choices.cat && state.choices.priority &&
+                         state.choices.escalate !== null &&
+                         state.choices.notes.trim().length > 10;
+          submitBtn.disabled = !canSub;
+        }
+      });
+    }
     const submitBtn = document.getElementById('submitBtn');
     if (submitBtn) submitBtn.addEventListener('click', submitTriage);
   }
@@ -455,6 +493,9 @@ function renderTriage() {
 // ── SUBMIT ────────────────────────────────────────────────────────────────
 function submitTriage() {
   const t = TICKETS.find(x => x.id === state.selected);
+  // Capture latest notes value
+  const notesInput = document.getElementById('notesInput');
+  if (notesInput) state.choices.notes = notesInput.value;
   const catOk   = state.choices.cat      === t.cat;
   const prioOk  = state.choices.priority === t.priority;
   const escOk   = state.choices.escalate === t.escalate;
@@ -464,6 +505,7 @@ function submitTriage() {
     cat:      state.choices.cat,
     priority: state.choices.priority,
     escalate: state.choices.escalate,
+    notes:    state.choices.notes,
     correct,
   };
   state.submitted = true;
