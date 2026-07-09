@@ -300,12 +300,12 @@ function renderQueue() {
     const done = state.results[t.id];
     const active = state.selected === t.id ? ' active' : '';
     const doneClass = done ? ' done' : '';
-    const badgeClass = t.edge ? 'badge-edge' : `badge-${t.priority.toLowerCase()}`;
-    const badgeText  = t.edge ? 'EDGE' : t.priority.toUpperCase();
+    const badgeClass = t.edge ? 'badge-edge' : '';
+    const badgeText  = t.edge ? 'EDGE' : '';
     return `<div class="ticket-item${active}${doneClass}" data-id="${t.id}">
       <div class="ti-top">
         <span class="ti-id">${t.id}</span>
-        <span class="ti-badge ${badgeClass}">${badgeText}</span>
+        ${t.edge ? `<span class="ti-badge badge-edge">EDGE</span>` : ''}
       </div>
       <div class="ti-title">${t.title}</div>
       <div class="ti-cat">${t.cat}</div>
